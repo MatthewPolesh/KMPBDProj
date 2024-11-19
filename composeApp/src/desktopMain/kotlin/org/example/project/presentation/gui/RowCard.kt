@@ -23,13 +23,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import org.example.project.domain.entities.GOST
 import org.example.project.utils.Utilities
+import kotlin.reflect.full.memberProperties
 
 
 @Composable
-fun RowCard() {
+fun RowCard(item: GOST) {
     var extended by remember { mutableStateOf(false) }
-    val charList = listOf("Номер такой", "Выполнил тот то", "Выполнил этот")
+    val charList = item::class.memberProperties
     Box(
         modifier = Modifier
             .wrapContentHeight()
@@ -51,7 +53,7 @@ fun RowCard() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = "№1", modifier = Modifier.padding(end = 10.dp))
-                Text(text = "Запись 1")
+                Text(text = item.name)
                 Spacer(modifier = Modifier.weight(1F))
                 IconButton(
                     onClick = {},
@@ -65,8 +67,12 @@ fun RowCard() {
             }
             if (extended) {
                 Divider(modifier = Modifier.fillMaxWidth())
-                charList.forEach { char ->
-                    Text(text = char)
+                charList.forEach { property ->
+                    Row {
+                        Text(text = property.name)
+                        Text(text = "${item.id}")
+                    }
+
                 }
             }
         }

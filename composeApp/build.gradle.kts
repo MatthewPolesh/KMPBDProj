@@ -24,10 +24,12 @@ kotlin {
             implementation("org.jetbrains.exposed:exposed-spring-boot-starter:0.56.0")
             implementation("mysql:mysql-connector-java:8.0.33")
             //Koin
-            implementation ("io.insert-koin:koin-core:4.0.0")
-            implementation ("io.insert-koin:koin-android:4.0.0")
-            implementation ("org.koin:koin-androidx-viewmodel:4.0.0")
-            implementation ("androidx.lifecycle:lifecycle-viewmodel-savedstate:4.0.0")
+            api(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.lifecycle.viewmodel)
+            implementation(libs.navigation.compose)
+
 
             //Compose
             implementation(compose.runtime)

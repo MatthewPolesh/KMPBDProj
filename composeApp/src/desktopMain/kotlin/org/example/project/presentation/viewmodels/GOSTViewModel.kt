@@ -22,8 +22,14 @@ class GOSTViewModel(
     fun fetchGOSTs() {
         viewModelScope.launch {
             gostRepository.getAll()
-                .onSuccess { _gosts.value = it }
-                .onFailure { _error.value = it.message }
+                .onSuccess {
+                    _gosts.value = it
+                    println("Fetched GOSTs: ${it.size} items")
+                }
+                .onFailure {
+                    _error.value = it.message
+                    println("Error fetching GOSTs: ${it.message}")
+                }
         }
     }
 

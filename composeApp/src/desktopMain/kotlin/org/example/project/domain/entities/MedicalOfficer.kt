@@ -5,6 +5,8 @@ data class MedicalOfficer(
     val firstName: String,
     val lastName: String,
     val surname: String,
+    val age: Int,
+    val numberChild: Int,
     val email: String,
     val workExperience: Int,
     val specialityId: Int

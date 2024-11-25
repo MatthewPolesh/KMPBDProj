@@ -37,7 +37,6 @@ class ReportRepositoryImpl : BaseRepository(), ReportRepository {
             val medicalOfficerDao = MedicalOfficerDao.findById(report.medicalOfficerId)
                 ?: throw Exception("Medical Officer not found")
             dao.medicalOfficerDao = medicalOfficerDao
-
             true
         } else {
             false

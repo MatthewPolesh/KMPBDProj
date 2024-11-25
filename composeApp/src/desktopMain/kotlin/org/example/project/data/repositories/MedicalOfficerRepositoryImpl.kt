@@ -25,6 +25,8 @@ class MedicalOfficerRepositoryImpl : BaseRepository(), MedicalOfficerRepository 
             lastName = medicalOfficer.lastName
             surname = medicalOfficer.surname
             email = medicalOfficer.email
+            numberChild = medicalOfficer.numberChild
+            age = medicalOfficer.age
             workExperience = medicalOfficer.workExperience
             this.specialityDao = specialityDao
         }
@@ -39,6 +41,8 @@ class MedicalOfficerRepositoryImpl : BaseRepository(), MedicalOfficerRepository 
             dao.surname = medicalOfficer.surname
             dao.email = medicalOfficer.email
             dao.workExperience = medicalOfficer.workExperience
+            dao.numberChild = medicalOfficer.numberChild
+            dao.age = medicalOfficer.age
 
             val specialityDao = SpecialityDao.findById(medicalOfficer.specialityId)
                 ?: throw Exception("Speciality not found")

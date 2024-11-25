@@ -3,11 +3,11 @@ package org.example.project.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import org.example.project.domain.entities.Report
-import org.example.project.domain.repositories.ReportRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.example.project.domain.entities.Report
+import org.example.project.domain.repositories.ReportRepository
 
 class ReportViewModel(
     private val reportRepository: ReportRepository
@@ -40,6 +40,10 @@ class ReportViewModel(
             reportRepository.update(report)
                 .onSuccess { fetchReports() }
                 .onFailure { _error.value = it.message }
+            reportRepository.getAll()
+                .onSuccess { _reports.value = it }
+                .onFailure { _error.value = it.message }
+
         }
     }
 
@@ -47,6 +51,9 @@ class ReportViewModel(
         viewModelScope.launch {
             reportRepository.delete(id)
                 .onSuccess { fetchReports() }
+                .onFailure { _error.value = it.message }
+            reportRepository.getAll()
+                .onSuccess { _reports.value = it }
                 .onFailure { _error.value = it.message }
         }
     }

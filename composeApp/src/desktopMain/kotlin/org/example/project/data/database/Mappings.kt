@@ -68,8 +68,10 @@ fun MedicalOfficerDao.toDomain(): MedicalOfficer {
         lastName = this.lastName,
         surname = this.surname,
         email = this.email,
-        workExperience = this.workExperience,
-        specialityId = this.specialityDao.id.value
+        workExperience = this.workExperience?: 0,
+        specialityId = this.specialityDao.id.value,
+        age =  this.age?: 0,
+        numberChild = this.numberChild?: 0
     )
 }
 
@@ -108,7 +110,8 @@ fun ReportDao.toDomain(): Report {
         id = this.id.value,
         name = this.name,
         date = this.date,
-        medicalOfficerId = this.medicalOfficerDao.id.value
+        medicalOfficerId = this.medicalOfficerDao.id.value,
+        medicalOfficerName = "${this.medicalOfficerDao.surname} ${this.medicalOfficerDao.firstName} ${this.medicalOfficerDao.lastName}"
     )
 }
 

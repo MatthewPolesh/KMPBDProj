@@ -6,10 +6,10 @@ import org.koin.dsl.module
 val databaseModule = module{
     single<Database> {
         Database.connect(
-            url = "jdbc:mysql://192.168.0.108:3306/mydb",
+            url = "jdbc:mysql://26.15.95.41:3306/medicines",
             driver = "com.mysql.cj.jdbc.Driver",
             user = "vika",
-            password = "1234567890"
+            password = "1111"
         )
     }
 }

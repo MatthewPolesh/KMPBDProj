@@ -22,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import org.example.project.presentation.gui.sidemenu.DrawerContent
+import org.example.project.presentation.gui.tables.ReportTableCard
 import org.example.project.utils.Utilities
 
 
@@ -77,8 +79,8 @@ fun MainScreen() {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            TableCard(modifier = Modifier.weight(0.7f))
-            DescriptionCard(modifier = Modifier.weight(0.3f))
+            ReportTableCard(modifier = Modifier.weight(0.7f))
+            //DescriptionCard(modifier = Modifier.weight(0.3f))
         }
     }
 }

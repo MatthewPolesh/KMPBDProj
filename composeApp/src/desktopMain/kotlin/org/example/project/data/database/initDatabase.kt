@@ -6,7 +6,7 @@ import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 
 
-fun initDatabase(database: Database){
+fun initDatabase(database: Database) {
     transaction(database) {
         SchemaUtils.create(
             GOSTTable,

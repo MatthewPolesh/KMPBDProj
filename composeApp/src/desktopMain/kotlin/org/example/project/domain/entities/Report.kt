@@ -4,5 +4,6 @@ data class Report(
     val id: Int,
     val name: String,
     val date: kotlinx.datetime.LocalDate,
-    val medicalOfficerId: Int
+    val medicalOfficerId: Int,
+    val medicalOfficerName: String
 )

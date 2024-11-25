@@ -1,12 +1,12 @@
 package org.example.project.data.database.dao
 
 import org.example.project.data.database.tables.MedicineTable
-import org.jetbrains.exposed.dao.IntEntity
-import org.jetbrains.exposed.dao.IntEntityClass
+import org.jetbrains.exposed.dao.Entity
+import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 
-class MedicineDao(id: EntityID<Int>) : IntEntity(id) {
-    companion object : IntEntityClass<MedicineDao>(MedicineTable)
+class MedicineDao(id: EntityID<Int>) : Entity<Int>(id) {
+    companion object : EntityClass<Int,MedicineDao>(MedicineTable)
 
     var producer by MedicineTable.producer
     var name by MedicineTable.name

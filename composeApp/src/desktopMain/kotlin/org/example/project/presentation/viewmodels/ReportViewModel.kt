@@ -40,10 +40,6 @@ class ReportViewModel(
             reportRepository.update(report)
                 .onSuccess { fetchReports() }
                 .onFailure { _error.value = it.message }
-            reportRepository.getAll()
-                .onSuccess { _reports.value = it }
-                .onFailure { _error.value = it.message }
-
         }
     }
 
@@ -51,9 +47,6 @@ class ReportViewModel(
         viewModelScope.launch {
             reportRepository.delete(id)
                 .onSuccess { fetchReports() }
-                .onFailure { _error.value = it.message }
-            reportRepository.getAll()
-                .onSuccess { _reports.value = it }
                 .onFailure { _error.value = it.message }
         }
     }

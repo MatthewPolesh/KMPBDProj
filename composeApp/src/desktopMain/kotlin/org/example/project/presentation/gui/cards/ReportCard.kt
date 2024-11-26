@@ -38,12 +38,11 @@ fun ReportCard(
     var extended by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
 
-    var textId by remember { mutableStateOf("${item.id}") }
+    val textId by remember { mutableStateOf("${item.id}") }
     var textName by remember { mutableStateOf(item.name) }
     var textDate by remember { mutableStateOf("${item.date}") }
-    var textDone by remember { mutableStateOf(item.medicalOfficerName) }
+    val textDone by remember(item.medicalOfficerName) { mutableStateOf(item.medicalOfficerName) }
     var textOffId by remember { mutableStateOf("${item.medicalOfficerId}") }
-
     Box(
         modifier = Modifier
             .wrapContentHeight()

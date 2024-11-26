@@ -28,33 +28,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import org.example.project.domain.entities.MedicalOfficer
-import org.example.project.presentation.gui.cards.MedicalOfficerCard
-import org.example.project.presentation.viewmodels.MedicalOfficerViewModel
+import org.example.project.domain.entities.MedicinalForm
+import org.example.project.presentation.gui.cards.MedicinalFormCard
+import org.example.project.presentation.viewmodels.MedicinalFormViewModel
 import org.example.project.utils.Utilities
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
 @OptIn(KoinExperimentalAPI::class)
-@Preview
 @Composable
-fun MedicalOfficerTableCard(modifier: Modifier = Modifier) {
-
+fun MedicinalFormTableCard(modifier: Modifier = Modifier) {
     var textId by remember { mutableStateOf("") }
     var textName by remember { mutableStateOf("") }
-    var textAge by remember { mutableStateOf("") }
-    var textEmail by remember { mutableStateOf("") }
-    var textExp by remember { mutableStateOf("") }
-    var textSpec by remember { mutableStateOf("")}
-    var textChild by remember { mutableStateOf("") }
+    var textCompos by remember { mutableStateOf("") }
+    var textOffId by remember { mutableStateOf("") }
     var isEditing by remember { mutableStateOf(false) }
 
-    val viewModel: MedicalOfficerViewModel = koinViewModel()
-    val itemList = viewModel.medicalOfficers.collectAsState()
+    val viewModel: MedicinalFormViewModel = koinViewModel()
+    val itemList = viewModel.medicinalForms.collectAsState()
     LaunchedEffect(Unit){
-       viewModel.fetchMedicalOfficers()
+        viewModel.fetchMedicinalForms()
     }
+    println("Number of GOSTs: ${itemList.value.size}")
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -70,10 +65,10 @@ fun MedicalOfficerTableCard(modifier: Modifier = Modifier) {
                 modifier = Modifier.weight(0.9f)
             ) {
                 items(itemList.value) { item ->
-                    MedicalOfficerCard(
+                    MedicinalFormCard(
                         item,
-                        onUpdate = {},
-                        onDelete = {}
+                        onUpdate = {viewModel.updateMedicinalForm(it)},
+                        onDelete = {viewModel.deleteMedicinalForm(it)}
                     )
                 }
                 item {
@@ -101,6 +96,7 @@ fun MedicalOfficerTableCard(modifier: Modifier = Modifier) {
                                 Text(text = "Добавить" )
                             }
 
+
                             if (isEditing) {
                                 Divider(modifier = Modifier.fillMaxWidth())
                                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -111,63 +107,29 @@ fun MedicalOfficerTableCard(modifier: Modifier = Modifier) {
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("ФИО: ")
+                                    Text("Название: ")
                                     TextField(
                                         value = textName,
                                         onValueChange = { newText -> textName = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Возраст: ")
+                                    Text("Cостав: ")
                                     TextField(
-                                        value = textAge,
-                                        onValueChange = { newText -> textAge = newText },
-                                    )
-                                }
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Почта: ")
-                                    TextField(
-                                        value = textEmail,
-                                        onValueChange = { newText -> textEmail = newText },
-                                    )
-                                }
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("ID специальности: ")
-                                    TextField(
-                                        value = textSpec,
-                                        onValueChange = { newText -> textSpec = newText },
-                                    )
-                                }
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Опыт работы: ")
-                                    TextField(
-                                        value = textExp,
-                                        onValueChange = { newText -> textExp = newText },
-                                    )
-                                }
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Кол-во детей: ")
-                                    TextField(
-                                        value = textChild,
-                                        onValueChange = { newText -> textChild = newText  },
+                                        value = textCompos,
+                                        onValueChange = { newText -> textCompos = newText  },
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
                                     Text(
                                         "Подтвердить",
                                         modifier = Modifier.clickable {
                                             isEditing = !isEditing
-                                            val fullName = textName.split(" ")
-                                            viewModel.addMedicalOfficer(
-                                                MedicalOfficer(
+                                            viewModel.addMedicinalForm(
+                                                MedicinalForm(
                                                     id = textId.toInt(),
-                                                    firstName = fullName[1],
-                                                    lastName = fullName[2],
-                                                    surname = fullName[0],
-                                                    age = textAge.toInt(),
-                                                    numberChild = textChild.toInt(),
-                                                    email = textEmail,
-                                                    workExperience = textExp.toInt(),
-                                                    specialityId = textSpec.toInt()
+                                                    name = textName,
+                                                    composition = textCompos,
+                                                    medicalOfficerId = textOffId.toInt()
                                                 )
                                             )
                                         }

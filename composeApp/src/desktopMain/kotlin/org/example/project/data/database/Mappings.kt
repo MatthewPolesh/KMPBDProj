@@ -106,12 +106,14 @@ fun MedicineDao.toDomain(): Medicine {
 }
 
 fun ReportDao.toDomain(): Report {
+    val medicalOfficerDao = MedicalOfficerDao.findById(this.medicalOfficerDao.id.value)
+        ?: throw Exception("Medical Officer not found")
     return Report(
         id = this.id.value,
         name = this.name,
         date = this.date,
-        medicalOfficerId = this.medicalOfficerDao.id.value,
-        medicalOfficerName = "${this.medicalOfficerDao.surname} ${this.medicalOfficerDao.firstName} ${this.medicalOfficerDao.lastName}"
+        medicalOfficerId = medicalOfficerDao.id.value,
+        medicalOfficerName = "${medicalOfficerDao.surname} ${medicalOfficerDao.firstName} ${medicalOfficerDao.lastName}"
     )
 }
 

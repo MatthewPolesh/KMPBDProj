@@ -22,7 +22,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import org.example.project.presentation.gui.sidemenu.CustomDrawerShape
 import org.example.project.presentation.gui.sidemenu.DrawerContent
+import org.example.project.presentation.gui.tables.ActiveSubstanceTableCard
+import org.example.project.presentation.gui.tables.GostTableCard
+import org.example.project.presentation.gui.tables.MedicalOfficerTableCard
+import org.example.project.presentation.gui.tables.MedicinalFormTableCard
 import org.example.project.presentation.gui.tables.ReportTableCard
 import org.example.project.utils.Utilities
 
@@ -33,6 +38,8 @@ fun MainScreen() {
     val scope = rememberCoroutineScope()
     var checkboxState by remember { mutableStateOf(false) }
     var filtersState by remember{mutableStateOf(false)}
+    var tableName by remember{mutableStateOf("Отчёты")}
+
 
     if (filtersState)
         FiltersCard(
@@ -49,9 +56,12 @@ fun MainScreen() {
     Scaffold(
         scaffoldState = scaffoldState,
         drawerGesturesEnabled = true,
-        drawerShape = CustomDrawerShape(150.dp),
+        drawerShape = CustomDrawerShape(180.dp),
         drawerContent = {
             DrawerContent {
+                if (it != "Меню")
+                    tableName = it
+
                 scope.launch {
                     scaffoldState.drawerState.close()
                 }
@@ -67,7 +77,7 @@ fun MainScreen() {
                     modifier = Modifier
                         .clickable { scope.launch { scaffoldState.drawerState.open() } }
                         .padding(Utilities.paddingButton))
-                Text(text = "Название таблицы", modifier = Modifier.padding(Utilities.paddingButton))
+                Text(text = tableName, modifier = Modifier.padding(Utilities.paddingButton))
                 Spacer(modifier = Modifier.weight(1f))
                 Text(text = "Фильтры", modifier = Modifier.clickable { filtersState = !filtersState }.padding(
                     Utilities.paddingButton
@@ -79,8 +89,19 @@ fun MainScreen() {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            ReportTableCard(modifier = Modifier.weight(0.7f))
-            //DescriptionCard(modifier = Modifier.weight(0.3f))
+            when(tableName)
+            {
+                "Отчёты" -> ReportTableCard();
+                "Сотрудники" -> MedicalOfficerTableCard();
+                "Специальности" ->{};
+                "Лекарства" ->{};
+                "Активные комоненты препаратов" -> ActiveSubstanceTableCard();
+                "Виды лекарства"-> MedicinalFormTableCard();
+                "Стандарты изготовления" ->{};
+                "ГОСТы" -> GostTableCard();
+                "Статусы изготовления"->{};
+            }
+
         }
     }
 }

@@ -39,7 +39,6 @@ import org.koin.compose.viewmodel.koinViewModel
 @Preview
 @Composable
 fun ReportTableCard(modifier: Modifier = Modifier) {
-
     var textId by remember { mutableStateOf("") }
     var textName by remember { mutableStateOf("") }
     var textDate by remember { mutableStateOf("") }
@@ -145,7 +144,7 @@ fun ReportTableCard(modifier: Modifier = Modifier) {
                                                     name = textName,
                                                     date = LocalDate.parse(textDate),
                                                     medicalOfficerId = textOffId.toInt(),
-                                                    medicalOfficerName = "Null"
+                                                    medicalOfficerName = ""
                                                 )
                                             )
                                         }

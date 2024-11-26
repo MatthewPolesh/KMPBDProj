@@ -24,24 +24,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import org.example.project.domain.entities.ActiveSubstance
+import org.example.project.domain.entities.MedicinalForm
 import org.example.project.utils.Utilities
 
 
 @Composable
-fun ActiveSubstanceCard(
-    item: ActiveSubstance,
+fun MedicinalFormCard(
+    item: MedicinalForm,
     onDelete: (Int) -> Unit,
-    onUpdate: (ActiveSubstance) -> Unit,
+    onUpdate: (MedicinalForm) -> Unit,
 ) {
     var extended by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
 
-    val textId by remember { mutableStateOf("${item.id}") }
+    var textId by remember { mutableStateOf("${item.id}") }
     var textName by remember { mutableStateOf(item.name) }
     var textCompos by remember { mutableStateOf(item.composition) }
-    var textAppoint by remember{ mutableStateOf(item.appointment) }
-    var textOffId by remember { mutableStateOf("${item.medicalOfficerId}") }
+
     Box(
         modifier = Modifier
             .wrapContentHeight()
@@ -86,7 +85,6 @@ fun ActiveSubstanceCard(
                     Text("Id: $textId")
                     Text("Название: $textName")
                     Text("Состав: $textCompos")
-                    Text("Показания к применению: $textAppoint")
                 } else {
                     Text("Id: $textId")
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -102,20 +100,6 @@ fun ActiveSubstanceCard(
                             value = textCompos,
                             onValueChange = { newText -> textCompos = newText },
                         )
-                    }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Показания к применению: ")
-                        TextField(
-                            value = textAppoint,
-                            onValueChange = { newText -> textAppoint = newText },
-                        )
-                    }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Id сотрудника: ")
-                        TextField(
-                            value = textOffId,
-                            onValueChange = { newText -> textOffId = newText },
-                        )
                         Spacer(modifier = Modifier.weight(1f))
                         Text(
                             "Сохранить",
@@ -123,13 +107,11 @@ fun ActiveSubstanceCard(
                                 isEditing = false
                                 extended = false
                                 onUpdate(
-                                    ActiveSubstance(
+                                    MedicinalForm(
                                         id = textId.toInt(),
                                         name = textName,
                                         composition = textCompos,
-                                        appointment = textAppoint,
-                                        medicalOfficerId = textOffId.toInt(),
-
+                                        medicalOfficerId = item.medicalOfficerId
                                     )
                                 )
                             }
@@ -140,6 +122,5 @@ fun ActiveSubstanceCard(
 
             }
         }
-
     }
 }

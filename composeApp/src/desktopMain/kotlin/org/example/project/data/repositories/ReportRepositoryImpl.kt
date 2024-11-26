@@ -5,11 +5,15 @@ import org.example.project.data.database.dao.ReportDao
 import org.example.project.data.database.toDomain
 import org.example.project.domain.entities.Report
 import org.example.project.domain.repositories.ReportRepository
+import org.jetbrains.exposed.dao.with
+
 
 class ReportRepositoryImpl : BaseRepository(), ReportRepository {
 
     override suspend fun getAll(): Result<List<Report>> = safeDbCall {
-        ReportDao.all().map { it.toDomain() }
+        ReportDao.all()
+            .with(ReportDao::medicalOfficerDao)
+            .map { it.toDomain() }
     }
 
     override suspend fun getById(id: Int): Result<Report?> = safeDbCall {
@@ -24,6 +28,7 @@ class ReportRepositoryImpl : BaseRepository(), ReportRepository {
             name = report.name
             date = report.date
             this.medicalOfficerDao = medicalOfficerDao
+
         }
         dao.toDomain()
     }
@@ -37,6 +42,7 @@ class ReportRepositoryImpl : BaseRepository(), ReportRepository {
             val medicalOfficerDao = MedicalOfficerDao.findById(report.medicalOfficerId)
                 ?: throw Exception("Medical Officer not found")
             dao.medicalOfficerDao = medicalOfficerDao
+            dao.toDomain()
             true
         } else {
             false

@@ -2,6 +2,7 @@ package org.example.project.presentation.gui.cards
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,13 +26,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import org.example.project.domain.entities.GOST
 import org.example.project.utils.Utilities
-import kotlin.reflect.full.memberProperties
 
 
 @Composable
-fun GostCard(item: GOST) {
+fun GostCard(
+    item: GOST,
+    onDelete: (Int) -> Unit,
+    onUpdate: (GOST) -> Unit,
+) {
     var extended by remember { mutableStateOf(false) }
-    val charList = GOST::class.memberProperties
+    var isEditing by remember { mutableStateOf(false) }
+    val textId by remember { mutableStateOf("${item.id}") }
+    var textName by remember { mutableStateOf(item.name) }
+
+
     Box(
         modifier = Modifier
             .wrapContentHeight()
@@ -51,29 +60,56 @@ fun GostCard(item: GOST) {
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = item.name)
+                Text(text = textName)
                 Spacer(modifier = Modifier.weight(1F))
                 IconButton(
-                    onClick = {},
+                    onClick = {
+                        isEditing = !isEditing
+                        extended = true
+                    },
                     content = { Text(text = "R") })
                 IconButton(
-                    onClick = {},
+                    onClick = { onDelete(item.id) },
                     content = { Text(text = "D") })
                 IconButton(
-                    onClick = {extended = !extended},
+                    onClick = {
+                        extended = !extended
+                        isEditing = false
+                    },
                     content = { Text(text = if (extended) "<" else ">") })
             }
             if (extended) {
                 Divider(modifier = Modifier.fillMaxWidth())
-                charList.forEach { property ->
-                    Row {
-                        Text(text = property.name)
-                        Text(text = "${property.get(item)}")
+                if (!isEditing) {
+                    Text("ID: $textId")
+                    Text("Название: $textName")
+                } else {
+                    Text("Id: $textId")
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("Название: ")
+                        TextField(
+                            value = textName,
+                            onValueChange = { newText -> textName = newText },
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        Text(
+                            "Сохранить",
+                            modifier = Modifier.clickable {
+                                isEditing = false
+                                extended = false
+                                onUpdate(
+                                    GOST(
+                                        id = textId.toInt(),
+                                        name = textName
+                                    )
+                                )
+                            }
+                        )
                     }
 
                 }
+
             }
         }
-
     }
 }

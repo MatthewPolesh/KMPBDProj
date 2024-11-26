@@ -37,18 +37,20 @@ fun DrawerContent(
         DrawerItem(text = "Таблицы", onClick = {expanded = !expanded })
         if (expanded)
         {
-            DrawerItem(text ="Сотрудники", onClick = {})
-            DrawerItem(text ="Специальности", onClick = {})
-            DrawerItem(text ="Отчёты", onClick = {})
-            DrawerItem(text ="Лекарства", onClick = {}) //Medicine
-            DrawerItem(text ="Активные комоненты таблеток", onClick = {}) //ActiveSubstance
-            DrawerItem(text ="Виды лекарства", onClick = {}) // MedicinalForm
-            DrawerItem(text ="Стандарты изготовления", onClick = {})
-            DrawerItem(text ="Статусы изготовления", onClick = {})
+            DrawerItem(text ="Сотрудники", onClick = {onMenuItemClick("Сотрудники")})
+            DrawerItem(text ="Специальности", onClick = {onMenuItemClick("Специальности")})
+            DrawerItem(text ="Отчёты", onClick = {onMenuItemClick("Отчёты")})
+            DrawerItem(text ="Лекарства", onClick = {onMenuItemClick("Лекарства")}) //Medicine
+            DrawerItem(text ="Активные комоненты препаратов ", onClick = {onMenuItemClick("Активные комоненты препаратов")}) //ActiveSubstance
+            DrawerItem(text ="Виды лекарства", onClick = {onMenuItemClick("Виды лекарства")}) // MedicinalForm
+            DrawerItem(text ="ГОСТы", onClick = {onMenuItemClick("ГОСТы")})
+            DrawerItem(text ="Стандарты изготовления", onClick = {onMenuItemClick("Стандарты изготовления")})
+            DrawerItem(text ="Статусы изготовления", onClick = {onMenuItemClick("Статусы изготовления")})
         }
         Spacer(modifier = Modifier.weight(1f))
         DrawerItem(text = "Выход", onClick = {})
     }
+
 
 }
 

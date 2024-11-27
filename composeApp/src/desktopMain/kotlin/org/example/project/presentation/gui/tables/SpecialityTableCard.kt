@@ -28,35 +28,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import org.example.project.domain.entities.GOST
-import org.example.project.presentation.gui.cards.GostCard
-import org.example.project.presentation.viewmodels.GOSTViewModel
+import org.example.project.domain.entities.Speciality
+import org.example.project.presentation.gui.cards.SpecialityCard
+import org.example.project.presentation.viewmodels.SpecialityViewModel
 import org.example.project.utils.Utilities
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 
+@OptIn(KoinExperimentalAPI::class)
 @Preview
 @Composable
-fun GostTableCard(modifier: Modifier = Modifier) {
+fun SpecialityTableCard(modifier: Modifier = Modifier) {
 
-    var isEditing by remember { mutableStateOf(false) }
     var textId by remember { mutableStateOf("") }
     var textName by remember { mutableStateOf("") }
+    var textDuties by remember { mutableStateOf("") }
+    var isEditing by remember { mutableStateOf(false) }
 
-
-    val viewModel: GOSTViewModel = koinViewModel()
-    val itemList = viewModel.gosts.collectAsState()
-    LaunchedEffect(Unit) {
-        viewModel.fetchGOSTs()
+    val viewModel: SpecialityViewModel = koinViewModel()
+    val itemList = viewModel.specialities.collectAsState()
+    LaunchedEffect(Unit){
+        viewModel.fetchSpecialities()
     }
     Box(
         modifier = modifier
             .fillMaxSize()
-            .padding(
-                start = Utilities.paddingExternal,
-                end = Utilities.paddingExternal,
-                bottom = Utilities.paddingExternal
-            )
+            .padding(start = Utilities.paddingExternal, end = Utilities.paddingExternal, bottom = Utilities.paddingExternal)
 
     )
     {
@@ -68,10 +66,10 @@ fun GostTableCard(modifier: Modifier = Modifier) {
                 modifier = Modifier.weight(0.9f).padding(Utilities.paddingIntertal)
             ) {
                 items(itemList.value) { item ->
-                    GostCard(
+                    SpecialityCard(
                         item,
-                        onUpdate = { viewModel.updateGOST(it) },
-                        onDelete = { viewModel.deleteGOST(it) }
+                        onUpdate = {viewModel.updateSpeciality(it)},
+                        onDelete = {viewModel.deleteSpeciality(it)}
                     )
                 }
                 item {
@@ -96,7 +94,7 @@ fun GostTableCard(modifier: Modifier = Modifier) {
                                 modifier = Modifier.fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(text = "Добавить")
+                                Text(text = "Добавить" )
                             }
 
                             if (isEditing) {
@@ -109,20 +107,28 @@ fun GostTableCard(modifier: Modifier = Modifier) {
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Название: ")
+                                    Text("Специальность: ")
                                     TextField(
                                         value = textName,
                                         onValueChange = { newText -> textName = newText },
+                                    )
+                                    }
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text("Обязаности: ")
+                                    TextField(
+                                        value = textDuties,
+                                        onValueChange = { newText -> textDuties = newText },
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
                                     Text(
                                         "Подтвердить",
                                         modifier = Modifier.clickable {
                                             isEditing = !isEditing
-                                            viewModel.addGOST(
-                                                GOST(
+                                            viewModel.addSpeciality(
+                                                Speciality(
                                                     id = textId.toInt(),
-                                                    name = textName
+                                                    name = textName,
+                                                    duties = textDuties
                                                 )
                                             )
                                         }

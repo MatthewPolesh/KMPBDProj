@@ -28,35 +28,38 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import org.example.project.domain.entities.GOST
-import org.example.project.presentation.gui.cards.GostCard
-import org.example.project.presentation.viewmodels.GOSTViewModel
+import kotlinx.datetime.LocalDate
+import org.example.project.domain.entities.Medicine
+import org.example.project.presentation.gui.cards.MedicineCard
+import org.example.project.presentation.viewmodels.MedicineViewModel
 import org.example.project.utils.Utilities
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 
+@OptIn(KoinExperimentalAPI::class)
 @Preview
 @Composable
-fun GostTableCard(modifier: Modifier = Modifier) {
+fun MedicineTableCard(modifier: Modifier = Modifier) {
 
-    var isEditing by remember { mutableStateOf(false) }
     var textId by remember { mutableStateOf("") }
     var textName by remember { mutableStateOf("") }
+    var textProducer by remember { mutableStateOf("") }
+    var textDateProduce by remember { mutableStateOf("") }
+    var textSubId by remember { mutableStateOf("") }
+    var textFormId by remember { mutableStateOf("") }
+    var textStandardId by remember { mutableStateOf("") }
+    var isEditing by remember { mutableStateOf(false) }
 
-
-    val viewModel: GOSTViewModel = koinViewModel()
-    val itemList = viewModel.gosts.collectAsState()
-    LaunchedEffect(Unit) {
-        viewModel.fetchGOSTs()
+    val viewModel: MedicineViewModel = koinViewModel()
+    val itemList = viewModel.medicines.collectAsState()
+    LaunchedEffect(Unit){
+        viewModel.fetchMedicines()
     }
     Box(
         modifier = modifier
             .fillMaxSize()
-            .padding(
-                start = Utilities.paddingExternal,
-                end = Utilities.paddingExternal,
-                bottom = Utilities.paddingExternal
-            )
+            .padding(start = Utilities.paddingExternal, end = Utilities.paddingExternal, bottom = Utilities.paddingExternal)
 
     )
     {
@@ -68,10 +71,10 @@ fun GostTableCard(modifier: Modifier = Modifier) {
                 modifier = Modifier.weight(0.9f).padding(Utilities.paddingIntertal)
             ) {
                 items(itemList.value) { item ->
-                    GostCard(
+                    MedicineCard(
                         item,
-                        onUpdate = { viewModel.updateGOST(it) },
-                        onDelete = { viewModel.deleteGOST(it) }
+                        onUpdate = {viewModel.updateMedicine(it)},
+                        onDelete = {viewModel.deleteMedicine(it)}
                     )
                 }
                 item {
@@ -96,7 +99,7 @@ fun GostTableCard(modifier: Modifier = Modifier) {
                                 modifier = Modifier.fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(text = "Добавить")
+                                Text(text = "Добавить" )
                             }
 
                             if (isEditing) {
@@ -109,20 +112,64 @@ fun GostTableCard(modifier: Modifier = Modifier) {
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Название: ")
+                                    Text("Название: $textName")
                                     TextField(
                                         value = textName,
                                         onValueChange = { newText -> textName = newText },
+                                    )
+                                }
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text("Производитель: $textProducer")
+                                    TextField(
+                                        value = textProducer,
+                                        onValueChange = { newText -> textProducer = newText },
+                                    )
+                                }
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text("Дата производства: $textDateProduce")
+                                    TextField(
+                                        value = textDateProduce,
+                                        onValueChange = { newText -> textDateProduce = newText },
+                                    )
+                                }
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text("ID активного компонента: $textSubId")
+                                    TextField(
+                                        value = textSubId,
+                                        onValueChange = { newText -> textSubId = newText },
+                                    )
+                                }
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text("ID вида лекарства: ")
+                                    TextField(
+                                        value = textFormId,
+                                        onValueChange = { newText -> textFormId = newText },
+                                    )
+                                }
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text("ID стандарта: ")
+                                    TextField(
+                                        value = textStandardId,
+                                        onValueChange = { newText -> textStandardId = newText },
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
                                     Text(
                                         "Подтвердить",
                                         modifier = Modifier.clickable {
                                             isEditing = !isEditing
-                                            viewModel.addGOST(
-                                                GOST(
+                                            viewModel.addMedicine(
+                                                Medicine(
                                                     id = textId.toInt(),
-                                                    name = textName
+                                                    producer = textProducer,
+                                                    name = textName,
+                                                    dateProduce = LocalDate.parse(textDateProduce),
+                                                    activeSubstanceId = textSubId.toInt(),
+                                                    activeSubstanceName = "",
+                                                    medicinalFormId = textFormId.toInt(),
+                                                    medicinalFormName = "",
+                                                    standardId = textStandardId.toInt(),
+                                                    standardName = ""
+
                                                 )
                                             )
                                         }

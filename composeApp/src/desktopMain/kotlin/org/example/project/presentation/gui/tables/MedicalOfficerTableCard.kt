@@ -67,13 +67,13 @@ fun MedicalOfficerTableCard(modifier: Modifier = Modifier) {
                 .fillMaxSize()
         ) {
             LazyColumn(
-                modifier = Modifier.weight(0.9f)
+                modifier = Modifier.weight(0.9f).padding(Utilities.paddingIntertal)
             ) {
                 items(itemList.value) { item ->
                     MedicalOfficerCard(
                         item,
-                        onUpdate = {},
-                        onDelete = {}
+                        onUpdate = {viewModel.updateMedicalOfficer(it)},
+                        onDelete = {viewModel.deleteMedicalOfficer(it)}
                     )
                 }
                 item {

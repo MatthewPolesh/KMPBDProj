@@ -9,6 +9,9 @@ data class Medicine(
     val name: String,
     val dateProduce: LocalDate,
     val activeSubstanceId: Int,
+    val activeSubstanceName: String,
     val medicinalFormId: Int,
-    val standardId: Int
+    val medicinalFormName: String,
+    val standardId: Int,
+    val standardName: String
 )

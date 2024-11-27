@@ -28,26 +28,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import org.example.project.domain.entities.GOST
-import org.example.project.presentation.gui.cards.GostCard
-import org.example.project.presentation.viewmodels.GOSTViewModel
+import kotlinx.datetime.LocalDate
+import org.example.project.domain.entities.Status
+import org.example.project.presentation.gui.cards.StatusCard
+import org.example.project.presentation.viewmodels.StatusViewModel
 import org.example.project.utils.Utilities
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Preview
 @Composable
-fun GostTableCard(modifier: Modifier = Modifier) {
+fun StatusTableCard(modifier: Modifier = Modifier) {
 
     var isEditing by remember { mutableStateOf(false) }
     var textId by remember { mutableStateOf("") }
-    var textName by remember { mutableStateOf("") }
+    var textStartData by remember { mutableStateOf("") }
+    var textEndData by remember { mutableStateOf("") }
+    var textReasonOfChange by remember { mutableStateOf("") }
 
 
-    val viewModel: GOSTViewModel = koinViewModel()
-    val itemList = viewModel.gosts.collectAsState()
+    val viewModel: StatusViewModel = koinViewModel()
+    val itemList = viewModel.statuses.collectAsState()
     LaunchedEffect(Unit) {
-        viewModel.fetchGOSTs()
+        viewModel.fetchStatuses()
     }
     Box(
         modifier = modifier
@@ -68,10 +71,10 @@ fun GostTableCard(modifier: Modifier = Modifier) {
                 modifier = Modifier.weight(0.9f).padding(Utilities.paddingIntertal)
             ) {
                 items(itemList.value) { item ->
-                    GostCard(
+                    StatusCard(
                         item,
-                        onUpdate = { viewModel.updateGOST(it) },
-                        onDelete = { viewModel.deleteGOST(it) }
+                        onUpdate = { viewModel.updateStatus(it) },
+                        onDelete = { viewModel.deleteStatus(it) }
                     )
                 }
                 item {
@@ -109,33 +112,49 @@ fun GostTableCard(modifier: Modifier = Modifier) {
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Название: ")
+                                    Text("Начало: $textStartData")
                                     TextField(
-                                        value = textName,
-                                        onValueChange = { newText -> textName = newText },
+                                        value = textStartData,
+                                        onValueChange = { newText -> textStartData = newText },
+                                    )
+                                }
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text("Конец: $textEndData")
+                                    TextField(
+                                        value = textEndData,
+                                        onValueChange = { newText -> textEndData = newText },
+                                    )
+                                }
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text("Причина изменений: $textReasonOfChange")
+                                    TextField(
+                                        value = textReasonOfChange,
+                                        onValueChange = { newText -> textReasonOfChange = newText },
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
                                     Text(
-                                        "Подтвердить",
+                                        "Сохранить",
                                         modifier = Modifier.clickable {
-                                            isEditing = !isEditing
-                                            viewModel.addGOST(
-                                                GOST(
+                                            isEditing = false
+                                            viewModel.addStatus(
+                                                Status(
                                                     id = textId.toInt(),
-                                                    name = textName
+                                                    startData = LocalDate.parse(textStartData),
+                                                    endData = LocalDate.parse(textEndData),
+                                                    reasonOfChange = textReasonOfChange
+
                                                 )
                                             )
                                         }
-
                                     )
                                 }
+
                             }
 
                         }
                     }
                 }
             }
-
         }
     }
 }

@@ -94,14 +94,23 @@ fun MedicinalFormReportDao.toDomain(): MedicinalFormReport {
 }
 
 fun MedicineDao.toDomain(): Medicine {
+    val activeSubstanceDao = ActiveSubstanceDao.findById(this.activeSubstanceDao.id.value)
+        ?: throw Exception("Active Substance not found")
+    val medicinalFormDao = MedicinalFormDao.findById(this.medicinalFormDao.id.value)
+        ?: throw Exception("Medicinal Form not found")
+    val standardDao = StandardDao.findById(this.standardDao.id.value)
+        ?: throw Exception("Standard not found")
     return Medicine(
         id = this.id.value,
         producer = this.producer,
         name = this.name,
         dateProduce = this.dateProduce,
         activeSubstanceId = this.activeSubstanceDao.id.value,
+        activeSubstanceName = activeSubstanceDao.name,
         medicinalFormId = this.medicinalFormDao.id.value,
-        standardId = this.standardDao.id.value
+        medicinalFormName = medicinalFormDao.name,
+        standardId = this.standardDao.id.value,
+        standardName = standardDao.name
     )
 }
 

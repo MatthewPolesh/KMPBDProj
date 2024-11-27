@@ -28,7 +28,11 @@ import org.example.project.presentation.gui.tables.ActiveSubstanceTableCard
 import org.example.project.presentation.gui.tables.GostTableCard
 import org.example.project.presentation.gui.tables.MedicalOfficerTableCard
 import org.example.project.presentation.gui.tables.MedicinalFormTableCard
+import org.example.project.presentation.gui.tables.MedicineTableCard
 import org.example.project.presentation.gui.tables.ReportTableCard
+import org.example.project.presentation.gui.tables.SpecialityTableCard
+import org.example.project.presentation.gui.tables.StandardTableCard
+import org.example.project.presentation.gui.tables.StatusTableCard
 import org.example.project.utils.Utilities
 
 
@@ -93,13 +97,13 @@ fun MainScreen() {
             {
                 "Отчёты" -> ReportTableCard();
                 "Сотрудники" -> MedicalOfficerTableCard();
-                "Специальности" ->{};
-                "Лекарства" ->{};
+                "Специальности" -> SpecialityTableCard();
+                "Лекарства" -> MedicineTableCard();
                 "Активные комоненты препаратов" -> ActiveSubstanceTableCard();
                 "Виды лекарства"-> MedicinalFormTableCard();
-                "Стандарты изготовления" ->{};
+                "Стандарты изготовления" -> StandardTableCard();
                 "ГОСТы" -> GostTableCard();
-                "Статусы изготовления"->{};
+                "Статусы изготовления"-> StatusTableCard();
             }
 
         }

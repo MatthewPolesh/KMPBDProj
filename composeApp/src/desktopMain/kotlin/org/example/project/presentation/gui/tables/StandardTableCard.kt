@@ -28,26 +28,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import org.example.project.domain.entities.GOST
-import org.example.project.presentation.gui.cards.GostCard
-import org.example.project.presentation.viewmodels.GOSTViewModel
+import org.example.project.domain.entities.Standard
+import org.example.project.presentation.gui.cards.StandardCard
+import org.example.project.presentation.viewmodels.StandardViewModel
 import org.example.project.utils.Utilities
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Preview
 @Composable
-fun GostTableCard(modifier: Modifier = Modifier) {
+fun StandardTableCard(modifier: Modifier = Modifier) {
 
     var isEditing by remember { mutableStateOf(false) }
     var textId by remember { mutableStateOf("") }
     var textName by remember { mutableStateOf("") }
+    var textComponents by remember { mutableStateOf("") }
 
 
-    val viewModel: GOSTViewModel = koinViewModel()
-    val itemList = viewModel.gosts.collectAsState()
+    val viewModel: StandardViewModel = koinViewModel()
+    val itemList = viewModel.standards.collectAsState()
     LaunchedEffect(Unit) {
-        viewModel.fetchGOSTs()
+        viewModel.fetchStandards()
     }
     Box(
         modifier = modifier
@@ -68,10 +69,10 @@ fun GostTableCard(modifier: Modifier = Modifier) {
                 modifier = Modifier.weight(0.9f).padding(Utilities.paddingIntertal)
             ) {
                 items(itemList.value) { item ->
-                    GostCard(
+                    StandardCard(
                         item,
-                        onUpdate = { viewModel.updateGOST(it) },
-                        onDelete = { viewModel.deleteGOST(it) }
+                        onUpdate = { viewModel.updateStandard(it) },
+                        onDelete = { viewModel.deleteStandard(it) }
                     )
                 }
                 item {
@@ -114,15 +115,23 @@ fun GostTableCard(modifier: Modifier = Modifier) {
                                         value = textName,
                                         onValueChange = { newText -> textName = newText },
                                     )
+                                }
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text("Компоненты: ")
+                                    TextField(
+                                        value = textComponents,
+                                        onValueChange = { newText -> textComponents = newText },
+                                    )
                                     Spacer(modifier = Modifier.weight(1f))
                                     Text(
                                         "Подтвердить",
                                         modifier = Modifier.clickable {
                                             isEditing = !isEditing
-                                            viewModel.addGOST(
-                                                GOST(
+                                            viewModel.addStandard(
+                                                Standard(
                                                     id = textId.toInt(),
-                                                    name = textName
+                                                    name = textName,
+                                                    components = textComponents
                                                 )
                                             )
                                         }

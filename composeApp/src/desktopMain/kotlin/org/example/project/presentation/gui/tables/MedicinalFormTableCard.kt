@@ -62,7 +62,7 @@ fun MedicinalFormTableCard(modifier: Modifier = Modifier) {
                 .fillMaxSize()
         ) {
             LazyColumn(
-                modifier = Modifier.weight(0.9f)
+                modifier = Modifier.weight(0.9f).padding(Utilities.paddingIntertal)
             ) {
                 items(itemList.value) { item ->
                     MedicinalFormCard(

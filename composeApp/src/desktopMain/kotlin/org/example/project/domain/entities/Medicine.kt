@@ -7,6 +7,7 @@ data class Medicine(
     val id: Int,
     val producer: String,
     val name: String,
+    val dosage: Int,
     val dateProduce: LocalDate,
     val activeSubstanceId: Int,
     val activeSubstanceName: String,

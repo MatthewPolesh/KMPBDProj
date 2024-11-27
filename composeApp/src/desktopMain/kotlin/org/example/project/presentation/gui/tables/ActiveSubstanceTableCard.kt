@@ -42,19 +42,23 @@ fun ActiveSubstanceTableCard(modifier: Modifier = Modifier) {
     var textId by remember { mutableStateOf("") }
     var textName by remember { mutableStateOf("") }
     var textCompos by remember { mutableStateOf("") }
-    var textAppoint by remember{ mutableStateOf("") }
+    var textAppoint by remember { mutableStateOf("") }
     var textOffId by remember { mutableStateOf("") }
     var isEditing by remember { mutableStateOf(false) }
 
     val viewModel: ActiveSubstanceViewModel = koinViewModel()
     val itemList = viewModel.activeSubstances.collectAsState()
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         viewModel.fetchActiveSubstances()
     }
     Box(
-    modifier = modifier
-    .fillMaxSize()
-    .padding(start = Utilities.paddingExternal, end = Utilities.paddingExternal, bottom = Utilities.paddingExternal)
+        modifier = modifier
+            .fillMaxSize()
+            .padding(
+                start = Utilities.paddingExternal,
+                end = Utilities.paddingExternal,
+                bottom = Utilities.paddingExternal
+            )
 
     )
     {
@@ -68,8 +72,8 @@ fun ActiveSubstanceTableCard(modifier: Modifier = Modifier) {
                 items(itemList.value) { item ->
                     ActiveSubstanceCard(
                         item,
-                        onDelete = { viewModel.deleteActiveSubstance(it)},
-                        onUpdate = { viewModel.updateActiveSubstance(it)}
+                        onDelete = { viewModel.deleteActiveSubstance(it) },
+                        onUpdate = { viewModel.updateActiveSubstance(it) }
                     )
                 }
                 item {
@@ -91,10 +95,22 @@ fun ActiveSubstanceTableCard(modifier: Modifier = Modifier) {
                                 .padding(horizontal = Utilities.paddingIntertal)
                         ) {
                             Row(
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        start = Utilities.paddingExternal,
+                                        end = Utilities.paddingExternal,
+                                        bottom = Utilities.paddingExternal
+                                    ),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(text = "Добавить" )
+                                Text(
+                                    text = "Добавить",
+                                    modifier = Modifier
+                                        .padding( vertical = Utilities.paddingButton/2)
+                                        .clip(shape = RoundedCornerShape(Utilities.cornerBox))
+                                        .clickable { isEditing = !isEditing }
+                                        .padding( vertical = Utilities.paddingButton/2) )
                             }
 
                             if (isEditing) {
@@ -114,36 +130,50 @@ fun ActiveSubstanceTableCard(modifier: Modifier = Modifier) {
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Cостав: ")
+                                    Text("Состав: ")
                                     TextField(
                                         value = textCompos,
-                                        onValueChange = { newText -> textCompos = newText  },
+                                        onValueChange = { newText -> textCompos = newText },
+                                    )
+                                }
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text("Показания к применению: ")
+                                    TextField(
+                                        value = textAppoint,
+                                        onValueChange = { newText -> textAppoint = newText },
+                                    )
+                                }
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text("Id сотрудника: ")
+                                    TextField(
+                                        value = textOffId,
+                                        onValueChange = { newText -> textOffId = newText },
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
                                     Text(
-                                        "Подтвердить",
+                                        "Сохранить",
                                         modifier = Modifier.clickable {
-                                            isEditing = !isEditing
+                                            isEditing = false
                                             viewModel.addActiveSubstance(
                                                 ActiveSubstance(
                                                     id = textId.toInt(),
                                                     name = textName,
                                                     composition = textCompos,
                                                     appointment = textAppoint,
-                                                    medicalOfficerId = textOffId.toInt()
-                                                )
+                                                    medicalOfficerId = textOffId.toInt(),
+                                                    )
                                             )
-                                        }
-
+                                        }.padding( vertical = Utilities.paddingButton/2)
                                     )
                                 }
+
                             }
 
                         }
                     }
+
                 }
             }
-
         }
     }
 }

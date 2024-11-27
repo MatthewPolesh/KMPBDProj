@@ -93,10 +93,22 @@ fun GostTableCard(modifier: Modifier = Modifier) {
                                 .padding(horizontal = Utilities.paddingIntertal)
                         ) {
                             Row(
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        start = Utilities.paddingExternal,
+                                        end = Utilities.paddingExternal,
+                                        bottom = Utilities.paddingExternal
+                                    ),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(text = "Добавить")
+                                Text(
+                                    text = "Добавить",
+                                    modifier = Modifier
+                                        .padding( vertical = Utilities.paddingButton/2)
+                                        .clip(shape = RoundedCornerShape(Utilities.cornerBox))
+                                        .clickable { isEditing = !isEditing }
+                                        .padding( vertical = Utilities.paddingButton/2) )
                             }
 
                             if (isEditing) {
@@ -125,7 +137,7 @@ fun GostTableCard(modifier: Modifier = Modifier) {
                                                     name = textName
                                                 )
                                             )
-                                        }
+                                        }.padding( vertical = Utilities.paddingButton/2)
 
                                     )
                                 }

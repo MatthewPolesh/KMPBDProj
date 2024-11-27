@@ -91,21 +91,21 @@ fun StatusCard(
                 } else {
                     Text("Id: $textId")
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Начало: $textStartData")
+                        Text("Начало: ")
                         TextField(
                             value = textStartData,
                             onValueChange = { newText -> textStartData = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Конец: $textEndData")
+                        Text("Конец: ")
                         TextField(
                             value = textEndData,
                             onValueChange = { newText -> textEndData = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Причина изменений: $textReasonOfChange")
+                        Text("Причина изменений: ")
                         TextField(
                             value = textReasonOfChange,
                             onValueChange = { newText -> textReasonOfChange = newText },

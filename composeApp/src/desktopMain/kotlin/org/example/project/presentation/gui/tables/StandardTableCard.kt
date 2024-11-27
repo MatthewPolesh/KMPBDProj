@@ -94,10 +94,22 @@ fun StandardTableCard(modifier: Modifier = Modifier) {
                                 .padding(horizontal = Utilities.paddingIntertal)
                         ) {
                             Row(
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        start = Utilities.paddingExternal,
+                                        end = Utilities.paddingExternal,
+                                        bottom = Utilities.paddingExternal
+                                    ),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(text = "Добавить")
+                                Text(
+                                    text = "Добавить",
+                                    modifier = Modifier
+                                        .padding( vertical = Utilities.paddingButton/2)
+                                        .clip(shape = RoundedCornerShape(Utilities.cornerBox))
+                                        .clickable { isEditing = !isEditing }
+                                        .padding( vertical = Utilities.paddingButton/2) )
                             }
 
                             if (isEditing) {
@@ -134,7 +146,7 @@ fun StandardTableCard(modifier: Modifier = Modifier) {
                                                     components = textComponents
                                                 )
                                             )
-                                        }
+                                        }.padding( vertical = Utilities.paddingButton/2)
 
                                     )
                                 }

@@ -42,6 +42,7 @@ fun MedicineCard(
     var textName by remember { mutableStateOf(item.name) }
     var textProducer by remember { mutableStateOf(item.producer) }
     var textDateProduce by remember { mutableStateOf("${item.dateProduce}") }
+    var textDosage by remember { mutableStateOf("${item.dosage}") }
     var textSubId by remember { mutableStateOf("${item.activeSubstanceId}") }
     var textSubName by remember { mutableStateOf(item.activeSubstanceName) }
     var textFormId by remember { mutableStateOf("${item.medicinalFormId}") }
@@ -94,6 +95,7 @@ fun MedicineCard(
                     Text("Название: $textName")
                     Text("Производитель: $textProducer")
                     Text("Дата производства: $textDateProduce")
+                    Text("Дозировка: $textDosage")
                     Text("ID активного компонента: $textSubId")
                     Text("Активный компонент: $textSubName")
                     Text("ID вида лекраства: $textFormId")
@@ -103,42 +105,49 @@ fun MedicineCard(
                 } else {
                     Text("Id: $textId")
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Название: $textName")
+                        Text("Название: ")
                         TextField(
                             value = textName,
                             onValueChange = { newText -> textName = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Производитель: $textProducer")
+                        Text("Производитель: ")
                         TextField(
                             value = textProducer,
                             onValueChange = { newText -> textProducer = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Дата производства: $textDateProduce")
+                        Text("Дата производства: ")
                         TextField(
                             value = textDateProduce,
                             onValueChange = { newText -> textDateProduce = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("ID активного компонента: $textSubId")
+                        Text("Дозировка: ")
+                        TextField(
+                            value = textDosage,
+                            onValueChange = { newText -> textDosage = newText },
+                        )
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("ID активного компонента: ")
                         TextField(
                             value = textSubId,
                             onValueChange = { newText -> textSubId = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("ID вида лекраства: $textFormId")
+                        Text("ID вида лекраства: ")
                         TextField(
                             value = textFormId,
                             onValueChange = { newText -> textFormId = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("ID стандрата: $textStandardId")
+                        Text("ID стандрата: ")
                         TextField(
                             value = textName,
                             onValueChange = { newText -> textName = newText },
@@ -146,7 +155,7 @@ fun MedicineCard(
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("ID стандрата: $textStandardId")
+                            Text("ID стандрата: ")
                             TextField(
                                 value = textStandardId,
                                 onValueChange = { newText -> textStandardId = newText },
@@ -169,7 +178,8 @@ fun MedicineCard(
                                         medicinalFormId = textFormId.toInt(),
                                         medicinalFormName = "",
                                         standardId = textStandardId.toInt(),
-                                        standardName = ""
+                                        standardName = "",
+                                        dosage = textDosage.toInt()
 
                                     )
                                 )

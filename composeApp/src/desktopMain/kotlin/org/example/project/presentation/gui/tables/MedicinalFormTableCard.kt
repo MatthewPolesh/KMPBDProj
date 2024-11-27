@@ -49,7 +49,6 @@ fun MedicinalFormTableCard(modifier: Modifier = Modifier) {
     LaunchedEffect(Unit){
         viewModel.fetchMedicinalForms()
     }
-    println("Number of GOSTs: ${itemList.value.size}")
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -90,10 +89,22 @@ fun MedicinalFormTableCard(modifier: Modifier = Modifier) {
                                 .padding(horizontal = Utilities.paddingIntertal)
                         ) {
                             Row(
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        start = Utilities.paddingExternal,
+                                        end = Utilities.paddingExternal,
+                                        bottom = Utilities.paddingExternal
+                                    ),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(text = "Добавить" )
+                                Text(
+                                    text = "Добавить",
+                                    modifier = Modifier
+                                        .padding( vertical = Utilities.paddingButton/2)
+                                        .clip(shape = RoundedCornerShape(Utilities.cornerBox))
+                                        .clickable { isEditing = !isEditing }
+                                        .padding( vertical = Utilities.paddingButton/2) )
                             }
 
 
@@ -119,6 +130,13 @@ fun MedicinalFormTableCard(modifier: Modifier = Modifier) {
                                         value = textCompos,
                                         onValueChange = { newText -> textCompos = newText  },
                                     )
+                                }
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text("ID сотрудника: ")
+                                    TextField(
+                                        value = textOffId,
+                                        onValueChange = { newText -> textOffId = newText  },
+                                    )
                                     Spacer(modifier = Modifier.weight(1f))
                                     Text(
                                         "Подтвердить",
@@ -132,7 +150,7 @@ fun MedicinalFormTableCard(modifier: Modifier = Modifier) {
                                                     medicalOfficerId = textOffId.toInt()
                                                 )
                                             )
-                                        }
+                                        }.padding( vertical = Utilities.paddingButton/2)
 
                                     )
                                 }

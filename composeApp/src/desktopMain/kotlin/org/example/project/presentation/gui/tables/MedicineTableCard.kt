@@ -46,6 +46,7 @@ fun MedicineTableCard(modifier: Modifier = Modifier) {
     var textName by remember { mutableStateOf("") }
     var textProducer by remember { mutableStateOf("") }
     var textDateProduce by remember { mutableStateOf("") }
+    var textDosage by remember { mutableStateOf("") }
     var textSubId by remember { mutableStateOf("") }
     var textFormId by remember { mutableStateOf("") }
     var textStandardId by remember { mutableStateOf("") }
@@ -60,7 +61,6 @@ fun MedicineTableCard(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxSize()
             .padding(start = Utilities.paddingExternal, end = Utilities.paddingExternal, bottom = Utilities.paddingExternal)
-
     )
     {
         Column(
@@ -96,10 +96,22 @@ fun MedicineTableCard(modifier: Modifier = Modifier) {
                                 .padding(horizontal = Utilities.paddingIntertal)
                         ) {
                             Row(
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        start = Utilities.paddingExternal,
+                                        end = Utilities.paddingExternal,
+                                        bottom = Utilities.paddingExternal
+                                    ),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(text = "Добавить" )
+                                Text(
+                                    text = "Добавить",
+                                    modifier = Modifier
+                                        .padding( vertical = Utilities.paddingButton/2)
+                                        .clip(shape = RoundedCornerShape(Utilities.cornerBox))
+                                        .clickable { isEditing = !isEditing }
+                                        .padding( vertical = Utilities.paddingButton/2) )
                             }
 
                             if (isEditing) {
@@ -112,28 +124,35 @@ fun MedicineTableCard(modifier: Modifier = Modifier) {
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Название: $textName")
+                                    Text("Название: ")
                                     TextField(
                                         value = textName,
                                         onValueChange = { newText -> textName = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Производитель: $textProducer")
+                                    Text("Производитель: ")
                                     TextField(
                                         value = textProducer,
                                         onValueChange = { newText -> textProducer = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Дата производства: $textDateProduce")
+                                    Text("Дата производства: ")
                                     TextField(
                                         value = textDateProduce,
                                         onValueChange = { newText -> textDateProduce = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("ID активного компонента: $textSubId")
+                                    Text("Дозировка: ")
+                                    TextField(
+                                        value = textDosage,
+                                        onValueChange = { newText -> textDosage = newText },
+                                    )
+                                }
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text("ID активного компонента: ")
                                     TextField(
                                         value = textSubId,
                                         onValueChange = { newText -> textSubId = newText },
@@ -168,11 +187,11 @@ fun MedicineTableCard(modifier: Modifier = Modifier) {
                                                     medicinalFormId = textFormId.toInt(),
                                                     medicinalFormName = "",
                                                     standardId = textStandardId.toInt(),
-                                                    standardName = ""
-
+                                                    standardName = "",
+                                                    dosage = textDosage.toInt()
                                                 )
                                             )
-                                        }
+                                        }.padding( vertical = Utilities.paddingButton/2)
 
                                     )
                                 }

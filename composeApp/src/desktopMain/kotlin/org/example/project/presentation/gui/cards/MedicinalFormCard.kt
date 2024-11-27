@@ -41,6 +41,7 @@ fun MedicinalFormCard(
     var textName by remember { mutableStateOf(item.name) }
     var textCompos by remember { mutableStateOf(item.composition) }
 
+
     Box(
         modifier = Modifier
             .wrapContentHeight()

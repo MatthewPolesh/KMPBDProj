@@ -105,6 +105,7 @@ fun MedicineDao.toDomain(): Medicine {
         producer = this.producer,
         name = this.name,
         dateProduce = this.dateProduce,
+        dosage = this.dosage,
         activeSubstanceId = this.activeSubstanceDao.id.value,
         activeSubstanceName = activeSubstanceDao.name,
         medicinalFormId = this.medicinalFormDao.id.value,

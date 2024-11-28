@@ -60,7 +60,7 @@ fun MainScreen() {
     Scaffold(
         scaffoldState = scaffoldState,
         drawerGesturesEnabled = true,
-        drawerShape = CustomDrawerShape(180.dp),
+        drawerShape = CustomDrawerShape(200.dp),
         drawerContent = {
             DrawerContent {
                 if (it != "Меню")

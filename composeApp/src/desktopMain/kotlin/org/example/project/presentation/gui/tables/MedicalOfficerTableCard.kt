@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import org.example.project.domain.entities.MedicalOfficer
+import org.example.project.presentation.gui.CustomButton
 import org.example.project.presentation.gui.cards.MedicalOfficerCard
 import org.example.project.presentation.viewmodels.MedicalOfficerViewModel
 import org.example.project.utils.Utilities
@@ -96,23 +97,14 @@ fun MedicalOfficerTableCard(modifier: Modifier = Modifier) {
                         ) {
                             Row(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        start = Utilities.paddingExternal,
-                                        end = Utilities.paddingExternal,
-                                        bottom = Utilities.paddingExternal
-                                    ),
+                                    .fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
-                                    text = "Добавить",
-                                    modifier = Modifier
-                                        .padding( vertical = Utilities.paddingButton/2)
-                                        .clip(shape = RoundedCornerShape(Utilities.cornerBox))
-                                        .clickable { isEditing = !isEditing }
-                                        .padding( vertical = Utilities.paddingButton/2) )
+                                CustomButton(
+                                    text = "Новое",
+                                    onClick = { isEditing = !isEditing }
+                                )
                             }
-
                             if (isEditing) {
                                 Divider(modifier = Modifier.fillMaxWidth())
                                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -164,9 +156,9 @@ fun MedicalOfficerTableCard(modifier: Modifier = Modifier) {
                                         onValueChange = { newText -> textChild = newText  },
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
-                                    Text(
-                                        "Подтвердить",
-                                        modifier = Modifier.clickable {
+                                    CustomButton(
+                                        text = "Добавить",
+                                        onClick = {
                                             isEditing = !isEditing
                                             val fullName = textName.split(" ")
                                             viewModel.addMedicalOfficer(
@@ -182,8 +174,7 @@ fun MedicalOfficerTableCard(modifier: Modifier = Modifier) {
                                                     specialityId = textSpec.toInt()
                                                 )
                                             )
-                                        }.padding( vertical = Utilities.paddingButton/2)
-
+                                        }
                                     )
                                 }
                             }

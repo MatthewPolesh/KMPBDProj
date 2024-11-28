@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import org.example.project.domain.entities.Speciality
+import org.example.project.presentation.gui.CustomButton
 import org.example.project.presentation.gui.cards.SpecialityCard
 import org.example.project.presentation.viewmodels.SpecialityViewModel
 import org.example.project.utils.Utilities
@@ -92,21 +93,13 @@ fun SpecialityTableCard(modifier: Modifier = Modifier) {
                         ) {
                             Row(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        start = Utilities.paddingExternal,
-                                        end = Utilities.paddingExternal,
-                                        bottom = Utilities.paddingExternal
-                                    ),
+                                    .fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
-                                    text = "Добавить",
-                                    modifier = Modifier
-                                        .padding( vertical = Utilities.paddingButton/2)
-                                        .clip(shape = RoundedCornerShape(Utilities.cornerBox))
-                                        .clickable { isEditing = !isEditing }
-                                        .padding( vertical = Utilities.paddingButton/2) )
+                                CustomButton(
+                                    text = "Новое",
+                                    onClick = { isEditing = !isEditing }
+                                )
                             }
 
                             if (isEditing) {
@@ -132,9 +125,9 @@ fun SpecialityTableCard(modifier: Modifier = Modifier) {
                                         onValueChange = { newText -> textDuties = newText },
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
-                                    Text(
-                                        "Подтвердить",
-                                        modifier = Modifier.clickable {
+                                    CustomButton(
+                                        text = "Добавить",
+                                        onClick = {
                                             isEditing = !isEditing
                                             viewModel.addSpeciality(
                                                 Speciality(
@@ -143,8 +136,7 @@ fun SpecialityTableCard(modifier: Modifier = Modifier) {
                                                     duties = textDuties
                                                 )
                                             )
-                                        }.padding( vertical = Utilities.paddingButton/2)
-
+                                        }
                                     )
                                 }
                             }

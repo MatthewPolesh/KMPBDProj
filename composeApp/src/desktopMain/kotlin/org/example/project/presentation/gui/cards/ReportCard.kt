@@ -2,7 +2,6 @@ package org.example.project.presentation.gui.cards
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.LocalDate
 import org.example.project.domain.entities.Report
+import org.example.project.presentation.gui.CustomButton
 import org.example.project.utils.Utilities
 
 
@@ -114,9 +114,9 @@ fun ReportCard(
                             onValueChange = { newText -> textOffId = newText },
                         )
                         Spacer(modifier = Modifier.weight(1f))
-                        Text(
-                            "Сохранить",
-                            modifier = Modifier.clickable {
+                        CustomButton(
+                            text = "Сохранить",
+                            onClick = {
                                 isEditing = false
                                 extended = false
                                 onUpdate(
@@ -131,11 +131,8 @@ fun ReportCard(
                             }
                         )
                     }
-
                 }
-
             }
         }
-
     }
 }

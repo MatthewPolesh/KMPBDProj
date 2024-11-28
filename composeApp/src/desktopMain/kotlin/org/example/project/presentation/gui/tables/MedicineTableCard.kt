@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import kotlinx.datetime.LocalDate
 import org.example.project.domain.entities.Medicine
+import org.example.project.presentation.gui.CustomButton
 import org.example.project.presentation.gui.cards.MedicineCard
 import org.example.project.presentation.viewmodels.MedicineViewModel
 import org.example.project.utils.Utilities
@@ -97,21 +98,13 @@ fun MedicineTableCard(modifier: Modifier = Modifier) {
                         ) {
                             Row(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        start = Utilities.paddingExternal,
-                                        end = Utilities.paddingExternal,
-                                        bottom = Utilities.paddingExternal
-                                    ),
+                                    .fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
-                                    text = "Добавить",
-                                    modifier = Modifier
-                                        .padding( vertical = Utilities.paddingButton/2)
-                                        .clip(shape = RoundedCornerShape(Utilities.cornerBox))
-                                        .clickable { isEditing = !isEditing }
-                                        .padding( vertical = Utilities.paddingButton/2) )
+                                CustomButton(
+                                    text = "Новое",
+                                    onClick = { isEditing = !isEditing }
+                                )
                             }
 
                             if (isEditing) {
@@ -172,9 +165,9 @@ fun MedicineTableCard(modifier: Modifier = Modifier) {
                                         onValueChange = { newText -> textStandardId = newText },
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
-                                    Text(
-                                        "Подтвердить",
-                                        modifier = Modifier.clickable {
+                                    CustomButton(
+                                        text = "Добавить",
+                                        onClick = {
                                             isEditing = !isEditing
                                             viewModel.addMedicine(
                                                 Medicine(
@@ -191,8 +184,7 @@ fun MedicineTableCard(modifier: Modifier = Modifier) {
                                                     dosage = textDosage.toInt()
                                                 )
                                             )
-                                        }.padding( vertical = Utilities.paddingButton/2)
-
+                                        }
                                     )
                                 }
                             }

@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import org.example.project.domain.entities.Standard
+import org.example.project.presentation.gui.CustomButton
 import org.example.project.presentation.gui.cards.StandardCard
 import org.example.project.presentation.viewmodels.StandardViewModel
 import org.example.project.utils.Utilities
@@ -95,21 +96,13 @@ fun StandardTableCard(modifier: Modifier = Modifier) {
                         ) {
                             Row(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        start = Utilities.paddingExternal,
-                                        end = Utilities.paddingExternal,
-                                        bottom = Utilities.paddingExternal
-                                    ),
+                                    .fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
-                                    text = "Добавить",
-                                    modifier = Modifier
-                                        .padding( vertical = Utilities.paddingButton/2)
-                                        .clip(shape = RoundedCornerShape(Utilities.cornerBox))
-                                        .clickable { isEditing = !isEditing }
-                                        .padding( vertical = Utilities.paddingButton/2) )
+                                CustomButton(
+                                    text = "Новое",
+                                    onClick = { isEditing = !isEditing }
+                                )
                             }
 
                             if (isEditing) {
@@ -135,9 +128,9 @@ fun StandardTableCard(modifier: Modifier = Modifier) {
                                         onValueChange = { newText -> textComponents = newText },
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
-                                    Text(
-                                        "Подтвердить",
-                                        modifier = Modifier.clickable {
+                                    CustomButton(
+                                        text = "Добавить",
+                                        onClick = {
                                             isEditing = !isEditing
                                             viewModel.addStandard(
                                                 Standard(
@@ -146,12 +139,10 @@ fun StandardTableCard(modifier: Modifier = Modifier) {
                                                     components = textComponents
                                                 )
                                             )
-                                        }.padding( vertical = Utilities.paddingButton/2)
-
+                                        }
                                     )
                                 }
                             }
-
                         }
                     }
                 }

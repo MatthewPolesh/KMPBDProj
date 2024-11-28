@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import org.example.project.domain.entities.ActiveSubstance
+import org.example.project.presentation.gui.CustomButton
 import org.example.project.presentation.gui.cards.ActiveSubstanceCard
 import org.example.project.presentation.viewmodels.ActiveSubstanceViewModel
 import org.example.project.utils.Utilities
@@ -96,21 +97,13 @@ fun ActiveSubstanceTableCard(modifier: Modifier = Modifier) {
                         ) {
                             Row(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        start = Utilities.paddingExternal,
-                                        end = Utilities.paddingExternal,
-                                        bottom = Utilities.paddingExternal
-                                    ),
+                                    .fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
-                                    text = "Добавить",
-                                    modifier = Modifier
-                                        .padding( vertical = Utilities.paddingButton/2)
-                                        .clip(shape = RoundedCornerShape(Utilities.cornerBox))
-                                        .clickable { isEditing = !isEditing }
-                                        .padding( vertical = Utilities.paddingButton/2) )
+                                CustomButton(
+                                    text = "Новое",
+                                    onClick = { isEditing = !isEditing }
+                                )
                             }
 
                             if (isEditing) {
@@ -150,9 +143,9 @@ fun ActiveSubstanceTableCard(modifier: Modifier = Modifier) {
                                         onValueChange = { newText -> textOffId = newText },
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
-                                    Text(
-                                        "Сохранить",
-                                        modifier = Modifier.clickable {
+                                    CustomButton(
+                                        text = "Добавить",
+                                        onClick = {
                                             isEditing = false
                                             viewModel.addActiveSubstance(
                                                 ActiveSubstance(
@@ -161,9 +154,9 @@ fun ActiveSubstanceTableCard(modifier: Modifier = Modifier) {
                                                     composition = textCompos,
                                                     appointment = textAppoint,
                                                     medicalOfficerId = textOffId.toInt(),
-                                                    )
+                                                )
                                             )
-                                        }.padding( vertical = Utilities.paddingButton/2)
+                                        }
                                     )
                                 }
 

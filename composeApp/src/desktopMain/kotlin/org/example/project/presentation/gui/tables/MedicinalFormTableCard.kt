@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import org.example.project.domain.entities.MedicinalForm
+import org.example.project.presentation.gui.CustomButton
 import org.example.project.presentation.gui.cards.MedicinalFormCard
 import org.example.project.presentation.viewmodels.MedicinalFormViewModel
 import org.example.project.utils.Utilities
@@ -90,21 +91,13 @@ fun MedicinalFormTableCard(modifier: Modifier = Modifier) {
                         ) {
                             Row(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        start = Utilities.paddingExternal,
-                                        end = Utilities.paddingExternal,
-                                        bottom = Utilities.paddingExternal
-                                    ),
+                                    .fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
-                                    text = "Добавить",
-                                    modifier = Modifier
-                                        .padding( vertical = Utilities.paddingButton/2)
-                                        .clip(shape = RoundedCornerShape(Utilities.cornerBox))
-                                        .clickable { isEditing = !isEditing }
-                                        .padding( vertical = Utilities.paddingButton/2) )
+                                CustomButton(
+                                    text = "Новое",
+                                    onClick = { isEditing = !isEditing }
+                                )
                             }
 
 
@@ -138,9 +131,9 @@ fun MedicinalFormTableCard(modifier: Modifier = Modifier) {
                                         onValueChange = { newText -> textOffId = newText  },
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
-                                    Text(
-                                        "Подтвердить",
-                                        modifier = Modifier.clickable {
+                                    CustomButton(
+                                        text = "Добавить",
+                                        onClick = {
                                             isEditing = !isEditing
                                             viewModel.addMedicinalForm(
                                                 MedicinalForm(
@@ -150,8 +143,7 @@ fun MedicinalFormTableCard(modifier: Modifier = Modifier) {
                                                     medicalOfficerId = textOffId.toInt()
                                                 )
                                             )
-                                        }.padding( vertical = Utilities.paddingButton/2)
-
+                                        }
                                     )
                                 }
                             }

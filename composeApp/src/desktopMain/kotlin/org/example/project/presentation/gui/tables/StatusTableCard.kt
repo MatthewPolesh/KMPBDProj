@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import kotlinx.datetime.LocalDate
 import org.example.project.domain.entities.Status
+import org.example.project.presentation.gui.CustomButton
 import org.example.project.presentation.gui.cards.StatusCard
 import org.example.project.presentation.viewmodels.StatusViewModel
 import org.example.project.utils.Utilities
@@ -97,21 +98,13 @@ fun StatusTableCard(modifier: Modifier = Modifier) {
                         ) {
                             Row(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        start = Utilities.paddingExternal,
-                                        end = Utilities.paddingExternal,
-                                        bottom = Utilities.paddingExternal
-                                    ),
+                                    .fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
-                                    text = "Добавить",
-                                    modifier = Modifier
-                                        .padding( vertical = Utilities.paddingButton/2)
-                                        .clip(shape = RoundedCornerShape(Utilities.cornerBox))
-                                        .clickable { isEditing = !isEditing }
-                                        .padding( vertical = Utilities.paddingButton/2) )
+                                CustomButton(
+                                    text = "Новое",
+                                    onClick = { isEditing = !isEditing }
+                                )
                             }
 
                             if (isEditing) {
@@ -144,10 +137,10 @@ fun StatusTableCard(modifier: Modifier = Modifier) {
                                         onValueChange = { newText -> textReasonOfChange = newText },
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
-                                    Text(
-                                        "Сохранить",
-                                        modifier = Modifier.clickable {
-                                            isEditing = false
+                                    CustomButton(
+                                        text = "Добавить",
+                                        onClick = {
+                                            isEditing = !isEditing
                                             viewModel.addStatus(
                                                 Status(
                                                     id = textId.toInt(),
@@ -157,12 +150,10 @@ fun StatusTableCard(modifier: Modifier = Modifier) {
 
                                                 )
                                             )
-                                        }.padding( vertical = Utilities.paddingButton/2)
+                                        }
                                     )
                                 }
-
                             }
-
                         }
                     }
                 }

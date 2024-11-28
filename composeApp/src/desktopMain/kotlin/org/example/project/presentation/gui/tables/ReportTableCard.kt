@@ -2,13 +2,11 @@ package org.example.project.presentation.gui.tables
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -32,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import kotlinx.datetime.LocalDate
 import org.example.project.domain.entities.Report
+import org.example.project.presentation.gui.CustomButton
 import org.example.project.presentation.gui.cards.ReportCard
 import org.example.project.presentation.viewmodels.ReportViewModel
 import org.example.project.utils.Utilities
@@ -101,17 +100,13 @@ fun ReportTableCard(modifier: Modifier = Modifier) {
                         ) {
                             Row(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .fillMaxHeight(),
+                                    .fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
-                                    text = "Добавить",
-                                    modifier = Modifier
-                                        .padding( vertical = Utilities.paddingButton/2)
-                                        .clip(shape = RoundedCornerShape(Utilities.cornerBox))
-                                        .clickable { isEditing = !isEditing }
-                                        .padding( vertical = Utilities.paddingButton/2) )
+                                CustomButton(
+                                    text = "Новое",
+                                    onClick = { isEditing = !isEditing }
+                                )
                             }
                             if (isEditing) {
                                 Divider(modifier = Modifier.fillMaxWidth())
@@ -143,11 +138,9 @@ fun ReportTableCard(modifier: Modifier = Modifier) {
                                         onValueChange = { newText -> textOffId = newText },
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
-                                    Text(
-                                        "Подтвердить",
-                                        modifier = Modifier
-                                            .clip(shape = RoundedCornerShape(Utilities.cornerBox))
-                                            .clickable {
+                                    CustomButton(
+                                        text = "Добавить",
+                                        onClick = {
                                             isEditing = !isEditing
                                             viewModel.addReport(
                                                 Report(
@@ -158,7 +151,7 @@ fun ReportTableCard(modifier: Modifier = Modifier) {
                                                     medicalOfficerName = ""
                                                 )
                                             )
-                                        }.padding( vertical = Utilities.paddingButton/2)
+                                        }
                                     )
                                 }
                             }

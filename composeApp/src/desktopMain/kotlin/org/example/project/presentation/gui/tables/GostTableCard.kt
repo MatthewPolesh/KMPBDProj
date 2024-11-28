@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import org.example.project.domain.entities.GOST
+import org.example.project.presentation.gui.CustomButton
 import org.example.project.presentation.gui.cards.GostCard
 import org.example.project.presentation.viewmodels.GOSTViewModel
 import org.example.project.utils.Utilities
@@ -94,21 +95,13 @@ fun GostTableCard(modifier: Modifier = Modifier) {
                         ) {
                             Row(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        start = Utilities.paddingExternal,
-                                        end = Utilities.paddingExternal,
-                                        bottom = Utilities.paddingExternal
-                                    ),
+                                    .fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
-                                    text = "Добавить",
-                                    modifier = Modifier
-                                        .padding( vertical = Utilities.paddingButton/2)
-                                        .clip(shape = RoundedCornerShape(Utilities.cornerBox))
-                                        .clickable { isEditing = !isEditing }
-                                        .padding( vertical = Utilities.paddingButton/2) )
+                                CustomButton(
+                                    text = "Новое",
+                                    onClick = { isEditing = !isEditing }
+                                )
                             }
 
                             if (isEditing) {
@@ -127,18 +120,17 @@ fun GostTableCard(modifier: Modifier = Modifier) {
                                         onValueChange = { newText -> textName = newText },
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
-                                    Text(
-                                        "Подтвердить",
-                                        modifier = Modifier.clickable {
-                                            isEditing = !isEditing
+                                    CustomButton(
+                                        text = "Добавить",
+                                        onClick = {
+                                            isEditing = false
                                             viewModel.addGOST(
                                                 GOST(
                                                     id = textId.toInt(),
                                                     name = textName
                                                 )
                                             )
-                                        }.padding( vertical = Utilities.paddingButton/2)
-
+                                        }
                                     )
                                 }
                             }

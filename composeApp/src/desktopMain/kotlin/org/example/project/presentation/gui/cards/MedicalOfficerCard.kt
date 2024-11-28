@@ -2,7 +2,6 @@ package org.example.project.presentation.gui.cards
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import org.example.project.domain.entities.MedicalOfficer
+import org.example.project.presentation.gui.CustomButton
 import org.example.project.utils.Utilities
 
 
@@ -139,9 +139,9 @@ fun MedicalOfficerCard(
                             onValueChange = { newText -> textChild = newText },
                         )
                         Spacer(modifier = Modifier.weight(1f))
-                        Text(
-                            "Сохранить",
-                            modifier = Modifier.clickable {
+                        CustomButton(
+                            text = "Сохранить",
+                            onClick = {
                                 isEditing = false
                                 extended = false
                                 val name = textName.split(" ")
@@ -161,9 +161,7 @@ fun MedicalOfficerCard(
                             }
                         )
                     }
-
                 }
-
             }
         }
     }

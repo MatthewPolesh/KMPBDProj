@@ -48,7 +48,7 @@ fun DrawerContent(
             DrawerItem(text ="Статусы изготовления", onClick = {onMenuItemClick("Статусы изготовления")})
         }
         Spacer(modifier = Modifier.weight(1f))
-        DrawerItem(text = "Выход", onClick = {})
+        DrawerItem(text = "Выход", onClick = {onMenuItemClick("Выход")})
     }
 
 

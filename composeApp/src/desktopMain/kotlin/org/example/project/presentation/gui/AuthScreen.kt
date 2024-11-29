@@ -21,7 +21,9 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AuthScreen(
-    userViewModel: UserViewModel = koinViewModel()
+    userViewModel: UserViewModel = koinViewModel(),
+    onAuth: () -> Unit,
+    onReg: () -> Unit
 ) {
     LaunchedEffect(Unit) {
         userViewModel.fetchMedicalOfficers()
@@ -55,10 +57,15 @@ fun AuthScreen(
         )
         CustomButton(
             text = "Авторизоваться",
-            onClick = { userViewModel.authenticate(usernameInput, passwordInput) }
+            onClick = {
+                userViewModel.authenticate(usernameInput, passwordInput)
+                onAuth()
+            }
         )
         CustomButton(
             text = "Зарегистрироваться",
-            onClick = {})
+            onClick = {
+                onReg()
+            })
     }
 }

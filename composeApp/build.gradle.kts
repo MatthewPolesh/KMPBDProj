@@ -58,10 +58,8 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-
+            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10")
             //ViewModel
-
-
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
 

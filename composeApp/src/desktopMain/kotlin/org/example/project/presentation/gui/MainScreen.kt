@@ -37,7 +37,9 @@ import org.example.project.utils.Utilities
 
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    onLogOut: () -> Unit,
+) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     var checkboxState by remember { mutableStateOf(false) }
@@ -63,9 +65,11 @@ fun MainScreen() {
         drawerShape = CustomDrawerShape(200.dp),
         drawerContent = {
             DrawerContent {
-                if (it != "Меню")
-                    tableName = it
-
+                when(it){
+                    "Выход" -> onLogOut()
+                    "Меню" -> {}
+                    else -> tableName = it
+                }
                 scope.launch {
                     scaffoldState.drawerState.close()
                 }

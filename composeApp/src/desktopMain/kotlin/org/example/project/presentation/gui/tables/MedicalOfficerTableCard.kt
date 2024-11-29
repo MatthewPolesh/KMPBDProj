@@ -29,8 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import org.example.project.domain.entities.MedicalOfficer
-import org.example.project.presentation.gui.CustomButton
 import org.example.project.presentation.gui.cards.MedicalOfficerCard
+import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.viewmodels.MedicalOfficerViewModel
 import org.example.project.utils.Utilities
 import org.jetbrains.compose.ui.tooling.preview.Preview

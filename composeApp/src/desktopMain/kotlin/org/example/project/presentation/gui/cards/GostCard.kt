@@ -30,7 +30,7 @@ import kotlinproject.composeapp.generated.resources.arrow_drop_up_24px
 import kotlinproject.composeapp.generated.resources.delete_24px
 import kotlinproject.composeapp.generated.resources.edit_note_24px
 import org.example.project.domain.entities.GOST
-import org.example.project.presentation.gui.CustomButton
+import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.utils.Utilities
 import org.jetbrains.compose.resources.painterResource
 

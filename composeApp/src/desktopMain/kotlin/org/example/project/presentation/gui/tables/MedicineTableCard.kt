@@ -30,7 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import kotlinx.datetime.LocalDate
 import org.example.project.domain.entities.Medicine
-import org.example.project.presentation.gui.CustomButton
+import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.gui.cards.MedicineCard
 import org.example.project.presentation.viewmodels.MedicineViewModel
 import org.example.project.utils.Utilities

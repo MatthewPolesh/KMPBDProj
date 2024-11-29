@@ -10,8 +10,9 @@ import org.example.project.data.database.initDatabase
 import org.example.project.di.databaseModule
 import org.example.project.di.repositoryModule
 import org.example.project.di.viewModelModule
-import org.example.project.presentation.gui.AuthScreen
-import org.example.project.presentation.gui.MainScreen
+import org.example.project.presentation.gui.screens.AuthScreen
+import org.example.project.presentation.gui.screens.MainScreen
+import org.example.project.presentation.gui.screens.RegScreen
 import org.example.project.presentation.navigation.Screens
 import org.jetbrains.exposed.sql.Database
 import org.koin.core.context.startKoin
@@ -46,7 +47,12 @@ fun main() = application {
             composable(route = Screens.Auth.route) {
                 AuthScreen(
                     onAuth = {navController.navigate(Screens.Main.route)},
-                    onReg = {}
+                    onReg = {navController.navigate(Screens.Reg.route)}
+                )
+            }
+            composable(route = Screens.Reg.route) {
+                RegScreen(
+                    onReg = {navController.navigate(Screens.Main.route)}
                 )
             }
         }

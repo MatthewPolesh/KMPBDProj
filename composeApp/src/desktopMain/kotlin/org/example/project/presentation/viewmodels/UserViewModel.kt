@@ -6,55 +6,131 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.example.project.domain.entities.MedicalOfficer
+import org.example.project.domain.entities.Speciality
 import org.example.project.domain.repositories.MedicalOfficerRepository
+import org.example.project.domain.repositories.SpecialityRepository
 
 class UserViewModel(
-    private val medicalOfficerRepository: MedicalOfficerRepository
+    private val medicalOfficerRepository: MedicalOfficerRepository,
+    private val specialityRepository: SpecialityRepository
 ) : ViewModel() {
-    // Храним username пользователя
     private val _username = MutableStateFlow<String?>(null)
     val username: StateFlow<String?> = _username
 
     private val _accessibility = MutableStateFlow<Boolean?>(null)
     val accessibility: StateFlow<Boolean?> = _accessibility
 
-    private val _medicalOfficers = MutableStateFlow<List<MedicalOfficer>>(emptyList())
-    val medicalOfficers: StateFlow<List<MedicalOfficer>> = _medicalOfficers
-
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
-    // Храним состояние аутентификации
     private val _isAuthenticated = MutableStateFlow(false)
     val isAuthenticated: StateFlow<Boolean> = _isAuthenticated
-    fun fetchMedicalOfficers() {
+
+
+
+    fun addMedicalOfficer(
+        firstName: String,
+        lastName: String,
+        surname: String,
+        age: Int,
+        numberChild: Int,
+        email: String,
+        workExperience: Int,
+        specName: String
+    ) {
         viewModelScope.launch {
-            medicalOfficerRepository.getAll()
-                .onSuccess { _medicalOfficers.value = it }
+            specialityRepository.getAll()
+                .onSuccess {
+                    var specId: Int? = null
+                    val specMap = mutableMapOf<Int, String>()
+                    for (spec in it) {
+                        if (specName == spec.name) {
+                            specId = spec.id
+                            val medicalOfficer = MedicalOfficer(
+                                0,
+                                firstName,
+                                lastName,
+                                surname,
+                                age,
+                                numberChild,
+                                email,
+                                workExperience,
+                                specId
+                            )
+                            println("$specId")
+                            viewModelScope.launch {
+                                medicalOfficerRepository.add(medicalOfficer)
+                                    .onSuccess {
+                                        _username.value = "$surname $firstName $lastName"
+                                        _isAuthenticated.value = true
+                                        _accessibility.value = specId == 0 }
+                                    .onFailure { _error.value = it.message }
+                            }
+                            break
+                        }
+                        specMap += Pair(spec.id, spec.name)
+                    }
+                    if (specId == null) {
+                        viewModelScope.launch {
+                            specialityRepository.add(Speciality(0, specName, "Заполнить"))
+                                .onSuccess {
+                                    val medicalOfficer = MedicalOfficer(
+                                        0,
+                                        firstName,
+                                        lastName,
+                                        surname,
+                                        age,
+                                        numberChild,
+                                        email,
+                                        workExperience,
+                                        specMap.keys.max() + 1
+                                    )
+                                    medicalOfficerRepository.add(medicalOfficer)
+                                        .onSuccess {
+                                            _username.value = "$surname $firstName $lastName"
+                                            _isAuthenticated.value = true
+                                            _accessibility.value = false }
+                                        .onFailure {
+                                            _error.value = it.message
+                                        }
+                                }
+                                .onFailure {
+                                    _error.value = it.message
+                                }
+                        }
+                    }
+                }
                 .onFailure { _error.value = it.message }
         }
     }
+
+
     fun authenticate(username: String, password: String) {
-        val surnameMap = mutableMapOf<String, List<String>>()
-        for (medicalOff in medicalOfficers.value)
-        {
-            surnameMap += Pair(medicalOff.surname, listOf(medicalOff.id.toString(), medicalOff.specialityId.toString()))
+        viewModelScope.launch {
+            medicalOfficerRepository.getAll()
+                .onSuccess {
+                    val surnameMap = mutableMapOf<String, List<String>>()
+                    for (medicalOff in it) {
+                        surnameMap += Pair(
+                            medicalOff.surname,
+                            listOf(medicalOff.id.toString(), medicalOff.specialityId.toString())
+                        )
+                    }
+                    if (username in surnameMap.keys) {
+                        if (password == surnameMap[username]!![0]) {
+                            _username.value = username
+                            _isAuthenticated.value = true
+                            _accessibility.value = surnameMap[username]!![1] == "0"
+                        } else {
+                            _error.value = error("Неправильный пароль")
+                        }
+                    } else {
+                        _error.value = error("Такой пользователь не найден")
+                    }
+                }
+                .onFailure { _error.value = it.message }
         }
-        if (username in surnameMap.keys)
-        {
-            if (password == surnameMap[username]!![0])
-            {
-                _username.value = username
-                _isAuthenticated.value = true
-                _accessibility.value = surnameMap[username]!![1] == "0"
-            }
-            else {
-                _error.value = error("Неправильный пароль")
-            }
-        }
-        else {
-            _error.value = error("Такой пользователь не найден")
-        }
+
     }
 
     fun logout() {

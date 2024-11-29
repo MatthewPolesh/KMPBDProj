@@ -1,4 +1,4 @@
-package org.example.project.presentation.gui
+package org.example.project.presentation.gui.custom
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding

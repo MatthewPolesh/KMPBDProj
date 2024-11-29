@@ -29,7 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import org.example.project.domain.entities.Standard
-import org.example.project.presentation.gui.CustomButton
+import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.gui.cards.StandardCard
 import org.example.project.presentation.viewmodels.StandardViewModel
 import org.example.project.utils.Utilities

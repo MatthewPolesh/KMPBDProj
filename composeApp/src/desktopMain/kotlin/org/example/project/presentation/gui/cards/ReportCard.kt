@@ -33,7 +33,7 @@ import kotlinproject.composeapp.generated.resources.delete_24px
 import kotlinproject.composeapp.generated.resources.edit_note_24px
 import kotlinx.datetime.LocalDate
 import org.example.project.domain.entities.Report
-import org.example.project.presentation.gui.CustomButton
+import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.utils.Utilities
 import org.jetbrains.compose.resources.painterResource
 

@@ -6,7 +6,7 @@ import org.example.project.data.database.initDatabase
 import org.example.project.di.databaseModule
 import org.example.project.di.repositoryModule
 import org.example.project.di.viewModelModule
-import org.example.project.presentation.gui.AuthScreen
+import org.example.project.presentation.gui.MainScreen
 import org.jetbrains.exposed.sql.Database
 import org.koin.core.context.startKoin
 
@@ -28,6 +28,6 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         title = "KotlinProject",
     ) {
-        AuthScreen()
+        MainScreen()
     }
 }

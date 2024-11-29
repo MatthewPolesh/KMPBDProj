@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -66,7 +65,8 @@ fun FiltersCard(
                             awaitPointerEventScope {
                                 while (true) {
                                     val event = awaitPointerEvent()
-                                    val scrollDelta = event.changes.firstOrNull()?.scrollDelta ?: Offset.Zero
+                                    val scrollDelta =
+                                        event.changes.firstOrNull()?.scrollDelta ?: Offset.Zero
                                     if (scrollDelta.y != 0f) {
                                         val delta = scrollDelta.y
                                         coroutineScope.launch {
@@ -88,16 +88,22 @@ fun FiltersCard(
                         Column(
                             modifier = Modifier.padding(Utilities.paddingExternal)
                         ) {
-                            Text(text = item) //Название поля
-                            AutoTextField(allOptions[item]!!) //Фильтрация поля
+                            Text(text = item)
+                            AutoTextField(allOptions[item]!!)
                         }
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Row {
-                    Button(onClick = { onAccept() }) { Text(text = "Принять") }
+                    CustomButton(
+                        text = "Применить",
+                        onClick = { onAccept() }
+                    )
                     Spacer(modifier = Modifier.weight(1f))
-                    Button(onClick = { onDismiss() }) { Text(text = "Отменить") }
+                    CustomButton(
+                        text = "Отменить",
+                        onClick = { onDismiss() }
+                    )
                 }
             }
         }

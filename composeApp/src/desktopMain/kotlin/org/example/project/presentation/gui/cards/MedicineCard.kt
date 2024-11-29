@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
+import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -23,10 +24,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import kotlinproject.composeapp.generated.resources.Res
+import kotlinproject.composeapp.generated.resources.arrow_drop_down_24px
+import kotlinproject.composeapp.generated.resources.arrow_drop_up_24px
+import kotlinproject.composeapp.generated.resources.delete_24px
+import kotlinproject.composeapp.generated.resources.edit_note_24px
 import kotlinx.datetime.LocalDate
 import org.example.project.domain.entities.Medicine
 import org.example.project.presentation.gui.CustomButton
 import org.example.project.utils.Utilities
+import org.jetbrains.compose.resources.painterResource
 
 
 @Composable
@@ -77,19 +84,32 @@ fun MedicineCard(
                         isEditing = !isEditing
                         extended = true
                     },
-                    content = { Text(text = "R") })
+                    content = {
+                        Icon(painter = painterResource(Res.drawable.edit_note_24px),
+                            null,
+                            tint = Color.Black) })
                 IconButton(
                     onClick = { onDelete(item.id) },
-                    content = { Text(text = "D") })
+                    content = {
+                        Icon(painter = painterResource(Res.drawable.delete_24px),
+                            null,
+                            tint = Color.Black) })
                 IconButton(
                     onClick = {
                         extended = !extended
                         isEditing = false
                     },
-                    content = { Text(text = if (extended) "<" else ">") })
+                    content = { Icon(
+                        painter = if (!extended)
+                            painterResource(Res.drawable.arrow_drop_down_24px)
+                        else
+                            painterResource(Res.drawable.arrow_drop_up_24px),
+                        null,
+                        tint = Color.Black) }
+                )
             }
             if (extended) {
-                Divider(modifier = Modifier.fillMaxWidth())
+                Divider(modifier = Modifier.fillMaxWidth().padding(vertical = Utilities.paddingExternal))
                 if (!isEditing) {
                     Text("ID: $textId")
                     Text("Название: $textName")

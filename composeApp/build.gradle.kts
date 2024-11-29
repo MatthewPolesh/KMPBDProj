@@ -29,6 +29,9 @@ kotlin {
     sourceSets {
         val desktopMain by getting
         commonMain.dependencies {
+            //Moko
+            api("dev.icerock.moko:resources:0.20.1")
+            api("dev.icerock.moko:resources-compose:0.20.1")
             //Exposed
             implementation("org.jetbrains.exposed:exposed-core:0.56.0")
             implementation("org.jetbrains.exposed:exposed-crypt:0.56.0")
@@ -67,6 +70,7 @@ kotlin {
             implementation(kotlin("test"))
         }
         desktopMain.dependencies {
+            implementation(compose.components.resources)
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
         }
@@ -83,4 +87,11 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+compose.resources {
+    customDirectory(
+        sourceSetName = "desktopMain",
+        directoryProvider = provider { layout.projectDirectory.dir("desktopResources") }
+    )
 }

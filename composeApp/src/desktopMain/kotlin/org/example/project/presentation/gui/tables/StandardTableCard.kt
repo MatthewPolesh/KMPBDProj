@@ -29,8 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import org.example.project.domain.entities.Standard
-import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.gui.cards.StandardCard
+import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.viewmodels.StandardViewModel
 import org.example.project.utils.Utilities
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -38,7 +38,10 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Preview
 @Composable
-fun StandardTableCard(modifier: Modifier = Modifier) {
+fun StandardTableCard(
+    modifier: Modifier = Modifier,
+    onError: (String) -> Unit
+) {
 
     var isEditing by remember { mutableStateOf(false) }
     var textId by remember { mutableStateOf("") }
@@ -50,6 +53,12 @@ fun StandardTableCard(modifier: Modifier = Modifier) {
     val itemList = viewModel.standards.collectAsState()
     LaunchedEffect(Unit) {
         viewModel.fetchStandards()
+        viewModel.error.collect{
+            if (it != null) {
+                onError(it)
+                viewModel.fetchStandards()
+            }
+        }
     }
     Box(
         modifier = modifier

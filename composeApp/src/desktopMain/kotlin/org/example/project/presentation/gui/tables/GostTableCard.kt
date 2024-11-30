@@ -29,8 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import org.example.project.domain.entities.GOST
-import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.gui.cards.GostCard
+import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.viewmodels.GOSTViewModel
 import org.example.project.utils.Utilities
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -38,7 +38,10 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Preview
 @Composable
-fun GostTableCard(modifier: Modifier = Modifier) {
+fun GostTableCard(
+    modifier: Modifier = Modifier,
+    onError: (String) -> Unit
+) {
 
     var isEditing by remember { mutableStateOf(false) }
     var textId by remember { mutableStateOf("") }
@@ -49,6 +52,12 @@ fun GostTableCard(modifier: Modifier = Modifier) {
     val itemList = viewModel.gosts.collectAsState()
     LaunchedEffect(Unit) {
         viewModel.fetchGOSTs()
+        viewModel.error.collect{
+            if (it != null) {
+                onError(it)
+                viewModel.fetchGOSTs()
+            }
+        }
     }
     Box(
         modifier = modifier

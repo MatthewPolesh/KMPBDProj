@@ -2,6 +2,7 @@ package org.example.project.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -22,8 +23,11 @@ class MedicineViewModel(
         viewModelScope.launch {
             medicineRepository.getAll()
                 .onSuccess { _medicines.value = it }
-                .onFailure { _error.value = it.message }
-            println(error.value)
+                .onFailure {
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
         }
     }
 
@@ -31,7 +35,11 @@ class MedicineViewModel(
         viewModelScope.launch {
             medicineRepository.add(medicine)
                 .onSuccess { fetchMedicines() }
-                .onFailure { _error.value = it.message }
+                .onFailure {
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
         }
     }
 
@@ -39,7 +47,11 @@ class MedicineViewModel(
         viewModelScope.launch {
             medicineRepository.update(medicine)
                 .onSuccess { fetchMedicines() }
-                .onFailure { _error.value = it.message }
+                .onFailure {
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
         }
     }
 
@@ -47,7 +59,11 @@ class MedicineViewModel(
         viewModelScope.launch {
             medicineRepository.delete(id)
                 .onSuccess { fetchMedicines() }
-                .onFailure { _error.value = it.message }
+                .onFailure {
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
         }
     }
 }

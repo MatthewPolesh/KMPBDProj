@@ -30,8 +30,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import kotlinx.datetime.LocalDate
 import org.example.project.domain.entities.Medicine
-import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.gui.cards.MedicineCard
+import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.viewmodels.MedicineViewModel
 import org.example.project.utils.Utilities
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -41,7 +41,10 @@ import org.koin.core.annotation.KoinExperimentalAPI
 @OptIn(KoinExperimentalAPI::class)
 @Preview
 @Composable
-fun MedicineTableCard(modifier: Modifier = Modifier) {
+fun MedicineTableCard(
+    modifier: Modifier = Modifier,
+    onError: (String) -> Unit
+    ) {
 
     var textId by remember { mutableStateOf("") }
     var textName by remember { mutableStateOf("") }
@@ -57,6 +60,12 @@ fun MedicineTableCard(modifier: Modifier = Modifier) {
     val itemList = viewModel.medicines.collectAsState()
     LaunchedEffect(Unit){
         viewModel.fetchMedicines()
+        viewModel.error.collect{
+            if (it != null) {
+                onError(it)
+                viewModel.fetchMedicines()
+            }
+        }
     }
     Box(
         modifier = modifier

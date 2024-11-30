@@ -29,8 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import org.example.project.domain.entities.MedicinalForm
-import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.gui.cards.MedicinalFormCard
+import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.viewmodels.MedicinalFormViewModel
 import org.example.project.utils.Utilities
 import org.koin.compose.viewmodel.koinViewModel
@@ -38,7 +38,10 @@ import org.koin.core.annotation.KoinExperimentalAPI
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun MedicinalFormTableCard(modifier: Modifier = Modifier) {
+fun MedicinalFormTableCard(
+    modifier: Modifier = Modifier,
+    onError: (String) -> Unit
+    ) {
     var textId by remember { mutableStateOf("") }
     var textName by remember { mutableStateOf("") }
     var textCompos by remember { mutableStateOf("") }
@@ -49,6 +52,12 @@ fun MedicinalFormTableCard(modifier: Modifier = Modifier) {
     val itemList = viewModel.medicinalForms.collectAsState()
     LaunchedEffect(Unit){
         viewModel.fetchMedicinalForms()
+        viewModel.error.collect{
+            if (it != null) {
+                onError(it)
+                viewModel.fetchMedicinalForms()
+            }
+        }
     }
     Box(
         modifier = modifier

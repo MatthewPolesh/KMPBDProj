@@ -30,8 +30,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import kotlinx.datetime.LocalDate
 import org.example.project.domain.entities.Status
-import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.gui.cards.StatusCard
+import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.viewmodels.StatusViewModel
 import org.example.project.utils.Utilities
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -39,7 +39,10 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Preview
 @Composable
-fun StatusTableCard(modifier: Modifier = Modifier) {
+fun StatusTableCard(
+    modifier: Modifier = Modifier,
+    onError: (String) -> Unit
+    ) {
 
     var isEditing by remember { mutableStateOf(false) }
     var textId by remember { mutableStateOf("") }
@@ -52,6 +55,12 @@ fun StatusTableCard(modifier: Modifier = Modifier) {
     val itemList = viewModel.statuses.collectAsState()
     LaunchedEffect(Unit) {
         viewModel.fetchStatuses()
+        viewModel.error.collect{
+            if (it != null) {
+                onError(it)
+                viewModel.fetchStatuses()
+            }
+        }
     }
     Box(
         modifier = modifier

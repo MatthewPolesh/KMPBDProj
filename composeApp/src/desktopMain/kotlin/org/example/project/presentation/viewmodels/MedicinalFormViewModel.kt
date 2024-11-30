@@ -3,11 +3,12 @@ package org.example.project.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import org.example.project.domain.entities.MedicinalForm
-import org.example.project.domain.repositories.MedicinalFormRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.example.project.domain.entities.MedicinalForm
+import org.example.project.domain.repositories.MedicinalFormRepository
 
 class MedicinalFormViewModel(
     private val medicinalFormRepository: MedicinalFormRepository
@@ -23,7 +24,11 @@ class MedicinalFormViewModel(
         viewModelScope.launch {
             medicinalFormRepository.getAll()
                 .onSuccess { _medicinalForms.value = it }
-                .onFailure { _error.value = it.message }
+                .onFailure {
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
         }
     }
 
@@ -31,7 +36,11 @@ class MedicinalFormViewModel(
         viewModelScope.launch {
             medicinalFormRepository.add(medicinalForm)
                 .onSuccess { fetchMedicinalForms() }
-                .onFailure { _error.value = it.message }
+                .onFailure {
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
         }
     }
 
@@ -39,7 +48,11 @@ class MedicinalFormViewModel(
         viewModelScope.launch {
             medicinalFormRepository.update(medicinalForm)
                 .onSuccess { fetchMedicinalForms() }
-                .onFailure { _error.value = it.message }
+                .onFailure {
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
         }
     }
 
@@ -47,7 +60,11 @@ class MedicinalFormViewModel(
         viewModelScope.launch {
             medicinalFormRepository.delete(id)
                 .onSuccess { fetchMedicinalForms() }
-                .onFailure { _error.value = it.message }
+                .onFailure {
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
         }
     }
 }

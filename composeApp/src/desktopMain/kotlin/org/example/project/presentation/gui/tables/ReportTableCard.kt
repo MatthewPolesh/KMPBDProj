@@ -30,8 +30,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import kotlinx.datetime.LocalDate
 import org.example.project.domain.entities.Report
-import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.gui.cards.ReportCard
+import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.viewmodels.ReportViewModel
 import org.example.project.utils.Utilities
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -39,7 +39,10 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Preview
 @Composable
-fun ReportTableCard(modifier: Modifier = Modifier) {
+fun ReportTableCard(
+    modifier: Modifier = Modifier,
+    onError: (String) -> Unit
+) {
     var textId by remember { mutableStateOf("") }
     var textName by remember { mutableStateOf("") }
     var textDate by remember { mutableStateOf("") }
@@ -50,6 +53,12 @@ fun ReportTableCard(modifier: Modifier = Modifier) {
     val itemList = viewModel.reports.collectAsState()
     LaunchedEffect(Unit) {
         viewModel.fetchReports()
+        viewModel.error.collect{
+            if (it != null) {
+                onError(it)
+                viewModel.fetchReports()
+            }
+        }
     }
     Box(
         modifier = modifier

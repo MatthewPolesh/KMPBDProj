@@ -19,7 +19,7 @@ class ActiveSubstanceRepositoryImpl : BaseRepository(), ActiveSubstanceRepositor
 
     override suspend fun add(activeSubstance: ActiveSubstance): Result<ActiveSubstance> = safeDbCall {
         val medicalOfficerDao = MedicalOfficerDao.findById(activeSubstance.medicalOfficerId)
-            ?: throw Exception("Medical Officer not found")
+            ?: throw Exception("Такой сотрудник не найден")
 
         val dao = ActiveSubstanceDao.new {
             this.name = activeSubstance.name
@@ -38,7 +38,7 @@ class ActiveSubstanceRepositoryImpl : BaseRepository(), ActiveSubstanceRepositor
             dao.appointment = activeSubstance.appointment
 
             val medicalOfficerDao = MedicalOfficerDao.findById(activeSubstance.medicalOfficerId)
-                ?: throw Exception("Medical Officer not found")
+                ?: throw Exception("Такой сотрудник не найден")
             dao.medicalOfficerDao = medicalOfficerDao
 
             true

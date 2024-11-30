@@ -3,6 +3,7 @@ package org.example.project.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -24,11 +25,11 @@ class GOSTViewModel(
             gostRepository.getAll()
                 .onSuccess {
                     _gosts.value = it
-                    println("Fetched GOSTs: ${it.size} items")
                 }
                 .onFailure {
                     _error.value = it.message
-                    println("Error fetching GOSTs: ${it.message}")
+                    delay(1000)
+                    _error.value = null
                 }
         }
     }
@@ -37,7 +38,10 @@ class GOSTViewModel(
         viewModelScope.launch {
             gostRepository.add(gost)
                 .onSuccess { fetchGOSTs() }
-                .onFailure { _error.value = it.message }
+                .onFailure {
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null }
         }
     }
 
@@ -45,7 +49,11 @@ class GOSTViewModel(
         viewModelScope.launch {
             gostRepository.update(gost)
                 .onSuccess { fetchGOSTs() }
-                .onFailure { _error.value = it.message }
+                .onFailure {
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
         }
     }
 
@@ -53,7 +61,11 @@ class GOSTViewModel(
         viewModelScope.launch {
             gostRepository.delete(id)
                 .onSuccess { fetchGOSTs() }
-                .onFailure { _error.value = it.message }
+                .onFailure {
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
         }
     }
 }

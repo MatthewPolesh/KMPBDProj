@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -46,7 +48,7 @@ fun MainScreen(
     var checkboxState by remember { mutableStateOf(false) }
     var filtersState by remember{mutableStateOf(false)}
     var tableName by remember{mutableStateOf("Отчёты")}
-
+    val snackbarHostState = remember{ SnackbarHostState()}
 
     if (filtersState)
         FiltersCard(
@@ -64,11 +66,12 @@ fun MainScreen(
         scaffoldState = scaffoldState,
         drawerGesturesEnabled = true,
         drawerShape = CustomDrawerShape(200.dp),
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState)},
         drawerContent = {
             DrawerContent {
                 when(it){
                     "Выход" -> onLogOut()
-                    "Меню" -> {}
+                    "Таблицы" -> {}
                     else -> tableName = it
                 }
                 scope.launch {
@@ -82,7 +85,7 @@ fun MainScreen(
                 modifier = Modifier.background(Color.LightGray)
             ) {
                 Text(
-                    text = "Меню",
+                    text = "Таблицы",
                     modifier = Modifier
                         .clickable { scope.launch { scaffoldState.drawerState.open() } }
                         .padding(Utilities.paddingButton))
@@ -100,15 +103,24 @@ fun MainScreen(
         ) {
             when(tableName)
             {
-                "Отчёты" -> ReportTableCard();
-                "Сотрудники" -> MedicalOfficerTableCard();
-                "Специальности" -> SpecialityTableCard();
-                "Лекарства" -> MedicineTableCard();
-                "Активные комоненты препаратов" -> ActiveSubstanceTableCard();
-                "Виды лекарства"-> MedicinalFormTableCard();
-                "Стандарты изготовления" -> StandardTableCard();
-                "ГОСТы" -> GostTableCard();
-                "Статусы изготовления"-> StatusTableCard();
+                "Отчёты" -> ReportTableCard(
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
+                "Сотрудники" -> MedicalOfficerTableCard(
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
+                "Специальности" -> SpecialityTableCard(
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
+                "Лекарства" -> MedicineTableCard(
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
+                "Активные комоненты препаратов" -> ActiveSubstanceTableCard(
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
+                "Виды лекарства"-> MedicinalFormTableCard(
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
+                "Стандарты изготовления" -> StandardTableCard(
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
+                "ГОСТы" -> GostTableCard(
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
+                "Статусы изготовления"-> StatusTableCard(
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
             }
 
         }

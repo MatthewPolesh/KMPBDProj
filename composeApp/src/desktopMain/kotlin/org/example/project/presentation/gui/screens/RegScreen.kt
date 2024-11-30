@@ -4,23 +4,31 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import org.example.project.presentation.gui.custom.CustomButton
+import org.example.project.presentation.gui.sidemenu.CustomDrawerShape
 import org.example.project.presentation.viewmodels.UserViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun RegScreen(
-    userViewModel: UserViewModel = koinViewModel(),
+    viewModel: UserViewModel = koinViewModel(),
     onReg: () -> Unit
 ) {
     var textName by remember { mutableStateOf("") }
@@ -30,52 +38,73 @@ fun RegScreen(
     var textChild by remember { mutableStateOf("") }
     var textSpec by remember { mutableStateOf("") }
 
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    val scope = rememberCoroutineScope()
+    val scaffoldState = rememberScaffoldState()
+    val snackbarHostState = remember{ SnackbarHostState() }
 
-        Text(
-            "DDB")
-        Text(
-            "Doctor Database",
-            modifier = Modifier.padding(bottom = 10.dp))
-        TextField(
-            value = textEmail,
-            onValueChange = { textEmail = it },
-            label = { Text("Почта") }
-        )
-        TextField(
-            value = textName,
-            onValueChange = { textName = it },
-            label = { Text("ФИО") }
-        )
-        TextField(
-            value = textAge,
-            onValueChange = { textAge = it },
-            label = { Text("Возраст") }
-        )
-        TextField(
-            value = textExp,
-            onValueChange = { textExp = it },
-            label = { Text("Опыт работы") }
-        )
-        TextField(
-            value = textChild,
-            onValueChange = { textChild = it },
-            label = { Text("Количество детей") }
-        )
-        TextField(
-            value = textSpec,
-            onValueChange = { textSpec = it },
-            label = { Text("Ваша специальность") }
-        )
-        CustomButton(
-            text = "Зарегистрироваться",
-            onClick = {
-                val fullName = textName.split(" ")
-                userViewModel.addMedicalOfficer(
+    LaunchedEffect(Unit) {
+        viewModel.error.collect{
+            if (it != null) {
+                scope.launch { snackbarHostState.showSnackbar(message = it) }
+            }
+        }
+    }
+
+    Scaffold(
+        scaffoldState = scaffoldState,
+        drawerGesturesEnabled = true,
+        drawerShape = CustomDrawerShape(200.dp),
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+    )
+    {
+        Column(
+            modifier = Modifier.fillMaxSize().padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Text(
+                "DDB"
+            )
+            Text(
+                "Doctor Database",
+                modifier = Modifier.padding(bottom = 10.dp)
+            )
+            TextField(
+                value = textEmail,
+                onValueChange = { textEmail = it },
+                label = { Text("Почта") }
+            )
+            TextField(
+                value = textName,
+                onValueChange = { textName = it },
+                label = { Text("ФИО") }
+            )
+            TextField(
+                value = textAge,
+                onValueChange = { textAge = it },
+                label = { Text("Возраст") }
+            )
+            TextField(
+                value = textExp,
+                onValueChange = { textExp = it },
+                label = { Text("Опыт работы") }
+            )
+            TextField(
+                value = textChild,
+                onValueChange = { textChild = it },
+                label = { Text("Количество детей") }
+            )
+            TextField(
+                value = textSpec,
+                onValueChange = { textSpec = it },
+                label = { Text("Ваша специальность") }
+            )
+            CustomButton(
+                text = "Зарегистрироваться",
+                onClick = {
+                    val fullName = textName.split(" ")
+                    viewModel.addMedicalOfficer(
                         firstName = fullName[1],
                         lastName = fullName[2],
                         surname = fullName[0],
@@ -85,7 +114,9 @@ fun RegScreen(
                         workExperience = textExp.toInt(),
                         specName = textSpec
                     )
-                onReg()
-            })
+                    onReg()
+                })
+        }
     }
 }
+

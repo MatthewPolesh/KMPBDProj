@@ -29,8 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import org.example.project.domain.entities.Speciality
-import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.gui.cards.SpecialityCard
+import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.viewmodels.SpecialityViewModel
 import org.example.project.utils.Utilities
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -40,7 +40,10 @@ import org.koin.core.annotation.KoinExperimentalAPI
 @OptIn(KoinExperimentalAPI::class)
 @Preview
 @Composable
-fun SpecialityTableCard(modifier: Modifier = Modifier) {
+fun SpecialityTableCard(
+    modifier: Modifier = Modifier,
+    onError: (String) -> Unit
+) {
 
     var textId by remember { mutableStateOf("") }
     var textName by remember { mutableStateOf("") }
@@ -51,6 +54,12 @@ fun SpecialityTableCard(modifier: Modifier = Modifier) {
     val itemList = viewModel.specialities.collectAsState()
     LaunchedEffect(Unit){
         viewModel.fetchSpecialities()
+        viewModel.error.collect{
+            if (it != null) {
+                onError(it)
+                viewModel.fetchSpecialities()
+            }
+        }
     }
     Box(
         modifier = modifier

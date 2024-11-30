@@ -3,11 +3,12 @@ package org.example.project.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import org.example.project.domain.entities.MedicalOfficer
-import org.example.project.domain.repositories.MedicalOfficerRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.example.project.domain.entities.MedicalOfficer
+import org.example.project.domain.repositories.MedicalOfficerRepository
 
 class MedicalOfficerViewModel(
     private val medicalOfficerRepository: MedicalOfficerRepository
@@ -23,7 +24,11 @@ class MedicalOfficerViewModel(
         viewModelScope.launch {
             medicalOfficerRepository.getAll()
                 .onSuccess { _medicalOfficers.value = it }
-                .onFailure { _error.value = it.message }
+                .onFailure {
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
         }
     }
 
@@ -31,7 +36,11 @@ class MedicalOfficerViewModel(
         viewModelScope.launch {
             medicalOfficerRepository.add(medicalOfficer)
                 .onSuccess { fetchMedicalOfficers() }
-                .onFailure { _error.value = it.message }
+                .onFailure {
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
         }
     }
 
@@ -39,7 +48,11 @@ class MedicalOfficerViewModel(
         viewModelScope.launch {
             medicalOfficerRepository.update(medicalOfficer)
                 .onSuccess { fetchMedicalOfficers() }
-                .onFailure { _error.value = it.message }
+                .onFailure {
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
         }
     }
 
@@ -47,7 +60,11 @@ class MedicalOfficerViewModel(
         viewModelScope.launch {
             medicalOfficerRepository.delete(id)
                 .onSuccess { fetchMedicalOfficers() }
-                .onFailure { _error.value = it.message }
+                .onFailure {
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
         }
     }
 }

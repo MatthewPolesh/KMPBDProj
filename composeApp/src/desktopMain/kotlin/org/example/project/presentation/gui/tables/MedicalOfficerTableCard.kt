@@ -40,7 +40,10 @@ import org.koin.core.annotation.KoinExperimentalAPI
 @OptIn(KoinExperimentalAPI::class)
 @Preview
 @Composable
-fun MedicalOfficerTableCard(modifier: Modifier = Modifier) {
+fun MedicalOfficerTableCard(
+    modifier: Modifier = Modifier,
+    onError: (String) -> Unit
+) {
 
     var textId by remember { mutableStateOf("") }
     var textName by remember { mutableStateOf("") }
@@ -55,6 +58,12 @@ fun MedicalOfficerTableCard(modifier: Modifier = Modifier) {
     val itemList = viewModel.medicalOfficers.collectAsState()
     LaunchedEffect(Unit){
        viewModel.fetchMedicalOfficers()
+        viewModel.error.collect{
+            if (it != null) {
+                onError(it)
+                viewModel.fetchMedicalOfficers()
+            }
+        }
     }
     Box(
         modifier = modifier

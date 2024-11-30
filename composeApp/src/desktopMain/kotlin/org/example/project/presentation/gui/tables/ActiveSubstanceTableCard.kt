@@ -29,8 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import org.example.project.domain.entities.ActiveSubstance
-import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.gui.cards.ActiveSubstanceCard
+import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.viewmodels.ActiveSubstanceViewModel
 import org.example.project.utils.Utilities
 import org.koin.compose.viewmodel.koinViewModel
@@ -38,7 +38,10 @@ import org.koin.core.annotation.KoinExperimentalAPI
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun ActiveSubstanceTableCard(modifier: Modifier = Modifier) {
+fun ActiveSubstanceTableCard(
+    modifier: Modifier = Modifier,
+    onError: (String) -> Unit
+) {
 
     var textId by remember { mutableStateOf("") }
     var textName by remember { mutableStateOf("") }
@@ -46,12 +49,19 @@ fun ActiveSubstanceTableCard(modifier: Modifier = Modifier) {
     var textAppoint by remember { mutableStateOf("") }
     var textOffId by remember { mutableStateOf("") }
     var isEditing by remember { mutableStateOf(false) }
-
     val viewModel: ActiveSubstanceViewModel = koinViewModel()
+
     val itemList = viewModel.activeSubstances.collectAsState()
     LaunchedEffect(Unit) {
         viewModel.fetchActiveSubstances()
+        viewModel.error.collect{
+            if (it != null) {
+                onError(it)
+                viewModel.fetchActiveSubstances()
+            }
+        }
     }
+
     Box(
         modifier = modifier
             .fillMaxSize()

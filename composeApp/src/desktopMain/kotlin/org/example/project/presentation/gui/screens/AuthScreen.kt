@@ -81,7 +81,10 @@ fun AuthScreen(
                 text = "Авторизоваться",
                 onClick = {
                     viewModel.authenticate(usernameInput, passwordInput)
-                    onAuth()
+                    if (viewModel.isAuthenticated.value)
+                        onAuth()
+                    else
+                        scope.launch { snackbarHostState.showSnackbar("Не верно введен пароль или пользователь") }
                 }
             )
             CustomButton(

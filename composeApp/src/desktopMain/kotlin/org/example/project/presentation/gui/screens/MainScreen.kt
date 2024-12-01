@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Checkbox
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
@@ -24,7 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import org.example.project.presentation.gui.cards.FiltersCard
+import org.example.project.presentation.gui.cards.filters.FilterActiveSubstanceCard
+import org.example.project.presentation.gui.cards.filters.FilterMedicineCard
 import org.example.project.presentation.gui.sidemenu.CustomDrawerShape
 import org.example.project.presentation.gui.sidemenu.DrawerContent
 import org.example.project.presentation.gui.tables.ActiveSubstanceTableCard
@@ -50,17 +50,38 @@ fun MainScreen(
     var tableName by remember{mutableStateOf("Отчёты")}
     val snackbarHostState = remember{ SnackbarHostState()}
 
+
     if (filtersState)
-        FiltersCard(
-            onAccept = {
-                filtersState = false
-                checkboxState = true
-                       },
-            onDismiss = {
-                filtersState = false
-                checkboxState = false
+        when (tableName)
+        {
+            "Активные комоненты препаратов" ->{
+                FilterActiveSubstanceCard(
+                    onAccept = {
+                        filtersState = false
+                        checkboxState = true
+                    },
+                    onDismiss = {
+                        filtersState = false
+                        checkboxState = false
+                    }
+                )
             }
-        )
+            "Лекарства" -> {
+                FilterMedicineCard(
+                    onAccept = {
+                        filtersState = false
+                        checkboxState = true
+                    },
+                    onDismiss = {
+                        filtersState = false
+                        checkboxState = false
+                    }
+                )
+            }
+
+        }
+
+
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -94,7 +115,6 @@ fun MainScreen(
                 Text(text = "Фильтры", modifier = Modifier.clickable { filtersState = !filtersState }.padding(
                     Utilities.paddingButton
                 ))
-                Checkbox(checked = checkboxState, onCheckedChange = {checkboxState = !checkboxState})
             }
         }
     ) {

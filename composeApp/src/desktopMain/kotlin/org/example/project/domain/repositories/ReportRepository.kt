@@ -9,4 +9,5 @@ interface ReportRepository {
     suspend fun add(report: Report): Result<Report>
     suspend fun update(report: Report): Result<Boolean>
     suspend fun delete(id: Int): Result<Boolean>
+
 }

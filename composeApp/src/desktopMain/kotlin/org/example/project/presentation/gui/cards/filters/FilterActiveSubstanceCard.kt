@@ -1,4 +1,4 @@
-package org.example.project.presentation.gui.cards
+package org.example.project.presentation.gui.cards.filters
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,7 +13,12 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
@@ -21,26 +26,37 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import kotlinx.coroutines.launch
+import org.example.project.domain.filters.ActiveSubstanceFilter
 import org.example.project.presentation.gui.custom.AutoTextField
 import org.example.project.presentation.gui.custom.CustomButton
+import org.example.project.presentation.viewmodels.ActiveSubstanceViewModel
 import org.example.project.utils.Utilities
+import org.koin.compose.viewmodel.koinViewModel
 
 
 @Composable
-fun FiltersCard(
+fun FilterActiveSubstanceCard(
     onAccept: () -> Unit,
     onDismiss: () -> Unit,
 ) {
+    val viewModel: ActiveSubstanceViewModel = koinViewModel()
+    val itemsList = viewModel.activeSubstances.collectAsState()
     val rowState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
-    val charList = listOf("Поле1", "Поле2", "Поле3", "Поле4", "Поле5", "Поле6")
+
+    val idMedOffList = itemsList.value.map { it.medicalOfficerId.toString() }
+    val appointmentList = itemsList.value.map { it.appointment}
+    val compositionList = itemsList.value.map { it.composition }
+    val nameList = itemsList.value.map  { it.name }
+    val idList = itemsList.value.map  { it.id.toString() }
+    var filterState by remember { mutableStateOf(ActiveSubstanceFilter()) }
+    val charList = listOf("ID", "Название", "Состав", "Показания к применению", "ID сотрудника")
     val allOptions = mapOf(
-        "Поле1" to listOf("Хаха1", "Хи"),
-        "Поле2" to listOf("Хаха2", "Хи"),
-        "Поле3" to listOf("Хаха3", "Хи"),
-        "Поле4" to listOf("Поле4", "Хи"),
-        "Поле5" to listOf("Хаха5", "Хи"),
-        "Поле6" to listOf("Хаха6", "Хи")
+        "ID" to idList,
+        "Название" to nameList,
+        "Состав" to compositionList ,
+        "Показания к применению" to appointmentList ,
+        "ID сотрудника" to idMedOffList ,
     )
 
     Dialog(
@@ -49,7 +65,7 @@ fun FiltersCard(
     ) {
         Card(
             modifier = Modifier
-                .height(800.dp)
+                .height(400.dp)
                 .width(590.dp),
             elevation = 10.dp,
         ) {
@@ -86,12 +102,24 @@ fun FiltersCard(
                             }
                         }
                 ) {
-                    itemsIndexed(charList) { index, item ->
+                    itemsIndexed(charList) { _, item ->
                         Column(
                             modifier = Modifier.padding(Utilities.paddingExternal)
                         ) {
                             Text(text = item)
-                            AutoTextField(allOptions[item]!!)
+                            AutoTextField(
+                                allOptions[item]!!,
+                                onTextChange  = { newValue ->
+                                    filterState = when (item) {
+                                        "ID" -> filterState.copy(id = newValue.toIntOrNull())
+                                        "Название" -> filterState.copy(name = newValue)
+                                        "Состав" -> filterState.copy(composition = newValue)
+                                        "Показания к применению" -> filterState.copy(appointment = newValue)
+                                        "ID сотрудника" -> filterState.copy(medicalOfficerId = newValue.toIntOrNull())
+                                        else -> filterState
+                                    }
+                                }
+                            )
                         }
                     }
                 }
@@ -99,12 +127,17 @@ fun FiltersCard(
                 Row {
                     CustomButton(
                         text = "Применить",
-                        onClick = { onAccept() }
+                        onClick = {
+                            viewModel.fetchFilteredActiveSubstance(filterState)
+                            onAccept() }
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     CustomButton(
                         text = "Отменить",
-                        onClick = { onDismiss() }
+                        onClick = {
+                            onDismiss()
+                            viewModel.fetchActiveSubstances()
+                        }
                     )
                 }
             }

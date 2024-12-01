@@ -30,7 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import kotlinx.datetime.LocalDate
 import org.example.project.domain.entities.Report
-import org.example.project.presentation.gui.cards.ReportCard
+import org.example.project.presentation.gui.cards.items.ReportCard
 import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.viewmodels.ReportViewModel
 import org.example.project.utils.Utilities

@@ -1,4 +1,4 @@
-package org.example.project.presentation.gui.cards
+package org.example.project.presentation.gui.cards.items
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -29,29 +29,33 @@ import kotlinproject.composeapp.generated.resources.arrow_drop_down_24px
 import kotlinproject.composeapp.generated.resources.arrow_drop_up_24px
 import kotlinproject.composeapp.generated.resources.delete_24px
 import kotlinproject.composeapp.generated.resources.edit_note_24px
-import org.example.project.domain.entities.MedicalOfficer
+import kotlinx.datetime.LocalDate
+import org.example.project.domain.entities.Medicine
 import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.utils.Utilities
 import org.jetbrains.compose.resources.painterResource
 
 
 @Composable
-fun MedicalOfficerCard(
-    item: MedicalOfficer,
+fun MedicineCard(
+    item: Medicine,
     onDelete: (Int) -> Unit,
-    onUpdate: (MedicalOfficer) -> Unit,
+    onUpdate: (Medicine) -> Unit,
 ) {
     var extended by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
 
-    var textId by remember { mutableStateOf("${item.id}") }
-    var textName by remember { mutableStateOf("${item.surname} ${item.firstName} ${item.lastName}") }
-    var textAge by remember { mutableStateOf("${item.age}") }
-    var textEmail by remember { mutableStateOf(item.email) }
-    var textExp by remember { mutableStateOf("${item.workExperience}") }
-    var textSpec by remember { mutableStateOf("${item.specialityId}") }
-    var textChild by remember { mutableStateOf("${item.numberChild}") }
-
+    var textId by remember(item) { mutableStateOf("${item.id}") }
+    var textName by remember(item) { mutableStateOf(item.name) }
+    var textProducer by remember(item) { mutableStateOf(item.producer) }
+    var textDateProduce by remember(item) { mutableStateOf("${item.dateProduce}") }
+    var textDosage by remember(item) { mutableStateOf("${item.dosage}") }
+    var textSubId by remember(item) { mutableStateOf("${item.activeSubstanceId}") }
+    var textSubName by remember(item) { mutableStateOf(item.activeSubstanceName) }
+    var textFormId by remember(item) { mutableStateOf("${item.medicinalFormId}") }
+    var textFormName by remember(item) { mutableStateOf(item.medicinalFormName) }
+    var textStandardId by remember(item) { mutableStateOf("${item.standardId}") }
+    var textStandardName by remember(item) { mutableStateOf(item.standardName) }
 
     Box(
         modifier = Modifier
@@ -80,10 +84,16 @@ fun MedicalOfficerCard(
                         isEditing = !isEditing
                         extended = true
                     },
-                    content = { Icon(painter = painterResource(Res.drawable.edit_note_24px),null, tint = Color.Black) })
+                    content = {
+                        Icon(painter = painterResource(Res.drawable.edit_note_24px),
+                            null,
+                            tint = Color.Black) })
                 IconButton(
                     onClick = { onDelete(item.id) },
-                    content = { Icon(painter = painterResource(Res.drawable.delete_24px),null, tint = Color.Black) })
+                    content = {
+                        Icon(painter = painterResource(Res.drawable.delete_24px),
+                            null,
+                            tint = Color.Black) })
                 IconButton(
                     onClick = {
                         extended = !extended
@@ -102,74 +112,95 @@ fun MedicalOfficerCard(
                 Divider(modifier = Modifier.fillMaxWidth().padding(vertical = Utilities.paddingExternal))
                 if (!isEditing) {
                     Text("ID: $textId")
-                    Text("ФИО: $textName")
-                    Text("Возраст: $textAge")
-                    Text("Почта: $textEmail")
-                    Text("ID специальности: $textSpec")
-                    Text("Опыт работы: $textExp")
-                    Text("Кол-во детей: $textChild")
+                    Text("Название: $textName")
+                    Text("Производитель: $textProducer")
+                    Text("Дата производства: $textDateProduce")
+                    Text("Дозировка: $textDosage")
+                    Text("ID активного компонента: $textSubId")
+                    Text("Активный компонент: $textSubName")
+                    Text("ID вида лекраства: $textFormId")
+                    Text("Вид лекарства: $textFormName")
+                    Text("ID стандрата: $textStandardId")
+                    Text("Стандрат: $textStandardName")
                 } else {
                     Text("Id: $textId")
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("ФИО: ")
+                        Text("Название: ")
                         TextField(
                             value = textName,
                             onValueChange = { newText -> textName = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Возраст: ")
+                        Text("Производитель: ")
                         TextField(
-                            value = textAge,
-                            onValueChange = { newText -> textAge = newText },
+                            value = textProducer,
+                            onValueChange = { newText -> textProducer = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Почта: ")
+                        Text("Дата производства: ")
                         TextField(
-                            value = textEmail,
-                            onValueChange = { newText -> textEmail = newText },
+                            value = textDateProduce,
+                            onValueChange = { newText -> textDateProduce = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("ID специальности: ")
+                        Text("Дозировка: ")
                         TextField(
-                            value = textSpec,
-                            onValueChange = { newText -> textSpec = newText },
+                            value = textDosage,
+                            onValueChange = { newText -> textDosage = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Опыт работы: ")
+                        Text("ID активного компонента: ")
                         TextField(
-                            value = textExp,
-                            onValueChange = { newText -> textExp = newText },
+                            value = textSubId,
+                            onValueChange = { newText -> textSubId = newText },
                         )
                     }
-
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Кол-во детей: ")
+                        Text("ID вида лекраства: ")
                         TextField(
-                            value = textChild,
-                            onValueChange = { newText -> textChild = newText },
+                            value = textFormId,
+                            onValueChange = { newText -> textFormId = newText },
                         )
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("ID стандрата: ")
+                        TextField(
+                            value = textName,
+                            onValueChange = { newText -> textName = newText },
+                        )
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text("ID стандрата: ")
+                            TextField(
+                                value = textStandardId,
+                                onValueChange = { newText -> textStandardId = newText },
+                            )
+                        }
                         Spacer(modifier = Modifier.weight(1f))
                         CustomButton(
                             text = "Сохранить",
                             onClick = {
                                 isEditing = false
                                 extended = false
-                                val name = textName.split(" ")
                                 onUpdate(
-                                    MedicalOfficer(
+                                    Medicine(
                                         id = textId.toInt(),
-                                        firstName = name[1],
-                                        lastName = name[2],
-                                        surname = name[0],
-                                        age = textAge.toInt(),
-                                        numberChild = textChild.toInt(),
-                                        email = textEmail,
-                                        workExperience = textExp.toInt(),
-                                        specialityId = textSpec.toInt()
+                                        producer = textProducer,
+                                        name = textName,
+                                        dateProduce = LocalDate.parse(textDateProduce),
+                                        activeSubstanceId = textSubId.toInt(),
+                                        activeSubstanceName = "",
+                                        medicinalFormId = textFormId.toInt(),
+                                        medicinalFormName = "",
+                                        standardId = textStandardId.toInt(),
+                                        standardName = "",
+                                        dosage = textDosage.toInt()
+
                                     )
                                 )
                             }

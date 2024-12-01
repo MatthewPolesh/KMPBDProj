@@ -1,4 +1,4 @@
-package org.example.project.presentation.gui.cards
+package org.example.project.presentation.gui.cards.items
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -29,22 +29,28 @@ import kotlinproject.composeapp.generated.resources.arrow_drop_down_24px
 import kotlinproject.composeapp.generated.resources.arrow_drop_up_24px
 import kotlinproject.composeapp.generated.resources.delete_24px
 import kotlinproject.composeapp.generated.resources.edit_note_24px
-import org.example.project.domain.entities.GOST
+import org.example.project.domain.entities.MedicalOfficer
 import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.utils.Utilities
 import org.jetbrains.compose.resources.painterResource
 
 
 @Composable
-fun GostCard(
-    item: GOST,
+fun MedicalOfficerCard(
+    item: MedicalOfficer,
     onDelete: (Int) -> Unit,
-    onUpdate: (GOST) -> Unit,
+    onUpdate: (MedicalOfficer) -> Unit,
 ) {
     var extended by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
-    val textId by remember { mutableStateOf("${item.id}") }
-    var textName by remember { mutableStateOf(item.name) }
+
+    var textId by remember(item) { mutableStateOf("${item.id}") }
+    var textName by remember(item) { mutableStateOf("${item.surname} ${item.firstName} ${item.lastName}") }
+    var textAge by remember(item) { mutableStateOf("${item.age}") }
+    var textEmail by remember(item) { mutableStateOf(item.email) }
+    var textExp by remember(item) { mutableStateOf("${item.workExperience}") }
+    var textSpec by remember(item) { mutableStateOf("${item.specialityId}") }
+    var textChild by remember(item) { mutableStateOf("${item.numberChild}") }
 
 
     Box(
@@ -96,14 +102,55 @@ fun GostCard(
                 Divider(modifier = Modifier.fillMaxWidth().padding(vertical = Utilities.paddingExternal))
                 if (!isEditing) {
                     Text("ID: $textId")
-                    Text("Название: $textName")
+                    Text("ФИО: $textName")
+                    Text("Возраст: $textAge")
+                    Text("Почта: $textEmail")
+                    Text("ID специальности: $textSpec")
+                    Text("Опыт работы: $textExp")
+                    Text("Кол-во детей: $textChild")
                 } else {
                     Text("Id: $textId")
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Название: ")
+                        Text("ФИО: ")
                         TextField(
                             value = textName,
                             onValueChange = { newText -> textName = newText },
+                        )
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("Возраст: ")
+                        TextField(
+                            value = textAge,
+                            onValueChange = { newText -> textAge = newText },
+                        )
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("Почта: ")
+                        TextField(
+                            value = textEmail,
+                            onValueChange = { newText -> textEmail = newText },
+                        )
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("ID специальности: ")
+                        TextField(
+                            value = textSpec,
+                            onValueChange = { newText -> textSpec = newText },
+                        )
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("Опыт работы: ")
+                        TextField(
+                            value = textExp,
+                            onValueChange = { newText -> textExp = newText },
+                        )
+                    }
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("Кол-во детей: ")
+                        TextField(
+                            value = textChild,
+                            onValueChange = { newText -> textChild = newText },
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         CustomButton(
@@ -111,18 +158,24 @@ fun GostCard(
                             onClick = {
                                 isEditing = false
                                 extended = false
+                                val name = textName.split(" ")
                                 onUpdate(
-                                    GOST(
+                                    MedicalOfficer(
                                         id = textId.toInt(),
-                                        name = textName
+                                        firstName = name[1],
+                                        lastName = name[2],
+                                        surname = name[0],
+                                        age = textAge.toInt(),
+                                        numberChild = textChild.toInt(),
+                                        email = textEmail,
+                                        workExperience = textExp.toInt(),
+                                        specialityId = textSpec.toInt()
                                     )
                                 )
                             }
                         )
                     }
-
                 }
-
             }
         }
     }

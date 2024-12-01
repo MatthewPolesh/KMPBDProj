@@ -1,4 +1,4 @@
-package org.example.project.presentation.gui.cards
+package org.example.project.presentation.gui.cards.items
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -44,11 +44,11 @@ fun ActiveSubstanceCard(
     var extended by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
 
-    val textId by remember { mutableStateOf("${item.id}") }
-    var textName by remember { mutableStateOf(item.name) }
-    var textCompos by remember { mutableStateOf(item.composition) }
-    var textAppoint by remember{ mutableStateOf(item.appointment) }
-    var textOffId by remember { mutableStateOf("${item.medicalOfficerId}") }
+    val textId by remember(item) { mutableStateOf("${item.id}") }
+    var textName by remember(item) { mutableStateOf(item.name) }
+    var textCompos by remember(item) { mutableStateOf(item.composition) }
+    var textAppoint by remember(item){ mutableStateOf(item.appointment) }
+    var textOffId by remember(item) { mutableStateOf("${item.medicalOfficerId}") }
     Box(
         modifier = Modifier
             .wrapContentHeight()

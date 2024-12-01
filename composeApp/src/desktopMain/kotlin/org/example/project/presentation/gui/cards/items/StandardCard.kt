@@ -1,4 +1,4 @@
-package org.example.project.presentation.gui.cards
+package org.example.project.presentation.gui.cards.items
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -43,9 +43,9 @@ fun StandardCard(
 ) {
     var extended by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
-    val textId by remember { mutableStateOf("${item.id}") }
-    var textName by remember { mutableStateOf(item.name) }
-    var textComponents by remember { mutableStateOf(item.components) }
+    val textId by remember(item) { mutableStateOf("${item.id}") }
+    var textName by remember(item) { mutableStateOf(item.name) }
+    var textComponents by remember(item) { mutableStateOf(item.components) }
 
 
     Box(

@@ -29,7 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import org.example.project.domain.entities.GOST
-import org.example.project.presentation.gui.cards.GostCard
+import org.example.project.presentation.gui.cards.items.GostCard
 import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.viewmodels.GOSTViewModel
 import org.example.project.utils.Utilities

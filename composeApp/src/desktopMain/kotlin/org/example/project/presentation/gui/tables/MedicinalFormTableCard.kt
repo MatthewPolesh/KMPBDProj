@@ -29,7 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import org.example.project.domain.entities.MedicinalForm
-import org.example.project.presentation.gui.cards.MedicinalFormCard
+import org.example.project.presentation.gui.cards.items.MedicinalFormCard
 import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.viewmodels.MedicinalFormViewModel
 import org.example.project.utils.Utilities

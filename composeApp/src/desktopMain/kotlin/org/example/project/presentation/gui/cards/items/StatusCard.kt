@@ -1,4 +1,4 @@
-package org.example.project.presentation.gui.cards
+package org.example.project.presentation.gui.cards.items
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,33 +24,32 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.arrow_drop_down_24px
 import kotlinproject.composeapp.generated.resources.arrow_drop_up_24px
 import kotlinproject.composeapp.generated.resources.delete_24px
 import kotlinproject.composeapp.generated.resources.edit_note_24px
 import kotlinx.datetime.LocalDate
-import org.example.project.domain.entities.Report
+import org.example.project.domain.entities.Status
 import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.utils.Utilities
 import org.jetbrains.compose.resources.painterResource
 
 
 @Composable
-fun ReportCard(
-    item: Report,
+fun StatusCard(
+    item: Status,
     onDelete: (Int) -> Unit,
-    onUpdate: (Report) -> Unit,
+    onUpdate: (Status) -> Unit,
 ) {
     var extended by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
+    val textId by remember(item) { mutableStateOf("${item.id}") }
+    var textStartData by remember(item) { mutableStateOf("${item.startData}") }
+    var textEndData by remember(item) { mutableStateOf("${item.endData}") }
+    var textReasonOfChange by remember(item) { mutableStateOf(item.reasonOfChange) }
 
-    val textId by remember { mutableStateOf("${item.id}") }
-    var textName by remember { mutableStateOf(item.name) }
-    var textDate by remember { mutableStateOf("${item.date}") }
-    val textDone by remember(item.medicalOfficerName) { mutableStateOf(item.medicalOfficerName) }
-    var textOffId by remember { mutableStateOf("${item.medicalOfficerId}") }
+
     Box(
         modifier = Modifier
             .wrapContentHeight()
@@ -69,10 +67,10 @@ fun ReportCard(
                 .padding(horizontal = Utilities.paddingIntertal)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth().height(40.dp),
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = item.name)
+                Text(text = "Статус №${textId}")
                 Spacer(modifier = Modifier.weight(1F))
                 IconButton(
                     onClick = {
@@ -100,32 +98,31 @@ fun ReportCard(
             if (extended) {
                 Divider(modifier = Modifier.fillMaxWidth().padding(vertical = Utilities.paddingExternal))
                 if (!isEditing) {
-                    Text("Id: $textId")
-                    Text("Название: $textName")
-                    Text("Дата выполнения: $textDate")
-                    Text("Выполнил: $textDone")
-                    Text("Id сотрудника: $textOffId")
+                    Text("ID: $textId")
+                    Text("Начало: $textStartData")
+                    Text("Конец: $textEndData")
+                    Text("Причина изменений: $textReasonOfChange")
                 } else {
                     Text("Id: $textId")
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Название: ")
+                        Text("Начало: ")
                         TextField(
-                            value = textName,
-                            onValueChange = { newText -> textName = newText },
+                            value = textStartData,
+                            onValueChange = { newText -> textStartData = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Дата выполнения: ")
+                        Text("Конец: ")
                         TextField(
-                            value = textDate,
-                            onValueChange = { newText -> textDate = newText },
+                            value = textEndData,
+                            onValueChange = { newText -> textEndData = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Id сотрудника: ")
+                        Text("Причина изменений: ")
                         TextField(
-                            value = textOffId,
-                            onValueChange = { newText -> textOffId = newText },
+                            value = textReasonOfChange,
+                            onValueChange = { newText -> textReasonOfChange = newText },
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         CustomButton(
@@ -134,12 +131,12 @@ fun ReportCard(
                                 isEditing = false
                                 extended = false
                                 onUpdate(
-                                    Report(
+                                    Status(
                                         id = textId.toInt(),
-                                        name = textName,
-                                        date = LocalDate.parse(textDate),
-                                        medicalOfficerId = textOffId.toInt(),
-                                        medicalOfficerName = ""
+                                        startData = LocalDate.parse(textStartData),
+                                        endData = LocalDate.parse(textEndData),
+                                        reasonOfChange = textReasonOfChange
+
                                     )
                                 )
                             }

@@ -6,8 +6,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.example.project.domain.entities.ActiveSubstance
+import org.example.project.domain.filters.ActiveSubstanceFilter
 import org.example.project.domain.repositories.ActiveSubstanceRepository
 
 class ActiveSubstanceViewModel(
@@ -17,8 +19,20 @@ class ActiveSubstanceViewModel(
     private val _activeSubstances = MutableStateFlow<List<ActiveSubstance>>(emptyList())
     val activeSubstances: StateFlow<List<ActiveSubstance>> = _activeSubstances
 
+    private val _filterState = MutableStateFlow(ActiveSubstanceFilter())
+    val filterState: StateFlow<ActiveSubstanceFilter> = _filterState.asStateFlow()
+
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
+
+    init {
+        viewModelScope.launch {
+            _filterState.collect{
+                filter ->
+                fetchFilteredActiveSubstance(filter)
+            }
+        }
+    }
 
     fun fetchActiveSubstances() {
         viewModelScope.launch {
@@ -31,6 +45,24 @@ class ActiveSubstanceViewModel(
                 }
         }
     }
+
+    fun fetchFilteredActiveSubstance(filter: ActiveSubstanceFilter){
+        viewModelScope.launch {
+            activeSubstanceRepository.getActiveSubstaces(filter)
+                .onSuccess{
+                    _activeSubstances.value = it
+                }
+                .onFailure{
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
+
+        }
+    }
+
+
+
 
     fun addActiveSubstance(activeSubstance: ActiveSubstance) {
         viewModelScope.launch {

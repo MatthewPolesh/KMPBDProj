@@ -29,7 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import org.example.project.domain.entities.ActiveSubstance
-import org.example.project.presentation.gui.cards.ActiveSubstanceCard
+import org.example.project.presentation.gui.cards.items.ActiveSubstanceCard
 import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.viewmodels.ActiveSubstanceViewModel
 import org.example.project.utils.Utilities
@@ -40,7 +40,7 @@ import org.koin.core.annotation.KoinExperimentalAPI
 @Composable
 fun ActiveSubstanceTableCard(
     modifier: Modifier = Modifier,
-    onError: (String) -> Unit
+    onError: (String) -> Unit,
 ) {
 
     var textId by remember { mutableStateOf("") }

@@ -1,4 +1,4 @@
-package org.example.project.presentation.gui.cards
+package org.example.project.presentation.gui.cards.items
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,31 +25,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.arrow_drop_down_24px
 import kotlinproject.composeapp.generated.resources.arrow_drop_up_24px
 import kotlinproject.composeapp.generated.resources.delete_24px
 import kotlinproject.composeapp.generated.resources.edit_note_24px
-import org.example.project.domain.entities.MedicinalForm
+import kotlinx.datetime.LocalDate
+import org.example.project.domain.entities.Report
 import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.utils.Utilities
 import org.jetbrains.compose.resources.painterResource
 
 
 @Composable
-fun MedicinalFormCard(
-    item: MedicinalForm,
+fun ReportCard(
+    item: Report,
     onDelete: (Int) -> Unit,
-    onUpdate: (MedicinalForm) -> Unit,
+    onUpdate: (Report) -> Unit,
 ) {
     var extended by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
 
-    var textId by remember { mutableStateOf("${item.id}") }
-    var textName by remember { mutableStateOf(item.name) }
-    var textCompos by remember { mutableStateOf(item.composition) }
-
-
+    val textId by remember(item) { mutableStateOf("${item.id}") }
+    var textName by remember(item) { mutableStateOf(item.name) }
+    var textDate by remember(item) { mutableStateOf("${item.date}") }
+    val textDone by remember(item.medicalOfficerName) { mutableStateOf(item.medicalOfficerName) }
+    var textOffId by remember(item) { mutableStateOf("${item.medicalOfficerId}") }
     Box(
         modifier = Modifier
             .wrapContentHeight()
@@ -66,7 +69,7 @@ fun MedicinalFormCard(
                 .padding(horizontal = Utilities.paddingIntertal)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().height(40.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = item.name)
@@ -99,7 +102,9 @@ fun MedicinalFormCard(
                 if (!isEditing) {
                     Text("Id: $textId")
                     Text("Название: $textName")
-                    Text("Состав: $textCompos")
+                    Text("Дата выполнения: $textDate")
+                    Text("Выполнил: $textDone")
+                    Text("Id сотрудника: $textOffId")
                 } else {
                     Text("Id: $textId")
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -110,10 +115,17 @@ fun MedicinalFormCard(
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Состав: ")
+                        Text("Дата выполнения: ")
                         TextField(
-                            value = textCompos,
-                            onValueChange = { newText -> textCompos = newText },
+                            value = textDate,
+                            onValueChange = { newText -> textDate = newText },
+                        )
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("Id сотрудника: ")
+                        TextField(
+                            value = textOffId,
+                            onValueChange = { newText -> textOffId = newText },
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         CustomButton(
@@ -122,11 +134,12 @@ fun MedicinalFormCard(
                                 isEditing = false
                                 extended = false
                                 onUpdate(
-                                    MedicinalForm(
+                                    Report(
                                         id = textId.toInt(),
                                         name = textName,
-                                        composition = textCompos,
-                                        medicalOfficerId = item.medicalOfficerId
+                                        date = LocalDate.parse(textDate),
+                                        medicalOfficerId = textOffId.toInt(),
+                                        medicalOfficerName = ""
                                     )
                                 )
                             }

@@ -24,6 +24,7 @@ import org.example.project.utils.Utilities
 @Composable
 fun AutoTextField(
     suggestions: List<String>,
+    onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var text by remember { mutableStateOf("") }
@@ -34,6 +35,7 @@ fun AutoTextField(
         OutlinedTextField(
             value = text,
             onValueChange = { newText ->
+                onTextChange(newText)
                 text = newText
                 filteredSuggestions = if (newText.isNotEmpty()) {
                     suggestions.filter { it.contains(newText, ignoreCase = true) }

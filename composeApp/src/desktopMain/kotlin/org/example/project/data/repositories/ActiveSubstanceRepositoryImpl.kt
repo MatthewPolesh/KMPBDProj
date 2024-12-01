@@ -2,9 +2,15 @@ package org.example.project.data.repositories
 
 import org.example.project.data.database.dao.ActiveSubstanceDao
 import org.example.project.data.database.dao.MedicalOfficerDao
+import org.example.project.data.database.tables.ActiveSubstanceTable
+import org.example.project.data.database.tables.MedicalOfficerTable
 import org.example.project.data.database.toDomain
 import org.example.project.domain.entities.ActiveSubstance
+import org.example.project.domain.filters.ActiveSubstanceFilter
 import org.example.project.domain.repositories.ActiveSubstanceRepository
+import org.jetbrains.exposed.sql.JoinType
+import org.jetbrains.exposed.sql.andWhere
+import org.jetbrains.exposed.sql.selectAll
 
 
 class ActiveSubstanceRepositoryImpl : BaseRepository(), ActiveSubstanceRepository {
@@ -54,6 +60,46 @@ class ActiveSubstanceRepositoryImpl : BaseRepository(), ActiveSubstanceRepositor
             true
         } else {
             false
+        }
+    }
+
+    override suspend fun getActiveSubstaces(filter: ActiveSubstanceFilter): Result<List<ActiveSubstance>> = safeDbCall{
+        val query = ActiveSubstanceTable
+            .join(MedicalOfficerTable, JoinType.INNER, ActiveSubstanceTable.medicalOfficerId, MedicalOfficerTable.id)
+            .selectAll()
+
+
+        if (filter.id != null) {
+            query.andWhere { ActiveSubstanceTable.id eq filter.id }
+        }
+
+        if (filter.name != "") {
+            query.andWhere { ActiveSubstanceTable.name like "%${filter.name}%" }
+        }
+        if (filter.composition != "") {
+            query.andWhere { ActiveSubstanceTable.composition like  "%${filter.composition}%" }
+        }
+        if (filter.appointment != "") {
+            query.andWhere { ActiveSubstanceTable.appointment like "%${filter.appointment}%" }
+        }
+        if (filter.medicalOfficerId != null) {
+            query.andWhere { ActiveSubstanceTable.medicalOfficerId eq filter.medicalOfficerId }
+        }
+
+        query.map { row ->
+            val activeSubstanceId = row[ActiveSubstanceTable.id].value
+            val activeSubstanceName = row[ActiveSubstanceTable.name]
+            val activeSubstanceComposition = row[ActiveSubstanceTable.composition]
+            val activeSubstanceAppointment = row[ActiveSubstanceTable.appointment]
+            val medicalOfficerId = row[ActiveSubstanceTable.medicalOfficerId].value
+
+            ActiveSubstance(
+                id = activeSubstanceId,
+                name = activeSubstanceName,
+                composition = activeSubstanceComposition,
+                appointment = activeSubstanceAppointment,
+                medicalOfficerId = medicalOfficerId,
+            )
         }
     }
 }

@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.example.project.domain.entities.Medicine
+import org.example.project.domain.filters.MedicineFilter
 import org.example.project.domain.repositories.MedicineRepository
 
 class MedicineViewModel(
@@ -64,6 +65,22 @@ class MedicineViewModel(
                     delay(1000)
                     _error.value = null
                 }
+        }
+    }
+
+    fun fetchFilteredMedicine(filter: MedicineFilter){
+        viewModelScope.launch {
+            medicineRepository.getMedicines(filter)
+                .onSuccess{
+                    _medicines.value = it
+                    println("fetched: $it")
+                }
+                .onFailure{
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
+
         }
     }
 }

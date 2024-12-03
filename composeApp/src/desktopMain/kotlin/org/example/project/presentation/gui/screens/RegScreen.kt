@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
@@ -22,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.example.project.presentation.gui.custom.CustomButton
-import org.example.project.presentation.gui.sidemenu.CustomDrawerShape
 import org.example.project.presentation.viewmodels.UserViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -31,6 +31,9 @@ fun RegScreen(
     viewModel: UserViewModel = koinViewModel(),
     onReg: () -> Unit
 ) {
+    LaunchedEffect(Unit){
+        viewModel.logout()
+    }
     var textName by remember { mutableStateOf("") }
     var textAge by remember { mutableStateOf("") }
     var textEmail by remember { mutableStateOf("") }
@@ -52,8 +55,6 @@ fun RegScreen(
 
     Scaffold(
         scaffoldState = scaffoldState,
-        drawerGesturesEnabled = true,
-        drawerShape = CustomDrawerShape(200.dp),
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
     )
     {
@@ -64,11 +65,12 @@ fun RegScreen(
         ) {
 
             Text(
-                "DDB"
+                "DDB", style = MaterialTheme.typography.h4
             )
             Text(
                 "Doctor Database",
-                modifier = Modifier.padding(bottom = 10.dp)
+                modifier = Modifier.padding(bottom = 20.dp),
+                style = MaterialTheme.typography.h5
             )
             TextField(
                 value = textEmail,

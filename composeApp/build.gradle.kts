@@ -1,13 +1,11 @@
+
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.compose.reload.ComposeHotRun
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.compose.hot.reload)
-
 }
 composeCompiler {
     featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
@@ -17,10 +15,7 @@ composeCompiler {
     metricsDestination = layout.buildDirectory.dir("compose_compiler")
 }
 
-tasks.register<ComposeHotRun>("hotReload") {
-    mainClass.set("org.example.project.MainKt")
 
-}
 
 
 kotlin {
@@ -29,9 +24,6 @@ kotlin {
     sourceSets {
         val desktopMain by getting
         commonMain.dependencies {
-            //Moko
-            api("dev.icerock.moko:resources:0.20.1")
-            api("dev.icerock.moko:resources-compose:0.20.1")
             //Exposed
             implementation("org.jetbrains.exposed:exposed-core:0.56.0")
             implementation("org.jetbrains.exposed:exposed-crypt:0.56.0")

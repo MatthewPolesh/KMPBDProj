@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -40,6 +41,7 @@ fun MedicalOfficerCard(
     item: MedicalOfficer,
     onDelete: (Int) -> Unit,
     onUpdate: (MedicalOfficer) -> Unit,
+    accessibility: Boolean,
 ) {
     var extended by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
@@ -73,17 +75,20 @@ fun MedicalOfficerCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = textName)
+                Text(text = textName, style = MaterialTheme.typography.body1)
                 Spacer(modifier = Modifier.weight(1F))
-                IconButton(
-                    onClick = {
-                        isEditing = !isEditing
-                        extended = true
-                    },
-                    content = { Icon(painter = painterResource(Res.drawable.edit_note_24px),null, tint = Color.Black) })
-                IconButton(
-                    onClick = { onDelete(item.id) },
-                    content = { Icon(painter = painterResource(Res.drawable.delete_24px),null, tint = Color.Black) })
+                if (accessibility)
+                {
+                    IconButton(
+                        onClick = {
+                            isEditing = !isEditing
+                            extended = true
+                        },
+                        content = { Icon(painter = painterResource(Res.drawable.edit_note_24px),null, tint = Color.Black) })
+                    IconButton(
+                        onClick = { onDelete(item.id) },
+                        content = { Icon(painter = painterResource(Res.drawable.delete_24px),null, tint = Color.Black) })
+                }
                 IconButton(
                     onClick = {
                         extended = !extended
@@ -101,15 +106,15 @@ fun MedicalOfficerCard(
             if (extended) {
                 Divider(modifier = Modifier.fillMaxWidth().padding(vertical = Utilities.paddingExternal))
                 if (!isEditing) {
-                    Text("ID: $textId")
-                    Text("ФИО: $textName")
-                    Text("Возраст: $textAge")
-                    Text("Почта: $textEmail")
-                    Text("ID специальности: $textSpec")
-                    Text("Опыт работы: $textExp")
-                    Text("Кол-во детей: $textChild")
+                    Text("ID: $textId", style = MaterialTheme.typography.body2)
+                    Text("ФИО: $textName", style = MaterialTheme.typography.body2)
+                    Text("Возраст: $textAge", style = MaterialTheme.typography.body2)
+                    Text("Почта: $textEmail", style = MaterialTheme.typography.body2)
+                    Text("ID специальности: $textSpec", style = MaterialTheme.typography.body2)
+                    Text("Опыт работы: $textExp", style = MaterialTheme.typography.body2)
+                    Text("Кол-во детей: $textChild", style = MaterialTheme.typography.body2)
                 } else {
-                    Text("Id: $textId")
+                    Text("Id: $textId", style = MaterialTheme.typography.body2)
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("ФИО: ")
                         TextField(
@@ -118,28 +123,28 @@ fun MedicalOfficerCard(
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Возраст: ")
+                        Text("Возраст: ", style = MaterialTheme.typography.body2)
                         TextField(
                             value = textAge,
                             onValueChange = { newText -> textAge = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Почта: ")
+                        Text("Почта: ", style = MaterialTheme.typography.body2)
                         TextField(
                             value = textEmail,
                             onValueChange = { newText -> textEmail = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("ID специальности: ")
+                        Text("ID специальности: ", style = MaterialTheme.typography.body2)
                         TextField(
                             value = textSpec,
                             onValueChange = { newText -> textSpec = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Опыт работы: ")
+                        Text("Опыт работы: ", style = MaterialTheme.typography.body2)
                         TextField(
                             value = textExp,
                             onValueChange = { newText -> textExp = newText },
@@ -147,7 +152,7 @@ fun MedicalOfficerCard(
                     }
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Кол-во детей: ")
+                        Text("Кол-во детей: ", style = MaterialTheme.typography.body2)
                         TextField(
                             value = textChild,
                             onValueChange = { newText -> textChild = newText },

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
@@ -42,6 +43,7 @@ import org.example.project.utils.Utilities
 @Composable
 fun MainScreen(
     onLogOut: () -> Unit,
+    accessibility: Boolean
 ) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
@@ -86,7 +88,7 @@ fun MainScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         drawerGesturesEnabled = true,
-        drawerShape = CustomDrawerShape(200.dp),
+        drawerShape = CustomDrawerShape(240.dp),
         snackbarHost = { SnackbarHost(hostState = snackbarHostState)},
         drawerContent = {
             DrawerContent {
@@ -107,14 +109,15 @@ fun MainScreen(
             ) {
                 Text(
                     text = "Таблицы",
+                    style = MaterialTheme.typography.h6,
                     modifier = Modifier
                         .clickable { scope.launch { scaffoldState.drawerState.open() } }
                         .padding(Utilities.paddingButton))
-                Text(text = tableName, modifier = Modifier.padding(Utilities.paddingButton))
+                Text(text = tableName, modifier = Modifier.padding(Utilities.paddingButton), style = MaterialTheme.typography.h6)
                 Spacer(modifier = Modifier.weight(1f))
                 Text(text = "Фильтры", modifier = Modifier.clickable { filtersState = !filtersState }.padding(
                     Utilities.paddingButton
-                ))
+                ), style = MaterialTheme.typography.h6)
             }
         }
     ) {
@@ -126,9 +129,11 @@ fun MainScreen(
                 "Отчёты" -> ReportTableCard(
                     onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
                 "Сотрудники" -> MedicalOfficerTableCard(
-                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }},
+                    accessibility = accessibility)
                 "Специальности" -> SpecialityTableCard(
-                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }},
+                    accessibility = accessibility)
                 "Лекарства" -> MedicineTableCard(
                     onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
                 "Активные комоненты препаратов" -> ActiveSubstanceTableCard(
@@ -136,11 +141,14 @@ fun MainScreen(
                 "Виды лекарства"-> MedicinalFormTableCard(
                     onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
                 "Стандарты изготовления" -> StandardTableCard(
-                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }},
+                    accessibility = accessibility)
                 "ГОСТы" -> GostTableCard(
-                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }},
+                    accessibility = accessibility)
                 "Статусы изготовления"-> StatusTableCard(
-                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }},
+                    accessibility = accessibility)
             }
 
         }

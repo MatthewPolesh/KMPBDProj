@@ -1,5 +1,7 @@
 package org.example.project
 
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.navigation.NavHostController
@@ -30,7 +32,7 @@ fun main() = application {
 
     val database:Database = org.koin.core.context.GlobalContext.get().get()
     initDatabase(database)
-
+    var accessibility = remember {mutableStateOf(false)}
     val navController: NavHostController = rememberNavController()
 
     Window(
@@ -42,11 +44,14 @@ fun main() = application {
             startDestination = Screens.Auth.route
         ){
             composable(route = Screens.Main.route) {
-                MainScreen(onLogOut = { navController.navigate(Screens.Auth.route)})
+                MainScreen(
+                    accessibility = accessibility.value,
+                    onLogOut = { navController.navigate(Screens.Auth.route)}
+                )
             }
             composable(route = Screens.Auth.route) {
                 AuthScreen(
-                    onAuth = {navController.navigate(Screens.Main.route)},
+                    onAuth = {navController.navigate(Screens.Main.route); accessibility.value = it},
                     onReg = {navController.navigate(Screens.Reg.route)}
                 )
             }

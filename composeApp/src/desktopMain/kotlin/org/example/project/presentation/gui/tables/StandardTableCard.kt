@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -40,7 +41,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun StandardTableCard(
     modifier: Modifier = Modifier,
-    onError: (String) -> Unit
+    onError: (String) -> Unit,
+    accessibility: Boolean
 ) {
 
     var isEditing by remember { mutableStateOf(false) }
@@ -80,11 +82,13 @@ fun StandardTableCard(
             ) {
                 items(itemList.value) { item ->
                     StandardCard(
-                        item,
+                        accessibility = accessibility,
+                        item = item,
                         onUpdate = { viewModel.updateStandard(it) },
                         onDelete = { viewModel.deleteStandard(it) }
                     )
                 }
+                if (accessibility)
                 item {
                     Box(
                         modifier = Modifier
@@ -117,21 +121,21 @@ fun StandardTableCard(
                             if (isEditing) {
                                 Divider(modifier = Modifier.fillMaxWidth())
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Id: ")
+                                    Text("Id: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textId,
                                         onValueChange = { newText -> textId = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Название: ")
+                                    Text("Название: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textName,
                                         onValueChange = { newText -> textName = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Компоненты: ")
+                                    Text("Компоненты: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textComponents,
                                         onValueChange = { newText -> textComponents = newText },

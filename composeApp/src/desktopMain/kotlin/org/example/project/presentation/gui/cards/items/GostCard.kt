@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -40,6 +41,7 @@ fun GostCard(
     item: GOST,
     onDelete: (Int) -> Unit,
     onUpdate: (GOST) -> Unit,
+    accessibility: Boolean,
 ) {
     var extended by remember(item) { mutableStateOf(false) }
     var isEditing by remember(item) { mutableStateOf(false) }
@@ -67,17 +69,21 @@ fun GostCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = textName)
+                Text(text = textName, style = MaterialTheme.typography.body1)
                 Spacer(modifier = Modifier.weight(1F))
-                IconButton(
-                    onClick = {
-                        isEditing = !isEditing
-                        extended = true
-                    },
-                    content = { Icon(painter = painterResource(Res.drawable.edit_note_24px),null, tint = Color.Black) })
-                IconButton(
-                    onClick = { onDelete(item.id) },
-                    content = { Icon(painter = painterResource(Res.drawable.delete_24px),null, tint = Color.Black) })
+                if (accessibility)
+                {
+                    IconButton(
+                        onClick = {
+                            isEditing = !isEditing
+                            extended = true
+                        },
+                        content = { Icon(painter = painterResource(Res.drawable.edit_note_24px),null, tint = Color.Black) })
+                    IconButton(
+                        onClick = { onDelete(item.id) },
+                        content = { Icon(painter = painterResource(Res.drawable.delete_24px),null, tint = Color.Black) })
+                }
+
                 IconButton(
                     onClick = {
                         extended = !extended
@@ -95,12 +101,12 @@ fun GostCard(
             if (extended) {
                 Divider(modifier = Modifier.fillMaxWidth().padding(vertical = Utilities.paddingExternal))
                 if (!isEditing) {
-                    Text("ID: $textId")
-                    Text("Название: $textName")
+                    Text("ID: $textId", style = MaterialTheme.typography.body2)
+                    Text("Название: $textName", style = MaterialTheme.typography.body2)
                 } else {
                     Text("Id: $textId")
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Название: ")
+                        Text("Название: ", style = MaterialTheme.typography.body2)
                         TextField(
                             value = textName,
                             onValueChange = { newText -> textName = newText },

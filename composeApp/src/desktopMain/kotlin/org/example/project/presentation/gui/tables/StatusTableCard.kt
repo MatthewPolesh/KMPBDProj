@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -41,8 +42,9 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun StatusTableCard(
     modifier: Modifier = Modifier,
-    onError: (String) -> Unit
-    ) {
+    onError: (String) -> Unit,
+    accessibility: Boolean
+) {
 
     var isEditing by remember { mutableStateOf(false) }
     var textId by remember { mutableStateOf("") }
@@ -82,7 +84,8 @@ fun StatusTableCard(
             ) {
                 items(itemList.value) { item ->
                     StatusCard(
-                        item,
+                        accessibility = accessibility,
+                        item = item,
                         onUpdate = { viewModel.updateStatus(it) },
                         onDelete = { viewModel.deleteStatus(it) }
                     )
@@ -119,28 +122,28 @@ fun StatusTableCard(
                             if (isEditing) {
                                 Divider(modifier = Modifier.fillMaxWidth())
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Id: ")
+                                    Text("Id: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textId,
                                         onValueChange = { newText -> textId = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Начало: $textStartData")
+                                    Text("Начало: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textStartData,
                                         onValueChange = { newText -> textStartData = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Конец: $textEndData")
+                                    Text("Конец: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textEndData,
                                         onValueChange = { newText -> textEndData = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Причина изменений: $textReasonOfChange")
+                                    Text("Причина изменений: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textReasonOfChange,
                                         onValueChange = { newText -> textReasonOfChange = newText },

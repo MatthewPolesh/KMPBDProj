@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -42,7 +43,8 @@ import org.koin.core.annotation.KoinExperimentalAPI
 @Composable
 fun SpecialityTableCard(
     modifier: Modifier = Modifier,
-    onError: (String) -> Unit
+    onError: (String) -> Unit,
+    accessibility: Boolean
 ) {
 
     var textId by remember { mutableStateOf("") }
@@ -77,11 +79,13 @@ fun SpecialityTableCard(
             ) {
                 items(itemList.value) { item ->
                     SpecialityCard(
-                        item,
+                        accessibility = accessibility,
+                        item = item,
                         onUpdate = {viewModel.updateSpeciality(it)},
                         onDelete = {viewModel.deleteSpeciality(it)}
                     )
                 }
+                if (accessibility)
                 item {
                     Box(
                         modifier = Modifier
@@ -114,21 +118,21 @@ fun SpecialityTableCard(
                             if (isEditing) {
                                 Divider(modifier = Modifier.fillMaxWidth())
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Id: ")
+                                    Text("Id: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textId,
                                         onValueChange = { newText -> textId = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Специальность: ")
+                                    Text("Специальность: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textName,
                                         onValueChange = { newText -> textName = newText },
                                     )
                                     }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Обязаности: ")
+                                    Text("Обязаности: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textDuties,
                                         onValueChange = { newText -> textDuties = newText },

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
@@ -21,16 +22,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.example.project.presentation.gui.custom.CustomButton
-import org.example.project.presentation.gui.sidemenu.CustomDrawerShape
 import org.example.project.presentation.viewmodels.UserViewModel
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun AuthScreen(
     viewModel: UserViewModel = koinViewModel(),
-    onAuth: () -> Unit,
+    onAuth: (Boolean) -> Unit,
     onReg: () -> Unit
 ) {
     var usernameInput by remember { mutableStateOf("") }
@@ -49,8 +52,6 @@ fun AuthScreen(
 
     Scaffold(
         scaffoldState = scaffoldState,
-        drawerGesturesEnabled = true,
-        drawerShape = CustomDrawerShape(200.dp),
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
     )
     {
@@ -61,10 +62,11 @@ fun AuthScreen(
         ) {
 
             Text(
-                "DDB")
+                "DDB", style = MaterialTheme.typography.h4)
             Text(
                 "Doctor Database",
-                modifier = Modifier.padding(bottom = 10.dp))
+                style = MaterialTheme.typography.h5,
+                modifier = Modifier.padding(bottom = 20.dp))
 
             TextField(
                 value = usernameInput,
@@ -80,11 +82,14 @@ fun AuthScreen(
             CustomButton(
                 text = "Авторизоваться",
                 onClick = {
-                    viewModel.authenticate(usernameInput, passwordInput)
-                    if (viewModel.isAuthenticated.value)
-                        onAuth()
-                    else
-                        scope.launch { snackbarHostState.showSnackbar("Не верно введен пароль или пользователь") }
+                    val result = viewModel.authenticate(usernameInput, passwordInput)
+                    scope.launch {
+                        delay(3000)
+                        if (viewModel.isAuthenticated.value || result)
+                            onAuth(viewModel.accessibility.value)
+                        else
+                            snackbarHostState.showSnackbar("Не верно введен пароль или пользователь")
+                    }
                 }
             )
             CustomButton(

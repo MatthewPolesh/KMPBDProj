@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -43,8 +44,8 @@ import org.koin.core.annotation.KoinExperimentalAPI
 @Composable
 fun MedicineTableCard(
     modifier: Modifier = Modifier,
-    onError: (String) -> Unit
-    ) {
+    onError: (String) -> Unit,
+) {
 
     var textId by remember { mutableStateOf("") }
     var textName by remember { mutableStateOf("") }
@@ -82,7 +83,7 @@ fun MedicineTableCard(
             ) {
                 items(itemList.value) { item ->
                     MedicineCard(
-                        item,
+                        item = item,
                         onUpdate = {viewModel.updateMedicine(it)},
                         onDelete = {viewModel.deleteMedicine(it)}
                     )
@@ -119,56 +120,56 @@ fun MedicineTableCard(
                             if (isEditing) {
                                 Divider(modifier = Modifier.fillMaxWidth())
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Id: ")
+                                    Text("Id: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textId,
                                         onValueChange = { newText -> textId = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Название: ")
+                                    Text("Название: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textName,
                                         onValueChange = { newText -> textName = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Производитель: ")
+                                    Text("Производитель: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textProducer,
                                         onValueChange = { newText -> textProducer = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Дата производства: ")
+                                    Text("Дата производства: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textDateProduce,
                                         onValueChange = { newText -> textDateProduce = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Дозировка: ")
+                                    Text("Дозировка: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textDosage,
                                         onValueChange = { newText -> textDosage = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("ID активного компонента: ")
+                                    Text("ID активного компонента: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textSubId,
                                         onValueChange = { newText -> textSubId = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("ID вида лекарства: ")
+                                    Text("ID вида лекарства: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textFormId,
                                         onValueChange = { newText -> textFormId = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("ID стандарта: ")
+                                    Text("ID стандарта: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textStandardId,
                                         onValueChange = { newText -> textStandardId = newText },

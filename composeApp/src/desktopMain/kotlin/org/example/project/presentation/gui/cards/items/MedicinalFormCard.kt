@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -69,7 +70,7 @@ fun MedicinalFormCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = item.name)
+                Text(text = item.name, style = MaterialTheme.typography.body1)
                 Spacer(modifier = Modifier.weight(1F))
                 IconButton(
                     onClick = {
@@ -97,20 +98,20 @@ fun MedicinalFormCard(
             if (extended) {
                 Divider(modifier = Modifier.fillMaxWidth().padding(vertical = Utilities.paddingExternal))
                 if (!isEditing) {
-                    Text("Id: $textId")
-                    Text("Название: $textName")
-                    Text("Состав: $textCompos")
+                    Text("Id: $textId", style = MaterialTheme.typography.body2)
+                    Text("Название: $textName", style = MaterialTheme.typography.body2)
+                    Text("Состав: $textCompos", style = MaterialTheme.typography.body2)
                 } else {
                     Text("Id: $textId")
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Название: ")
+                        Text("Название: ", style = MaterialTheme.typography.body2)
                         TextField(
                             value = textName,
                             onValueChange = { newText -> textName = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Состав: ")
+                        Text("Состав: ", style = MaterialTheme.typography.body2)
                         TextField(
                             value = textCompos,
                             onValueChange = { newText -> textCompos = newText },

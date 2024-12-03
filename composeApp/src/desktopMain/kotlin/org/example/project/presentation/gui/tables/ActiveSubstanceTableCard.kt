@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -119,35 +120,35 @@ fun ActiveSubstanceTableCard(
                             if (isEditing) {
                                 Divider(modifier = Modifier.fillMaxWidth())
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Id: ")
+                                    Text("Id: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textId,
                                         onValueChange = { newText -> textId = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Название: ")
+                                    Text("Название: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textName,
                                         onValueChange = { newText -> textName = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Состав: ")
+                                    Text("Состав: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textCompos,
                                         onValueChange = { newText -> textCompos = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Показания к применению: ")
+                                    Text("Показания к применению: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textAppoint,
                                         onValueChange = { newText -> textAppoint = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Id сотрудника: ")
+                                    Text("Id сотрудника: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textOffId,
                                         onValueChange = { newText -> textOffId = newText },

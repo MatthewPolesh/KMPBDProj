@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -41,7 +42,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun ReportTableCard(
     modifier: Modifier = Modifier,
-    onError: (String) -> Unit
+    onError: (String) -> Unit,
 ) {
     var textId by remember { mutableStateOf("") }
     var textName by remember { mutableStateOf("") }
@@ -120,28 +121,28 @@ fun ReportTableCard(
                             if (isEditing) {
                                 Divider(modifier = Modifier.fillMaxWidth())
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Id: ")
+                                    Text("Id: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textId,
                                         onValueChange = { newText -> textId = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Название: ")
+                                    Text("Название: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textName,
                                         onValueChange = { newText -> textName = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Дата выполнения: ")
+                                    Text("Дата выполнения: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textDate,
                                         onValueChange = { newText -> textDate = newText },
                                     )
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Id сотрудника: ")
+                                    Text("Id сотрудника: ", style = MaterialTheme.typography.body2)
                                     TextField(
                                         value = textOffId,
                                         onValueChange = { newText -> textOffId = newText },

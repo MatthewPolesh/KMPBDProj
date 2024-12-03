@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -77,7 +78,7 @@ fun MedicineCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = textName)
+                Text(text = textName, style = MaterialTheme.typography.body1)
                 Spacer(modifier = Modifier.weight(1F))
                 IconButton(
                     onClick = {
@@ -111,63 +112,63 @@ fun MedicineCard(
             if (extended) {
                 Divider(modifier = Modifier.fillMaxWidth().padding(vertical = Utilities.paddingExternal))
                 if (!isEditing) {
-                    Text("ID: $textId")
-                    Text("Название: $textName")
-                    Text("Производитель: $textProducer")
-                    Text("Дата производства: $textDateProduce")
-                    Text("Дозировка: $textDosage")
-                    Text("ID активного компонента: $textSubId")
-                    Text("Активный компонент: $textSubName")
-                    Text("ID вида лекраства: $textFormId")
-                    Text("Вид лекарства: $textFormName")
-                    Text("ID стандрата: $textStandardId")
-                    Text("Стандрат: $textStandardName")
+                    Text("ID: $textId", style = MaterialTheme.typography.body2)
+                    Text("Название: $textName", style = MaterialTheme.typography.body2)
+                    Text("Производитель: $textProducer", style = MaterialTheme.typography.body2)
+                    Text("Дата производства: $textDateProduce", style = MaterialTheme.typography.body2)
+                    Text("Дозировка: $textDosage", style = MaterialTheme.typography.body2)
+                    Text("ID активного компонента: $textSubId", style = MaterialTheme.typography.body2)
+                    Text("Активный компонент: $textSubName", style = MaterialTheme.typography.body2)
+                    Text("ID вида лекраства: $textFormId", style = MaterialTheme.typography.body2)
+                    Text("Вид лекарства: $textFormName", style = MaterialTheme.typography.body2)
+                    Text("ID стандрата: $textStandardId", style = MaterialTheme.typography.body2)
+                    Text("Стандрат: $textStandardName", style = MaterialTheme.typography.body2)
                 } else {
-                    Text("Id: $textId")
+                    Text("Id: $textId", style = MaterialTheme.typography.body2)
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Название: ")
+                        Text("Название: ", style = MaterialTheme.typography.body2)
                         TextField(
                             value = textName,
                             onValueChange = { newText -> textName = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Производитель: ")
+                        Text("Производитель: ", style = MaterialTheme.typography.body2)
                         TextField(
                             value = textProducer,
                             onValueChange = { newText -> textProducer = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Дата производства: ")
+                        Text("Дата производства: ", style = MaterialTheme.typography.body2)
                         TextField(
                             value = textDateProduce,
                             onValueChange = { newText -> textDateProduce = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Дозировка: ")
+                        Text("Дозировка: ", style = MaterialTheme.typography.body2)
                         TextField(
                             value = textDosage,
                             onValueChange = { newText -> textDosage = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("ID активного компонента: ")
+                        Text("ID активного компонента: ", style = MaterialTheme.typography.body2)
                         TextField(
                             value = textSubId,
                             onValueChange = { newText -> textSubId = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("ID вида лекраства: ")
+                        Text("ID вида лекраства: ", style = MaterialTheme.typography.body2)
                         TextField(
                             value = textFormId,
                             onValueChange = { newText -> textFormId = newText },
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("ID стандрата: ")
+                        Text("ID стандрата: ", style = MaterialTheme.typography.body2)
                         TextField(
                             value = textName,
                             onValueChange = { newText -> textName = newText },
@@ -175,7 +176,7 @@ fun MedicineCard(
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("ID стандрата: ")
+                            Text("ID стандрата: ", style = MaterialTheme.typography.body2)
                             TextField(
                                 value = textStandardId,
                                 onValueChange = { newText -> textStandardId = newText },

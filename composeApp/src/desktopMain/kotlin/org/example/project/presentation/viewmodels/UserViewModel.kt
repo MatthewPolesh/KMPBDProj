@@ -17,8 +17,8 @@ class UserViewModel(
     private val _username = MutableStateFlow<String?>(null)
     val username: StateFlow<String?> = _username
 
-    private val _accessibility = MutableStateFlow<Boolean?>(null)
-    val accessibility: StateFlow<Boolean?> = _accessibility
+    private val _accessibility = MutableStateFlow(false)
+    val accessibility: StateFlow<Boolean> = _accessibility
 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
@@ -105,7 +105,8 @@ class UserViewModel(
     }
 
 
-    fun authenticate(username: String, password: String) {
+    fun authenticate(username: String, password: String): Boolean {
+        var result = false
         viewModelScope.launch {
             medicalOfficerRepository.getAll()
                 .onSuccess {
@@ -120,7 +121,9 @@ class UserViewModel(
                         if (password == surnameMap[username]!![0]) {
                             _username.value = username
                             _isAuthenticated.value = true
-                            _accessibility.value = surnameMap[username]!![1] == "0"
+                            _accessibility.value = surnameMap[username]!![0] == "1"
+                            println("Access: ${_accessibility.value}  Id: ${surnameMap[username]!![0]}")
+                            result = true
                         } else {
                             _error.value = error("Неправильный пароль")
                         }
@@ -128,9 +131,12 @@ class UserViewModel(
                         _error.value = error("Такой пользователь не найден")
                     }
                 }
-                .onFailure { _error.value = it.message }
+                .onFailure {
+                    _error.value = it.message
+                    result = false
+                }
         }
-
+        return result
     }
 
     fun logout() {

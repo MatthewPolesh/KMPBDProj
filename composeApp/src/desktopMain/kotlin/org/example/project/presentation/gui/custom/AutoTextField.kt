@@ -23,6 +23,7 @@ import org.example.project.utils.Utilities
 
 @Composable
 fun AutoTextField(
+
     suggestions: List<String>,
     onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -62,6 +63,7 @@ fun AutoTextField(
                             .clickable {
                                 text = suggestion
                                 filteredSuggestions = emptyList()
+                                onTextChange(text)
                             }
                             .padding(Utilities.paddingExternal)
                     )

@@ -40,7 +40,7 @@ fun GOSTDao.toDomain(): GOST {
 
 
 
-fun MedicalOfficerDao.toDomain(): MedicalOfficer {
+fun MedicalOfficerDao.toDomain(bonus: Int = 0): MedicalOfficer {
     return MedicalOfficer(
         id = this.id.value,
         firstName = this.firstName,
@@ -48,6 +48,7 @@ fun MedicalOfficerDao.toDomain(): MedicalOfficer {
         surname = this.surname,
         email = this.email,
         workExperience = this.workExperience?: 0,
+        bonus = bonus?: 0,
         specialityId = this.specialityDao.id.value,
         age =  this.age?: 0,
         numberChild = this.numberChild?: 0

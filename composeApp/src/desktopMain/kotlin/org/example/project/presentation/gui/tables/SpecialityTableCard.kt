@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -54,6 +54,8 @@ fun SpecialityTableCard(
 
     val viewModel: SpecialityViewModel = koinViewModel()
     val itemList = viewModel.specialities.collectAsState()
+    val fioList = viewModel.fioResult.collectAsState()
+
     LaunchedEffect(Unit){
         viewModel.fetchSpecialities()
         viewModel.error.collect{
@@ -77,12 +79,14 @@ fun SpecialityTableCard(
             LazyColumn(
                 modifier = Modifier.weight(0.9f).padding(Utilities.paddingIntertal)
             ) {
-                items(itemList.value) { item ->
+                itemsIndexed(itemList.value) { index, item ->
                     SpecialityCard(
+                        textFio = fioList.value[index],
                         accessibility = accessibility,
                         item = item,
-                        onUpdate = {viewModel.updateSpeciality(it)},
-                        onDelete = {viewModel.deleteSpeciality(it)}
+                        onUpdate = { viewModel.updateSpeciality(it) },
+                        onDelete = { viewModel.deleteSpeciality(it) },
+                        fioChecked ={ viewModel.getMedicalOfficerFIOBySpeciality(item.name, index) }
                     )
                 }
                 if (accessibility)

@@ -47,15 +47,15 @@ class UserViewModel(
                         if (specName == spec.name) {
                             specId = spec.id
                             val medicalOfficer = MedicalOfficer(
-                                0,
-                                firstName,
-                                lastName,
-                                surname,
-                                age,
-                                numberChild,
-                                email,
-                                workExperience,
-                                specId
+                                id = 0,
+                                firstName = firstName,
+                                lastName = lastName,
+                                surname = surname,
+                                age = age,
+                                numberChild = numberChild,
+                                email = email,
+                                workExperience = workExperience,
+                                specialityId = specId
                             )
                             println("$specId")
                             viewModelScope.launch {
@@ -75,15 +75,15 @@ class UserViewModel(
                             specialityRepository.add(Speciality(0, specName, "Заполнить"))
                                 .onSuccess {
                                     val medicalOfficer = MedicalOfficer(
-                                        0,
-                                        firstName,
-                                        lastName,
-                                        surname,
-                                        age,
-                                        numberChild,
-                                        email,
-                                        workExperience,
-                                        specMap.keys.max() + 1
+                                        id = 0,
+                                        firstName =firstName,
+                                        lastName = lastName,
+                                        surname = surname,
+                                        age =  age,
+                                        numberChild = numberChild,
+                                        email = email,
+                                        workExperience = workExperience,
+                                        specialityId = specMap.keys.max() + 1
                                     )
                                     medicalOfficerRepository.add(medicalOfficer)
                                         .onSuccess {
@@ -122,7 +122,6 @@ class UserViewModel(
                             _username.value = username
                             _isAuthenticated.value = true
                             _accessibility.value = surnameMap[username]!![0] == "1"
-                            println("Access: ${_accessibility.value}  Id: ${surnameMap[username]!![0]}")
                             result = true
                         } else {
                             _error.value = error("Неправильный пароль")

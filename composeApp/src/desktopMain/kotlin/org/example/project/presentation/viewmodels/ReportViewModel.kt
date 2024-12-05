@@ -3,10 +3,12 @@ package org.example.project.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.example.project.domain.entities.Report
+import org.example.project.domain.filters.ReportFilter
 import org.example.project.domain.repositories.ReportRepository
 
 class ReportViewModel(
@@ -23,7 +25,11 @@ class ReportViewModel(
         viewModelScope.launch {
             reportRepository.getAll()
                 .onSuccess { _reports.value = it }
-                .onFailure { _error.value = it.message }
+                .onFailure {
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
         }
     }
 
@@ -31,7 +37,11 @@ class ReportViewModel(
         viewModelScope.launch {
             reportRepository.add(report)
                 .onSuccess { fetchReports() }
-                .onFailure { _error.value = it.message }
+                .onFailure {
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
         }
     }
 
@@ -39,7 +49,11 @@ class ReportViewModel(
         viewModelScope.launch {
             reportRepository.update(report)
                 .onSuccess { fetchReports() }
-                .onFailure { _error.value = it.message }
+                .onFailure {
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
         }
     }
 
@@ -47,7 +61,26 @@ class ReportViewModel(
         viewModelScope.launch {
             reportRepository.delete(id)
                 .onSuccess { fetchReports() }
-                .onFailure { _error.value = it.message }
+                .onFailure {
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
+        }
+    }
+
+    fun fetchFilteredReports(filter: ReportFilter){
+        viewModelScope.launch {
+            reportRepository.getReports(filter)
+                .onSuccess{
+                    _reports.value = it
+                }
+                .onFailure{
+                    _error.value = it.message
+                    delay(1000)
+                    _error.value = null
+                }
+
         }
     }
 }

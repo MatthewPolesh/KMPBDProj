@@ -85,39 +85,38 @@ class MedicineRepositoryImpl : BaseRepository(), MedicineRepository {
             .join(StandardTable, JoinType.INNER, MedicineTable.standardId, StandardTable.id)
             .selectAll()
 
-
         if (filter.id != null) {
             query.andWhere { MedicineTable.id eq filter.id }
         }
         if (!filter.producer.isNullOrBlank()) {
-            query.andWhere { MedicineTable.producer like "%${filter.producer}%" }
+            query.andWhere { MedicineTable.producer eq filter.producer }
         }
         if (!filter.name.isNullOrBlank()) {
-            query.andWhere { MedicineTable.name like "%${filter.name}%" }
+            query.andWhere { MedicineTable.name eq  filter.name }
         }
         if (filter.dosage != null) {
             query.andWhere { MedicineTable.dosage eq filter.dosage }
         }
         if (filter.dateProduce != null) {
-            query.andWhere { MedicineTable.dateProduce eq  filter.dateProduce }
+            query.andWhere { MedicineTable.dateProduce eq filter.dateProduce }
         }
         if (filter.activeSubstanceId != null) {
             query.andWhere { MedicineTable.activeSubstanceId eq filter.activeSubstanceId }
         }
         if (!filter.activeSubstanceName.isNullOrBlank()) {
-            query.andWhere { ActiveSubstanceTable.name like "%${filter.activeSubstanceName}%" }
+            query.andWhere { ActiveSubstanceTable.name eq filter.activeSubstanceName }
         }
         if (filter.medicinalFormId != null) {
             query.andWhere { MedicineTable.medicinalFormId eq filter.medicinalFormId }
         }
         if (!filter.medicinalFormName.isNullOrBlank()) {
-            query.andWhere { MedicinalFormTable.name like "%${filter.medicinalFormName}%" }
+            query.andWhere { MedicinalFormTable.name eq filter.medicinalFormName }
         }
         if (filter.standardId != null) {
             query.andWhere { MedicineTable.standardId eq filter.standardId }
         }
         if (!filter.standardName.isNullOrBlank()) {
-            query.andWhere { StandardTable.name like "%${filter.standardName}%" }
+            query.andWhere { StandardTable.name eq filter.standardName }
         }
 
         query.map { row ->

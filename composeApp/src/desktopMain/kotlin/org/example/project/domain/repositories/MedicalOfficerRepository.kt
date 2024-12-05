@@ -8,4 +8,5 @@ interface MedicalOfficerRepository {
     suspend fun add(medicalOfficer: MedicalOfficer): Result<MedicalOfficer>
     suspend fun update(medicalOfficer: MedicalOfficer): Result<Boolean>
     suspend fun delete(id: Int): Result<Boolean>
+
 }

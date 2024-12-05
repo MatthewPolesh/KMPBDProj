@@ -14,6 +14,9 @@ class MedicalOfficerViewModel(
     private val medicalOfficerRepository: MedicalOfficerRepository
 ) : ViewModel() {
 
+    private val _bonuses = MutableStateFlow<List<Int>>(emptyList())
+    val bonuses: StateFlow<List<Int>> = _bonuses
+
     private val _medicalOfficers = MutableStateFlow<List<MedicalOfficer>>(emptyList())
     val medicalOfficers: StateFlow<List<MedicalOfficer>> = _medicalOfficers
 

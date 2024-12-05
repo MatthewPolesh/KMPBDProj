@@ -1,9 +1,14 @@
 package org.example.project.data.repositories
 
 import org.example.project.data.database.dao.SpecialityDao
+import org.example.project.data.database.tables.MedicalOfficerTable
+import org.example.project.data.database.tables.SpecialityTable
 import org.example.project.data.database.toDomain
 import org.example.project.domain.entities.Speciality
 import org.example.project.domain.repositories.SpecialityRepository
+import org.jetbrains.exposed.sql.IntegerColumnType
+import org.jetbrains.exposed.sql.VarCharColumnType
+import org.jetbrains.exposed.sql.transactions.TransactionManager
 
 class SpecialityRepositoryImpl : BaseRepository(), SpecialityRepository {
 
@@ -43,4 +48,25 @@ class SpecialityRepositoryImpl : BaseRepository(), SpecialityRepository {
             false
         }
     }
+
+    override suspend fun getMedicalOfficerFIOBySpeciality(nameSpeciality: String): Result<String?> =
+        safeDbCall {
+            val FIO = TransactionManager.current().exec(
+                stmt = "SELECT return_FIO(?) as FIO",
+                args = listOf(Pair(VarCharColumnType(), nameSpeciality)),
+                transform = {
+                        rs ->
+                    if (rs.next()) {
+                        rs.getString("FIO")
+                    } else {
+                        throw Exception("Не удалось получить ФИО из функции return_FIO")
+                    }
+                }
+            )
+            if (FIO != null)
+                FIO
+            else
+                throw Exception("Не удалось получить ФИО из функции return_FIO")
+        }
 }
+

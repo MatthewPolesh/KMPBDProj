@@ -8,4 +8,5 @@ interface SpecialityRepository {
     suspend fun add(speciality: Speciality): Result<Speciality>
     suspend fun update(speciality: Speciality): Result<Boolean>
     suspend fun delete(id: Int): Result<Boolean>
+    suspend fun getMedicalOfficerFIOBySpeciality(nameSpeciality: String): Result<String?>
 }

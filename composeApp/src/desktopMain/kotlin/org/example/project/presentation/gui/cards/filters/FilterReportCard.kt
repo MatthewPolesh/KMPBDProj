@@ -26,37 +26,39 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import kotlinx.coroutines.launch
-import org.example.project.domain.filters.ActiveSubstanceFilter
+import kotlinx.datetime.LocalDate
+import org.example.project.domain.filters.ReportFilter
 import org.example.project.presentation.gui.custom.AutoTextField
 import org.example.project.presentation.gui.custom.CustomButton
-import org.example.project.presentation.viewmodels.ActiveSubstanceViewModel
+import org.example.project.presentation.viewmodels.ReportViewModel
 import org.example.project.utils.Utilities
 import org.koin.compose.viewmodel.koinViewModel
 
 
 @Composable
-fun FilterActiveSubstanceCard(
+fun FilterReportCard(
     onAccept: () -> Unit,
     onDismiss: () -> Unit,
 ) {
-    val viewModel: ActiveSubstanceViewModel = koinViewModel()
-    val itemsList = viewModel.activeSubstances.collectAsState()
+    val viewModel: ReportViewModel = koinViewModel()
+    val itemsList = viewModel.reports.collectAsState()
     val rowState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
     val idMedOffList = itemsList.value.map { it.medicalOfficerId.toString() }
-    val appointmentList = itemsList.value.map { it.appointment}
-    val compositionList = itemsList.value.map { it.composition }
+    val nameMedOffList = itemsList.value.map { it.medicalOfficerName}
+    val dateList = itemsList.value.map { it.date.toString()}
     val nameList = itemsList.value.map  { it.name }
     val idList = itemsList.value.map  { it.id.toString() }
-    var filterState by remember { mutableStateOf(ActiveSubstanceFilter()) }
-    val charList = listOf("ID", "Название", "Состав", "Показания к применению", "ID сотрудника")
+    var filterState by remember { mutableStateOf(ReportFilter())}
+    var locDate by remember {mutableStateOf("")}
+    val charList = listOf("ID", "Название", "Дата выполнения", "Выполнил", "ID сотрудника")
     val allOptions = mapOf(
         "ID" to idList,
         "Название" to nameList,
-        "Состав" to compositionList ,
-        "Показания к применению" to appointmentList ,
-        "ID сотрудника" to idMedOffList ,
+        "Дата выполнения" to dateList ,
+        "Выполнил" to nameMedOffList,
+        "ID сотрудника" to idMedOffList,
     )
 
     Dialog(
@@ -106,18 +108,20 @@ fun FilterActiveSubstanceCard(
                         Column(
                             modifier = Modifier.padding(Utilities.paddingExternal)
                         ) {
+                            println("Filter state: $filterState")
                             Text(text = item)
                             AutoTextField(
-
                                 allOptions[item]!!.distinct(),
                                 onTextChange  = { newValue ->
-                                    filterState = when (item) {
-                                        "ID" -> filterState.copy(id = newValue.toIntOrNull())
-                                        "Название" -> filterState.copy(name = newValue)
-                                        "Состав" -> filterState.copy(composition = newValue)
-                                        "Показания к применению" -> filterState.copy(appointment = newValue)
-                                        "ID сотрудника" -> filterState.copy(medicalOfficerId = newValue.toIntOrNull())
-                                        else -> filterState
+                                     when (item) {
+                                        "ID" -> filterState = filterState.copy(id = newValue.toIntOrNull())
+                                        "Название" -> filterState = filterState.copy(name = newValue)
+                                        "Дата выполнения" ->  {
+                                            locDate = newValue
+                                        }
+                                        "Выполнил" ->filterState =  filterState.copy(medicalOfficerName = newValue)
+                                        "ID сотрудника" -> filterState = filterState.copy(medicalOfficerId = newValue.toIntOrNull())
+                                        else -> {}
                                     }
                                 }
                             )
@@ -129,7 +133,15 @@ fun FilterActiveSubstanceCard(
                     CustomButton(
                         text = "Применить",
                         onClick = {
-                            viewModel.fetchFilteredActiveSubstance(filterState)
+                            if (locDate.isNotBlank()) {
+                                val parsedDate = try {
+                                    LocalDate.parse(locDate)
+                                } catch (e: Exception) {
+                                    null
+                                }
+                                filterState = filterState.copy(date = parsedDate)
+                            }
+                            viewModel.fetchFilteredReports(filterState)
                             onAccept() }
                     )
                     Spacer(modifier = Modifier.weight(1f))
@@ -137,7 +149,7 @@ fun FilterActiveSubstanceCard(
                         text = "Отменить",
                         onClick = {
                             onDismiss()
-                            viewModel.fetchActiveSubstances()
+                            viewModel.fetchReports()
                         }
                     )
                 }

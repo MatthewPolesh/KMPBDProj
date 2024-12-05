@@ -38,17 +38,22 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun SpecialityCard(
+    textFio: String,
     item: Speciality,
     onDelete: (Int) -> Unit,
     onUpdate: (Speciality) -> Unit,
     accessibility:Boolean,
+    fioChecked: () -> Unit
 ) {
     var extended by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
+    var fioChecked by remember { mutableStateOf(false) }
 
-    var textId by remember(item) { mutableStateOf("${item.id}") }
+
+    val textId by remember(item) { mutableStateOf("${item.id}") }
     var textName by remember(item) { mutableStateOf(item.name) }
     var textDuties by remember(item) { mutableStateOf(item.duties) }
+    val textFIO by remember(textFio) { mutableStateOf(textFio) }
 
 
 
@@ -74,7 +79,6 @@ fun SpecialityCard(
             ) {
                 Text(text = textName, style = MaterialTheme.typography.body1)
                 Spacer(modifier = Modifier.weight(1F))
-                println("Access in card: ${accessibility}")
                 if (accessibility)
                 {
                     IconButton(
@@ -107,6 +111,9 @@ fun SpecialityCard(
                     Text("ID: $textId", style = MaterialTheme.typography.body2)
                     Text("Специальность: $textName", style = MaterialTheme.typography.body2)
                     Text("Обязаности: $textDuties", style = MaterialTheme.typography.body2)
+                    if (fioChecked)
+                        Text("ФИО сотрудник(а/ов): $textFIO", style = MaterialTheme.typography.body2)
+                    else CustomButton("Узнать сотрудника", onClick = {fioChecked = true; fioChecked()})
                 } else {
                     Text("Id: $textId", style = MaterialTheme.typography.body2)
                     Row(verticalAlignment = Alignment.CenterVertically) {

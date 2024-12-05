@@ -14,16 +14,25 @@ class SpecialityViewModel(
     private val specialityRepository: SpecialityRepository
 ) : ViewModel() {
 
+
+
     private val _specialities = MutableStateFlow<List<Speciality>>(emptyList())
     val specialities: StateFlow<List<Speciality>> = _specialities
+
+    private val _fioResult = MutableStateFlow<List<String>>(List(100){""})
+    val fioResult: StateFlow<List<String>> = _fioResult
 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
+    private fun updateFIOResult()
+    {
+        _fioResult.value = List(_specialities.value.size){""}
+    }
     fun fetchSpecialities() {
         viewModelScope.launch {
             specialityRepository.getAll()
-                .onSuccess { _specialities.value = it }
+                .onSuccess { _specialities.value = it; updateFIOResult()}
                 .onFailure {
                     _error.value = it.message
                     delay(1000)
@@ -63,6 +72,23 @@ class SpecialityViewModel(
                 .onFailure {
                     _error.value = it.message
                     delay(1000)
+                    _error.value = null
+                }
+        }
+    }
+    fun getMedicalOfficerFIOBySpeciality(nameSpeciality: String, index: Int) {
+        viewModelScope.launch {
+            specialityRepository.getMedicalOfficerFIOBySpeciality(nameSpeciality)
+                .onSuccess { fio ->
+                    if (fio != null) {
+                        val tempArr = _fioResult.value.toMutableList().apply { add(index,fio) }
+                        _fioResult.value = tempArr
+                    }
+                    else _error.value = "Неудалось получить ФИО сотрудника"
+                }
+                .onFailure {
+                    _error.value = it.message
+                    delay(2000)
                     _error.value = null
                 }
         }

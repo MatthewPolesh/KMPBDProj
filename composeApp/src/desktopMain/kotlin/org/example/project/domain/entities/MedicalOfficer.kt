@@ -9,5 +9,6 @@ data class MedicalOfficer(
     val numberChild: Int,
     val email: String,
     val workExperience: Int,
+    val bonus: Int = 0,
     val specialityId: Int
 )

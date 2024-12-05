@@ -73,7 +73,6 @@ class MedicineViewModel(
             medicineRepository.getMedicines(filter)
                 .onSuccess{
                     _medicines.value = it
-                    println("fetched: $it")
                 }
                 .onFailure{
                     _error.value = it.message

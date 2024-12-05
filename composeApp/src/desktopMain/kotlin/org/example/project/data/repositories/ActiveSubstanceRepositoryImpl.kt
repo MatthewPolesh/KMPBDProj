@@ -72,15 +72,14 @@ class ActiveSubstanceRepositoryImpl : BaseRepository(), ActiveSubstanceRepositor
         if (filter.id != null) {
             query.andWhere { ActiveSubstanceTable.id eq filter.id }
         }
-
         if (filter.name != "") {
-            query.andWhere { ActiveSubstanceTable.name like "%${filter.name}%" }
+            query.andWhere { ActiveSubstanceTable.name eq filter.name }
         }
         if (filter.composition != "") {
-            query.andWhere { ActiveSubstanceTable.composition like  "%${filter.composition}%" }
+            query.andWhere { ActiveSubstanceTable.composition eq filter.composition }
         }
         if (filter.appointment != "") {
-            query.andWhere { ActiveSubstanceTable.appointment like "%${filter.appointment}%" }
+            query.andWhere { ActiveSubstanceTable.appointment eq filter.appointment }
         }
         if (filter.medicalOfficerId != null) {
             query.andWhere { ActiveSubstanceTable.medicalOfficerId eq filter.medicalOfficerId }

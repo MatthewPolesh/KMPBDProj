@@ -5,11 +5,34 @@ import org.example.project.data.database.dao.SpecialityDao
 import org.example.project.data.database.toDomain
 import org.example.project.domain.entities.MedicalOfficer
 import org.example.project.domain.repositories.MedicalOfficerRepository
+import org.jetbrains.exposed.sql.IntegerColumnType
+import org.jetbrains.exposed.sql.transactions.TransactionManager
+
 
 class MedicalOfficerRepositoryImpl : BaseRepository(), MedicalOfficerRepository {
 
     override suspend fun getAll(): Result<List<MedicalOfficer>> = safeDbCall {
-        MedicalOfficerDao.all().map { it.toDomain() }
+
+        MedicalOfficerDao.all().map {
+            val bonus = TransactionManager.current().exec(
+                stmt = "CALL bonus_account(?)",
+                args = listOf(Pair(IntegerColumnType(), it.workExperience)),
+                transform = {
+                        rs ->
+                    if (rs.next()) {
+                        rs.getInt("bonus")
+                    } else {
+                        throw Exception("Не удалось получить бонус из процедуры")
+                    }
+                }
+            )
+            if (bonus != null)
+                it.toDomain(bonus)
+            else
+                throw Exception("Не удалось получить бонус из процедуры")
+
+        }
+
     }
 
     override suspend fun getById(id: Int): Result<MedicalOfficer?> = safeDbCall {
@@ -64,3 +87,4 @@ class MedicalOfficerRepositoryImpl : BaseRepository(), MedicalOfficerRepository 
         }
     }
 }
+

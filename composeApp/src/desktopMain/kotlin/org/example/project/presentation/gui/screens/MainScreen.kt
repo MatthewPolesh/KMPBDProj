@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.example.project.presentation.gui.cards.filters.FilterActiveSubstanceCard
 import org.example.project.presentation.gui.cards.filters.FilterMedicineCard
+import org.example.project.presentation.gui.cards.filters.FilterReportCard
 import org.example.project.presentation.gui.sidemenu.CustomDrawerShape
 import org.example.project.presentation.gui.sidemenu.DrawerContent
 import org.example.project.presentation.gui.tables.ActiveSubstanceTableCard
@@ -49,7 +50,7 @@ fun MainScreen(
     val scope = rememberCoroutineScope()
     var checkboxState by remember { mutableStateOf(false) }
     var filtersState by remember{mutableStateOf(false)}
-    var tableName by remember{mutableStateOf("Отчёты")}
+    var tableName by remember{mutableStateOf("Сотрудники")}
     val snackbarHostState = remember{ SnackbarHostState()}
 
 
@@ -80,11 +81,20 @@ fun MainScreen(
                     }
                 )
             }
+            "Отчёты" -> {
+                FilterReportCard(
+                    onAccept = {
+                        filtersState = false
+                        checkboxState = true
+                    },
+                    onDismiss = {
+                        filtersState = false
+                        checkboxState = false
+                    }
+                )
+            }
 
         }
-
-
-
     Scaffold(
         scaffoldState = scaffoldState,
         drawerGesturesEnabled = true,
@@ -115,9 +125,29 @@ fun MainScreen(
                         .padding(Utilities.paddingButton))
                 Text(text = tableName, modifier = Modifier.padding(Utilities.paddingButton), style = MaterialTheme.typography.h6)
                 Spacer(modifier = Modifier.weight(1f))
-                Text(text = "Фильтры", modifier = Modifier.clickable { filtersState = !filtersState }.padding(
-                    Utilities.paddingButton
-                ), style = MaterialTheme.typography.h6)
+                when(tableName){
+                    "Активные комоненты препаратов" ->
+                        Text(
+                            text = "Фильтры",
+                            modifier = Modifier
+                                .clickable { filtersState = !filtersState }
+                                .padding(Utilities.paddingButton),
+                            style = MaterialTheme.typography.h6)
+                    "Лекарства" ->
+                        Text(
+                            text = "Фильтры",
+                            modifier = Modifier
+                                .clickable { filtersState = !filtersState }
+                                .padding(Utilities.paddingButton),
+                            style = MaterialTheme.typography.h6)
+                    "Отчёты" ->
+                        Text(
+                            text = "Фильтры",
+                            modifier = Modifier
+                                .clickable { filtersState = !filtersState }
+                                .padding(Utilities.paddingButton),
+                            style = MaterialTheme.typography.h6)
+                }
             }
         }
     ) {

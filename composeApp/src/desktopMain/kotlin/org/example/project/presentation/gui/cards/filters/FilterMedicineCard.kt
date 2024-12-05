@@ -44,7 +44,6 @@ fun FilterMedicineCard(
     val rowState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
-    // Получение списков значений для автозаполнения
     val idList = itemsList.value.map { it.id.toString() }
     val producerList = itemsList.value.map { it.producer }
     val nameList = itemsList.value.map { it.name }
@@ -57,10 +56,8 @@ fun FilterMedicineCard(
     val standardIdList = itemsList.value.map { it.standardId.toString() }
     val standardNameList = itemsList.value.map { it.standardName }
     var locDate by remember {mutableStateOf("")}
-    // Состояние фильтров
-    var filterState by remember { mutableStateOf(MedicineFilter()) }
 
-    // Список названий полей фильтров
+    var filterState by remember { mutableStateOf(MedicineFilter()) }
     val charList = listOf(
         "ID",
         "Производитель",
@@ -74,8 +71,6 @@ fun FilterMedicineCard(
         "ID стандарта",
         "Название стандарта"
     )
-
-    // Мапа для автозаполнения опций
     val allOptions = mapOf(
         "ID" to idList,
         "Производитель" to producerList,
@@ -139,22 +134,22 @@ fun FilterMedicineCard(
                         ) {
                             Text(text = item)
                             AutoTextField(
-                                allOptions[item] ?: emptyList(),
+                                allOptions[item]!!.distinct(),
                                 onTextChange = { newValue ->
                                     when (item) {
                                         "ID" -> filterState = filterState.copy(id = newValue.toIntOrNull())
-                                        "Производитель" -> filterState = filterState.copy(producer = newValue)
-                                        "Название" -> filterState = filterState.copy(name = newValue)
+                                        "Производитель" -> filterState = filterState.copy(producer = newValue.trim())
+                                        "Название" -> filterState = filterState.copy(name = newValue.trim())
                                         "Дозировка" -> filterState = filterState.copy(dosage = newValue.toIntOrNull())
                                         "Дата производства" -> {
                                             locDate = newValue
                                         }
                                         "ID активного вещества" -> filterState = filterState.copy(activeSubstanceId = newValue.toIntOrNull())
-                                        "Название активного вещества" -> filterState = filterState.copy(activeSubstanceName = newValue)
+                                        "Название активного вещества" -> filterState = filterState.copy(activeSubstanceName = newValue.trim())
                                         "ID лекарственной формы" -> filterState = filterState.copy(medicinalFormId = newValue.toIntOrNull())
-                                        "Название лекарственной формы" -> filterState = filterState.copy(medicinalFormName = newValue)
+                                        "Название лекарственной формы" -> filterState = filterState.copy(medicinalFormName = newValue.trim())
                                         "ID стандарта" -> filterState = filterState.copy(standardId = newValue.toIntOrNull())
-                                        "Название стандарта" -> filterState = filterState.copy(standardName = newValue)
+                                        "Название стандарта" -> filterState = filterState.copy(standardName = newValue.trim())
                                         else -> {}
                                     }
                                 }

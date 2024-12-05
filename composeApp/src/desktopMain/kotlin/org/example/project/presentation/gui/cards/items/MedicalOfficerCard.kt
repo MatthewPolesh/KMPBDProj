@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.arrow_drop_down_24px
 import kotlinproject.composeapp.generated.resources.arrow_drop_up_24px
@@ -45,11 +46,13 @@ fun MedicalOfficerCard(
 ) {
     var extended by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
+    var bonusChecked by remember { mutableStateOf(false) }
 
     var textId by remember(item) { mutableStateOf("${item.id}") }
     var textName by remember(item) { mutableStateOf("${item.surname} ${item.firstName} ${item.lastName}") }
     var textAge by remember(item) { mutableStateOf("${item.age}") }
     var textEmail by remember(item) { mutableStateOf(item.email) }
+    var textBonus by remember(item) { mutableStateOf("${item.bonus}") }
     var textExp by remember(item) { mutableStateOf("${item.workExperience}") }
     var textSpec by remember(item) { mutableStateOf("${item.specialityId}") }
     var textChild by remember(item) { mutableStateOf("${item.numberChild}") }
@@ -83,6 +86,7 @@ fun MedicalOfficerCard(
                         onClick = {
                             isEditing = !isEditing
                             extended = true
+                            bonusChecked = false
                         },
                         content = { Icon(painter = painterResource(Res.drawable.edit_note_24px),null, tint = Color.Black) })
                     IconButton(
@@ -93,6 +97,7 @@ fun MedicalOfficerCard(
                     onClick = {
                         extended = !extended
                         isEditing = false
+                        bonusChecked = false
                     },
                     content = { Icon(
                         painter = if (!extended)
@@ -113,6 +118,13 @@ fun MedicalOfficerCard(
                     Text("ID специальности: $textSpec", style = MaterialTheme.typography.body2)
                     Text("Опыт работы: $textExp", style = MaterialTheme.typography.body2)
                     Text("Кол-во детей: $textChild", style = MaterialTheme.typography.body2)
+                    if(bonusChecked)
+                        Text("Премия: $textBonus", style = MaterialTheme.typography.body2)
+                    else
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text("Премия: ????", style = MaterialTheme.typography.body2, modifier = Modifier.padding(end = 5.dp))
+                            CustomButton("Расчитать премию", onClick = {bonusChecked = !bonusChecked})
+                        }
                 } else {
                     Text("Id: $textId", style = MaterialTheme.typography.body2)
                     Row(verticalAlignment = Alignment.CenterVertically) {

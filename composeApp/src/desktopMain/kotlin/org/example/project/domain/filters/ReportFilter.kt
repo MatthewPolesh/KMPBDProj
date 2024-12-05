@@ -6,5 +6,6 @@ data class ReportFilter(
     val id: Int? = null,
     val name: String = "",
     val date: LocalDate? = null,
-    val medicalOfficerId: Int
+    val medicalOfficerId: Int? = null,
+    val medicalOfficerName: String = ""
 )

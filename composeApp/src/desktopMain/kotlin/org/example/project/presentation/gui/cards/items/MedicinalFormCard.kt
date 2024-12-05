@@ -45,7 +45,6 @@ fun MedicinalFormCard(
     var extended by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
 
-    var textId by remember(item) { mutableStateOf("${item.id}") }
     var textName by remember(item) { mutableStateOf(item.name) }
     var textCompos by remember(item) { mutableStateOf(item.composition) }
 
@@ -98,11 +97,9 @@ fun MedicinalFormCard(
             if (extended) {
                 Divider(modifier = Modifier.fillMaxWidth().padding(vertical = Utilities.paddingExternal))
                 if (!isEditing) {
-                    Text("Id: $textId", style = MaterialTheme.typography.body2)
                     Text("Название: $textName", style = MaterialTheme.typography.body2)
                     Text("Состав: $textCompos", style = MaterialTheme.typography.body2)
                 } else {
-                    Text("Id: $textId")
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("Название: ", style = MaterialTheme.typography.body2)
                         TextField(
@@ -124,7 +121,7 @@ fun MedicinalFormCard(
                                 extended = false
                                 onUpdate(
                                     MedicinalForm(
-                                        id = textId.toInt(),
+                                        id = 0,
                                         name = textName,
                                         composition = textCompos,
                                         medicalOfficerId = item.medicalOfficerId

@@ -48,7 +48,6 @@ fun ReportCard(
     var extended by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
 
-    val textId by remember(item) { mutableStateOf("${item.id}") }
     var textName by remember(item) { mutableStateOf(item.name) }
     var textDate by remember(item) { mutableStateOf("${item.date}") }
     val textDone by remember(item.medicalOfficerName) { mutableStateOf(item.medicalOfficerName) }
@@ -103,13 +102,11 @@ fun ReportCard(
             if (extended) {
                 Divider(modifier = Modifier.fillMaxWidth().padding(vertical = Utilities.paddingExternal))
                 if (!isEditing) {
-                    Text("Id: $textId", style = MaterialTheme.typography.body2)
                     Text("Название: $textName", style = MaterialTheme.typography.body2)
                     Text("Дата выполнения: $textDate", style = MaterialTheme.typography.body2)
                     Text("Выполнил: $textDone", style = MaterialTheme.typography.body2)
                     Text("Id сотрудника: $textOffId", style = MaterialTheme.typography.body2)
                 } else {
-                    Text("Id: $textId", style = MaterialTheme.typography.body2)
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("Название: ")
                         TextField(
@@ -138,7 +135,7 @@ fun ReportCard(
                                 extended = false
                                 onUpdate(
                                     Report(
-                                        id = textId.toInt(),
+                                        id = 0,
                                         name = textName,
                                         date = LocalDate.parse(textDate),
                                         medicalOfficerId = textOffId.toInt(),

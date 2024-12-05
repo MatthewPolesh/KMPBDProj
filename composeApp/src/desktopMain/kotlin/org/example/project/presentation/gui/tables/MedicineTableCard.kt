@@ -2,7 +2,6 @@ package org.example.project.presentation.gui.tables
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -47,7 +46,6 @@ fun MedicineTableCard(
     onError: (String) -> Unit,
 ) {
 
-    var textId by remember { mutableStateOf("") }
     var textName by remember { mutableStateOf("") }
     var textProducer by remember { mutableStateOf("") }
     var textDateProduce by remember { mutableStateOf("") }
@@ -98,7 +96,7 @@ fun MedicineTableCard(
                             .clip(RoundedCornerShape(Utilities.cornerBox))
                             .background(color = Color.Gray)
                             .padding(Utilities.paddingIntertal)
-                            .clickable { isEditing = !isEditing }
+
                     )
                     {
                         Column(
@@ -119,13 +117,6 @@ fun MedicineTableCard(
 
                             if (isEditing) {
                                 Divider(modifier = Modifier.fillMaxWidth())
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Id: ", style = MaterialTheme.typography.body2)
-                                    TextField(
-                                        value = textId,
-                                        onValueChange = { newText -> textId = newText },
-                                    )
-                                }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Text("Название: ", style = MaterialTheme.typography.body2)
                                     TextField(
@@ -181,7 +172,7 @@ fun MedicineTableCard(
                                             isEditing = !isEditing
                                             viewModel.addMedicine(
                                                 Medicine(
-                                                    id = textId.toInt(),
+                                                    id = 0,
                                                     producer = textProducer,
                                                     name = textName,
                                                     dateProduce = LocalDate.parse(textDateProduce),

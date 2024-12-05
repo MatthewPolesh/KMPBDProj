@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
@@ -88,7 +89,7 @@ fun AuthScreen(
                         if (viewModel.isAuthenticated.value || result)
                             onAuth(viewModel.accessibility.value)
                         else
-                            snackbarHostState.showSnackbar("Не верно введен пароль или пользователь")
+                            snackbarHostState.showSnackbar("Не верно введен пароль или пользователь", duration = SnackbarDuration.Long)
                     }
                 }
             )

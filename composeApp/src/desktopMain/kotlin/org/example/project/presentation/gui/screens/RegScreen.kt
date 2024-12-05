@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
@@ -21,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.example.project.presentation.gui.custom.CustomButton
 import org.example.project.presentation.viewmodels.UserViewModel
@@ -106,7 +108,7 @@ fun RegScreen(
                 text = "Зарегистрироваться",
                 onClick = {
                     val fullName = textName.split(" ")
-                    viewModel.addMedicalOfficer(
+                    val result = viewModel.addMedicalOfficer(
                         firstName = fullName[1],
                         lastName = fullName[2],
                         surname = fullName[0],
@@ -116,7 +118,13 @@ fun RegScreen(
                         workExperience = textExp.toInt(),
                         specName = textSpec
                     )
-                    onReg()
+                    scope.launch {
+                        delay(3000)
+                        if (viewModel.isAuthenticated.value || result)
+                            onReg()
+                        else
+                            snackbarHostState.showSnackbar("Не удалось зарегистрироваться", duration = SnackbarDuration.Long)
+                    }
                 })
         }
     }

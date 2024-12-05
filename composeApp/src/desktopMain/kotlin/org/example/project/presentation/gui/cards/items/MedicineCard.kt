@@ -46,7 +46,6 @@ fun MedicineCard(
     var extended by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
 
-    var textId by remember(item) { mutableStateOf("${item.id}") }
     var textName by remember(item) { mutableStateOf(item.name) }
     var textProducer by remember(item) { mutableStateOf(item.producer) }
     var textDateProduce by remember(item) { mutableStateOf("${item.dateProduce}") }
@@ -112,19 +111,14 @@ fun MedicineCard(
             if (extended) {
                 Divider(modifier = Modifier.fillMaxWidth().padding(vertical = Utilities.paddingExternal))
                 if (!isEditing) {
-                    Text("ID: $textId", style = MaterialTheme.typography.body2)
                     Text("Название: $textName", style = MaterialTheme.typography.body2)
                     Text("Производитель: $textProducer", style = MaterialTheme.typography.body2)
                     Text("Дата производства: $textDateProduce", style = MaterialTheme.typography.body2)
                     Text("Дозировка: $textDosage", style = MaterialTheme.typography.body2)
-                    Text("ID активного компонента: $textSubId", style = MaterialTheme.typography.body2)
                     Text("Активный компонент: $textSubName", style = MaterialTheme.typography.body2)
-                    Text("ID вида лекраства: $textFormId", style = MaterialTheme.typography.body2)
                     Text("Вид лекарства: $textFormName", style = MaterialTheme.typography.body2)
-                    Text("ID стандрата: $textStandardId", style = MaterialTheme.typography.body2)
                     Text("Стандрат: $textStandardName", style = MaterialTheme.typography.body2)
                 } else {
-                    Text("Id: $textId", style = MaterialTheme.typography.body2)
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("Название: ", style = MaterialTheme.typography.body2)
                         TextField(
@@ -190,7 +184,7 @@ fun MedicineCard(
                                 extended = false
                                 onUpdate(
                                     Medicine(
-                                        id = textId.toInt(),
+                                        id = 0,
                                         producer = textProducer,
                                         name = textName,
                                         dateProduce = LocalDate.parse(textDateProduce),

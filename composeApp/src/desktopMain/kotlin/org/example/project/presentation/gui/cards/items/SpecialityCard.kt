@@ -49,8 +49,6 @@ fun SpecialityCard(
     var isEditing by remember { mutableStateOf(false) }
     var fioChecked by remember { mutableStateOf(false) }
 
-
-    val textId by remember(item) { mutableStateOf("${item.id}") }
     var textName by remember(item) { mutableStateOf(item.name) }
     var textDuties by remember(item) { mutableStateOf(item.duties) }
     val textFIO by remember(textFio) { mutableStateOf(textFio) }
@@ -108,14 +106,12 @@ fun SpecialityCard(
             if (extended) {
                 Divider(modifier = Modifier.fillMaxWidth().padding(vertical = Utilities.paddingExternal))
                 if (!isEditing) {
-                    Text("ID: $textId", style = MaterialTheme.typography.body2)
                     Text("Специальность: $textName", style = MaterialTheme.typography.body2)
                     Text("Обязаности: $textDuties", style = MaterialTheme.typography.body2)
                     if (fioChecked)
                         Text("ФИО сотрудник(а/ов): $textFIO", style = MaterialTheme.typography.body2)
                     else CustomButton("Узнать сотрудника", onClick = {fioChecked = true; fioChecked()})
                 } else {
-                    Text("Id: $textId", style = MaterialTheme.typography.body2)
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("Специальность: ", style = MaterialTheme.typography.body2)
                         TextField(
@@ -140,7 +136,7 @@ fun SpecialityCard(
                                 extended = false
                                 onUpdate(
                                     Speciality(
-                                        id = textId.toInt(),
+                                        id = 0,
                                         name = textName,
                                         duties = textDuties
                                     )

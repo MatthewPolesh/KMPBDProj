@@ -2,7 +2,6 @@ package org.example.project.presentation.gui.tables
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -47,7 +46,7 @@ fun StatusTableCard(
 ) {
 
     var isEditing by remember { mutableStateOf(false) }
-    var textId by remember { mutableStateOf("") }
+
     var textStartData by remember { mutableStateOf("") }
     var textEndData by remember { mutableStateOf("") }
     var textReasonOfChange by remember { mutableStateOf("") }
@@ -100,7 +99,7 @@ fun StatusTableCard(
                             .clip(RoundedCornerShape(Utilities.cornerBox))
                             .background(color = Color.Gray)
                             .padding(Utilities.paddingIntertal)
-                            .clickable { isEditing = !isEditing }
+                        
                     )
                     {
                         Column(
@@ -121,13 +120,6 @@ fun StatusTableCard(
 
                             if (isEditing) {
                                 Divider(modifier = Modifier.fillMaxWidth())
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Id: ", style = MaterialTheme.typography.body2)
-                                    TextField(
-                                        value = textId,
-                                        onValueChange = { newText -> textId = newText },
-                                    )
-                                }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Text("Начало: ", style = MaterialTheme.typography.body2)
                                     TextField(
@@ -155,7 +147,7 @@ fun StatusTableCard(
                                             isEditing = !isEditing
                                             viewModel.addStatus(
                                                 Status(
-                                                    id = textId.toInt(),
+                                                    id = 0,
                                                     startData = LocalDate.parse(textStartData),
                                                     endData = LocalDate.parse(textEndData),
                                                     reasonOfChange = textReasonOfChange

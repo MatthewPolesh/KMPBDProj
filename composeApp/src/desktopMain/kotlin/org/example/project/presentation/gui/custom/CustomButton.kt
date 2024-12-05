@@ -1,6 +1,7 @@
 package org.example.project.presentation.gui.custom
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -18,6 +19,7 @@ fun CustomButton(
         text = text,
         style = MaterialTheme.typography.button,
         modifier = Modifier
+            .focusable(false)
             .padding( vertical = Utilities.paddingButton/4)
             .clip(shape = RoundedCornerShape(Utilities.cornerBox))
             .clickable {onClick()}

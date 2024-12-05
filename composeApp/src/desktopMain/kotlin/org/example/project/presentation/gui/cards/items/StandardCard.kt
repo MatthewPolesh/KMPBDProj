@@ -45,7 +45,7 @@ fun StandardCard(
 ) {
     var extended by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
-    val textId by remember(item) { mutableStateOf("${item.id}") }
+
     var textName by remember(item) { mutableStateOf(item.name) }
     var textComponents by remember(item) { mutableStateOf(item.components) }
 
@@ -102,11 +102,9 @@ fun StandardCard(
             if (extended) {
                 Divider(modifier = Modifier.fillMaxWidth().padding(vertical = Utilities.paddingExternal))
                 if (!isEditing) {
-                    Text("ID: $textId", style = MaterialTheme.typography.body2)
                     Text("Название: $textName", style = MaterialTheme.typography.body2)
                     Text("Компоненты: $textComponents", style = MaterialTheme.typography.body2)
                 } else {
-                    Text("Id: $textId", style = MaterialTheme.typography.body2)
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("Название: ", style = MaterialTheme.typography.body2)
                         TextField(
@@ -128,7 +126,7 @@ fun StandardCard(
                                 extended = false
                                 onUpdate(
                                     Standard(
-                                        id = textId.toInt(),
+                                        id = 0,
                                         name = textName,
                                         components = textComponents
                                     )

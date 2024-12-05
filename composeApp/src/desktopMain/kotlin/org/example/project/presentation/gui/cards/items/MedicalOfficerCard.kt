@@ -48,7 +48,6 @@ fun MedicalOfficerCard(
     var isEditing by remember { mutableStateOf(false) }
     var bonusChecked by remember { mutableStateOf(false) }
 
-    var textId by remember(item) { mutableStateOf("${item.id}") }
     var textName by remember(item) { mutableStateOf("${item.surname} ${item.firstName} ${item.lastName}") }
     var textAge by remember(item) { mutableStateOf("${item.age}") }
     var textEmail by remember(item) { mutableStateOf(item.email) }
@@ -111,7 +110,6 @@ fun MedicalOfficerCard(
             if (extended) {
                 Divider(modifier = Modifier.fillMaxWidth().padding(vertical = Utilities.paddingExternal))
                 if (!isEditing) {
-                    Text("ID: $textId", style = MaterialTheme.typography.body2)
                     Text("ФИО: $textName", style = MaterialTheme.typography.body2)
                     Text("Возраст: $textAge", style = MaterialTheme.typography.body2)
                     Text("Почта: $textEmail", style = MaterialTheme.typography.body2)
@@ -122,11 +120,11 @@ fun MedicalOfficerCard(
                         Text("Премия: $textBonus", style = MaterialTheme.typography.body2)
                     else
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("Премия: ????", style = MaterialTheme.typography.body2, modifier = Modifier.padding(end = 5.dp))
+                            Text("Премия: ", style = MaterialTheme.typography.body2, modifier = Modifier.padding(end = 5.dp))
                             CustomButton("Расчитать премию", onClick = {bonusChecked = !bonusChecked})
                         }
                 } else {
-                    Text("Id: $textId", style = MaterialTheme.typography.body2)
+
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("ФИО: ")
                         TextField(
@@ -178,7 +176,7 @@ fun MedicalOfficerCard(
                                 val name = textName.split(" ")
                                 onUpdate(
                                     MedicalOfficer(
-                                        id = textId.toInt(),
+                                        id = 0,
                                         firstName = name[1],
                                         lastName = name[2],
                                         surname = name[0],

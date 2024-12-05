@@ -45,7 +45,6 @@ fun GostCard(
 ) {
     var extended by remember(item) { mutableStateOf(false) }
     var isEditing by remember(item) { mutableStateOf(false) }
-    val textId by remember(item) { mutableStateOf("${item.id}") }
     var textName by remember(item) { mutableStateOf(item.name) }
 
 
@@ -101,10 +100,9 @@ fun GostCard(
             if (extended) {
                 Divider(modifier = Modifier.fillMaxWidth().padding(vertical = Utilities.paddingExternal))
                 if (!isEditing) {
-                    Text("ID: $textId", style = MaterialTheme.typography.body2)
+
                     Text("Название: $textName", style = MaterialTheme.typography.body2)
                 } else {
-                    Text("Id: $textId")
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("Название: ", style = MaterialTheme.typography.body2)
                         TextField(
@@ -119,7 +117,7 @@ fun GostCard(
                                 extended = false
                                 onUpdate(
                                     GOST(
-                                        id = textId.toInt(),
+                                        id = 0,
                                         name = textName
                                     )
                                 )

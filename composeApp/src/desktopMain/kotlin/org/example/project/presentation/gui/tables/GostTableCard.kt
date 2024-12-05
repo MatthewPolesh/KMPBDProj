@@ -2,7 +2,6 @@ package org.example.project.presentation.gui.tables
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -46,7 +45,6 @@ fun GostTableCard(
 ) {
 
     var isEditing by remember { mutableStateOf(false) }
-    var textId by remember { mutableStateOf("") }
     var textName by remember { mutableStateOf("") }
 
 
@@ -98,7 +96,7 @@ fun GostTableCard(
                             .clip(RoundedCornerShape(Utilities.cornerBox))
                             .background(color = Color.Gray)
                             .padding(Utilities.paddingIntertal)
-                            .clickable { isEditing = !isEditing }
+
                     )
                     {
                         Column(
@@ -119,13 +117,7 @@ fun GostTableCard(
 
                             if (isEditing) {
                                 Divider(modifier = Modifier.fillMaxWidth())
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Id: ", style = MaterialTheme.typography.body2)
-                                    TextField(
-                                        value = textId,
-                                        onValueChange = { newText -> textId = newText },
-                                    )
-                                }
+
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Text("Название: ", style = MaterialTheme.typography.body2)
                                     TextField(
@@ -139,7 +131,7 @@ fun GostTableCard(
                                             isEditing = false
                                             viewModel.addGOST(
                                                 GOST(
-                                                    id = textId.toInt(),
+                                                    id = 0,
                                                     name = textName
                                                 )
                                             )

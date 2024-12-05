@@ -37,7 +37,8 @@ class UserViewModel(
         email: String,
         workExperience: Int,
         specName: String
-    ) {
+    ): Boolean {
+        var result = false
         viewModelScope.launch {
             specialityRepository.getAll()
                 .onSuccess {
@@ -57,13 +58,14 @@ class UserViewModel(
                                 workExperience = workExperience,
                                 specialityId = specId
                             )
-                            println("$specId")
                             viewModelScope.launch {
                                 medicalOfficerRepository.add(medicalOfficer)
                                     .onSuccess {
                                         _username.value = "$surname $firstName $lastName"
                                         _isAuthenticated.value = true
-                                        _accessibility.value = specId == 0 }
+                                        _accessibility.value = specId == 0
+                                        result = true
+                                    }
                                     .onFailure { _error.value = it.message }
                             }
                             break
@@ -87,9 +89,12 @@ class UserViewModel(
                                     )
                                     medicalOfficerRepository.add(medicalOfficer)
                                         .onSuccess {
+
                                             _username.value = "$surname $firstName $lastName"
                                             _isAuthenticated.value = true
-                                            _accessibility.value = false }
+                                            _accessibility.value = false
+                                            result = true
+                                        }
                                         .onFailure {
                                             _error.value = it.message
                                         }
@@ -102,6 +107,7 @@ class UserViewModel(
                 }
                 .onFailure { _error.value = it.message }
         }
+        return result
     }
 
 
@@ -121,7 +127,7 @@ class UserViewModel(
                         if (password == surnameMap[username]!![0]) {
                             _username.value = username
                             _isAuthenticated.value = true
-                            _accessibility.value = surnameMap[username]!![0] == "1"
+                            _accessibility.value = surnameMap[username]!![1] == "1"
                             result = true
                         } else {
                             _error.value = error("Неправильный пароль")

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
@@ -157,27 +158,27 @@ fun MainScreen(
             when(tableName)
             {
                 "Отчёты" -> ReportTableCard(
-                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it, duration = SnackbarDuration.Long) }})
                 "Сотрудники" -> MedicalOfficerTableCard(
-                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }},
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it, duration = SnackbarDuration.Long) }},
                     accessibility = accessibility)
                 "Специальности" -> SpecialityTableCard(
-                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }},
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it, duration = SnackbarDuration.Long) }},
                     accessibility = accessibility)
                 "Лекарства" -> MedicineTableCard(
-                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it, duration = SnackbarDuration.Long) }})
                 "Активные комоненты препаратов" -> ActiveSubstanceTableCard(
-                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it, duration = SnackbarDuration.Long) }})
                 "Виды лекарства"-> MedicinalFormTableCard(
-                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }})
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it, duration = SnackbarDuration.Long) }})
                 "Стандарты изготовления" -> StandardTableCard(
-                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }},
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it, duration = SnackbarDuration.Long) }},
                     accessibility = accessibility)
                 "ГОСТы" -> GostTableCard(
-                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }},
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it, duration = SnackbarDuration.Long) }},
                     accessibility = accessibility)
                 "Статусы изготовления"-> StatusTableCard(
-                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it) }},
+                    onError = { scope.launch { snackbarHostState.showSnackbar(message = it, duration = SnackbarDuration.Long) }},
                     accessibility = accessibility)
             }
 

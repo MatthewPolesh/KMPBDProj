@@ -101,7 +101,6 @@ fun StatusCard(
             if (extended) {
                 Divider(modifier = Modifier.fillMaxWidth().padding(vertical = Utilities.paddingExternal))
                 if (!isEditing) {
-                    Text("ID: $textId", style = MaterialTheme.typography.body2)
                     Text("Начало: $textStartData", style = MaterialTheme.typography.body2)
                     Text("Конец: $textEndData", style = MaterialTheme.typography.body2)
                     Text("Причина изменений: $textReasonOfChange", style = MaterialTheme.typography.body2)
@@ -135,7 +134,7 @@ fun StatusCard(
                                 extended = false
                                 onUpdate(
                                     Status(
-                                        id = textId.toInt(),
+                                        id = 0,
                                         startData = LocalDate.parse(textStartData),
                                         endData = LocalDate.parse(textEndData),
                                         reasonOfChange = textReasonOfChange

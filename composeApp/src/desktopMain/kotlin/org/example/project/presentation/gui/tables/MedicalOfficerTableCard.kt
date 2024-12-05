@@ -2,7 +2,6 @@ package org.example.project.presentation.gui.tables
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -47,7 +46,6 @@ fun MedicalOfficerTableCard(
     accessibility: Boolean
 ) {
 
-    var textId by remember { mutableStateOf("") }
     var textName by remember { mutableStateOf("") }
     var textAge by remember { mutableStateOf("") }
     var textEmail by remember { mutableStateOf("") }
@@ -58,7 +56,6 @@ fun MedicalOfficerTableCard(
 
     val viewModel: MedicalOfficerViewModel = koinViewModel()
     val itemList = viewModel.medicalOfficers.collectAsState()
-    val listOfBonuses = viewModel.bonuses.collectAsState()
 
     LaunchedEffect(Unit){
        viewModel.fetchMedicalOfficers()
@@ -103,7 +100,7 @@ fun MedicalOfficerTableCard(
                             .clip(RoundedCornerShape(Utilities.cornerBox))
                             .background(color = Color.Gray)
                             .padding(Utilities.paddingIntertal)
-                            .clickable { isEditing = !isEditing }
+
                     )
                     {
                         Column(
@@ -123,13 +120,6 @@ fun MedicalOfficerTableCard(
                             }
                             if (isEditing) {
                                 Divider(modifier = Modifier.fillMaxWidth())
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Id: ", style = MaterialTheme.typography.body2)
-                                    TextField(
-                                        value = textId,
-                                        onValueChange = { newText -> textId = newText },
-                                    )
-                                }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Text("ФИО: ", style = MaterialTheme.typography.body2)
                                     TextField(
@@ -179,7 +169,7 @@ fun MedicalOfficerTableCard(
                                             val fullName = textName.split(" ")
                                             viewModel.addMedicalOfficer(
                                                 MedicalOfficer(
-                                                    id = textId.toInt(),
+                                                    id = 0,
                                                     firstName = fullName[1],
                                                     lastName = fullName[2],
                                                     surname = fullName[0],

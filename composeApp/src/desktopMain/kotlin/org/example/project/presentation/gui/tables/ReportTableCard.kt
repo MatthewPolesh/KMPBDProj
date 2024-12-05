@@ -44,7 +44,6 @@ fun ReportTableCard(
     modifier: Modifier = Modifier,
     onError: (String) -> Unit,
 ) {
-    var textId by remember { mutableStateOf("") }
     var textName by remember { mutableStateOf("") }
     var textDate by remember { mutableStateOf("") }
     var textOffId by remember { mutableStateOf("") }
@@ -120,13 +119,7 @@ fun ReportTableCard(
                             }
                             if (isEditing) {
                                 Divider(modifier = Modifier.fillMaxWidth())
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Id: ", style = MaterialTheme.typography.body2)
-                                    TextField(
-                                        value = textId,
-                                        onValueChange = { newText -> textId = newText },
-                                    )
-                                }
+
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Text("Название: ", style = MaterialTheme.typography.body2)
                                     TextField(
@@ -154,7 +147,7 @@ fun ReportTableCard(
                                             isEditing = !isEditing
                                             viewModel.addReport(
                                                 Report(
-                                                    id = textId.toInt(),
+                                                    id = 0,
                                                     name = textName,
                                                     date = LocalDate.parse(textDate),
                                                     medicalOfficerId = textOffId.toInt(),

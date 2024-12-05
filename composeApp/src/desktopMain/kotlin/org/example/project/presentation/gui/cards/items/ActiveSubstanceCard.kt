@@ -45,7 +45,6 @@ fun ActiveSubstanceCard(
     var extended by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
 
-    val textId by remember(item) { mutableStateOf("${item.id}") }
     var textName by remember(item) { mutableStateOf(item.name) }
     var textCompos by remember(item) { mutableStateOf(item.composition) }
     var textAppoint by remember(item){ mutableStateOf(item.appointment) }
@@ -101,12 +100,10 @@ fun ActiveSubstanceCard(
             if (extended) {
                 Divider(modifier = Modifier.fillMaxWidth().padding(vertical = Utilities.paddingExternal))
                 if (!isEditing) {
-                    Text("Id: $textId", style = MaterialTheme.typography.body2)
                     Text("Название: $textName", style = MaterialTheme.typography.body2)
                     Text("Состав: $textCompos", style = MaterialTheme.typography.body2)
                     Text("Показания к применению: $textAppoint", style = MaterialTheme.typography.body2)
                 } else {
-                    Text("Id: $textId")
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("Название: ", style = MaterialTheme.typography.body2)
                         TextField(
@@ -142,7 +139,7 @@ fun ActiveSubstanceCard(
                                 extended = false
                                 onUpdate(
                                     ActiveSubstance(
-                                        id = textId.toInt(),
+                                        id = 0,
                                         name = textName,
                                         composition = textCompos,
                                         appointment = textAppoint,

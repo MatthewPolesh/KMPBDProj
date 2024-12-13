@@ -51,11 +51,11 @@ fun MedicineCard(
     var textDateProduce by remember(item) { mutableStateOf("${item.dateProduce}") }
     var textDosage by remember(item) { mutableStateOf("${item.dosage}") }
     var textSubId by remember(item) { mutableStateOf("${item.activeSubstanceId}") }
-    var textSubName by remember(item) { mutableStateOf(item.activeSubstanceName) }
+    val textSubName by remember(item) { mutableStateOf(item.activeSubstanceName) }
     var textFormId by remember(item) { mutableStateOf("${item.medicinalFormId}") }
-    var textFormName by remember(item) { mutableStateOf(item.medicinalFormName) }
+    val textFormName by remember(item) { mutableStateOf(item.medicinalFormName) }
     var textStandardId by remember(item) { mutableStateOf("${item.standardId}") }
-    var textStandardName by remember(item) { mutableStateOf(item.standardName) }
+    val textStandardName by remember(item) { mutableStateOf(item.standardName) }
 
     Box(
         modifier = Modifier

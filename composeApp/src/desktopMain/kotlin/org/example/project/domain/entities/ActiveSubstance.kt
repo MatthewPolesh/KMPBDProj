@@ -5,5 +5,6 @@ data class ActiveSubstance(
     val name: String,
     val composition: String,
     val appointment: String,
-    val medicalOfficerId: Int
+    val medicalOfficerId: Int,
+    val medicalOfficerName: String
 )

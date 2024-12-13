@@ -54,6 +54,7 @@ fun MedicalOfficerCard(
     var textBonus by remember(item) { mutableStateOf("${item.bonus}") }
     var textExp by remember(item) { mutableStateOf("${item.workExperience}") }
     var textSpec by remember(item) { mutableStateOf("${item.specialityId}") }
+    var textSpecName by remember(item) { mutableStateOf(item.specialityName) }
     var textChild by remember(item) { mutableStateOf("${item.numberChild}") }
 
 
@@ -113,7 +114,7 @@ fun MedicalOfficerCard(
                     Text("ФИО: $textName", style = MaterialTheme.typography.body2)
                     Text("Возраст: $textAge", style = MaterialTheme.typography.body2)
                     Text("Почта: $textEmail", style = MaterialTheme.typography.body2)
-                    Text("ID специальности: $textSpec", style = MaterialTheme.typography.body2)
+                    Text("Специальность: $textSpecName", style = MaterialTheme.typography.body2)
                     Text("Опыт работы: $textExp", style = MaterialTheme.typography.body2)
                     Text("Кол-во детей: $textChild", style = MaterialTheme.typography.body2)
                     if(bonusChecked)
@@ -184,7 +185,8 @@ fun MedicalOfficerCard(
                                         numberChild = textChild.toInt(),
                                         email = textEmail,
                                         workExperience = textExp.toInt(),
-                                        specialityId = textSpec.toInt()
+                                        specialityId = textSpec.toInt(),
+                                        specialityName = ""
                                     )
                                 )
                             }

@@ -105,7 +105,6 @@ fun ReportCard(
                     Text("Название: $textName", style = MaterialTheme.typography.body2)
                     Text("Дата выполнения: $textDate", style = MaterialTheme.typography.body2)
                     Text("Выполнил: $textDone", style = MaterialTheme.typography.body2)
-                    Text("Id сотрудника: $textOffId", style = MaterialTheme.typography.body2)
                 } else {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("Название: ")

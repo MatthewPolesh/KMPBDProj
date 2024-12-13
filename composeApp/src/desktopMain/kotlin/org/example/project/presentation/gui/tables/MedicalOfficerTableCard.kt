@@ -177,7 +177,8 @@ fun MedicalOfficerTableCard(
                                                     numberChild = textChild.toInt(),
                                                     email = textEmail,
                                                     workExperience = textExp.toInt(),
-                                                    specialityId = textSpec.toInt()
+                                                    specialityId = textSpec.toInt(),
+                                                    specialityName = ""
                                                 )
                                             )
                                         }

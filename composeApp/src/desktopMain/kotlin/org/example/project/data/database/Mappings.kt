@@ -25,7 +25,8 @@ fun ActiveSubstanceDao.toDomain(): ActiveSubstance {
         name = this.name,
         composition = this.composition,
         appointment = this.appointment,
-        medicalOfficerId = this.medicalOfficerDao.id.value
+        medicalOfficerId = this.medicalOfficerDao.id.value,
+        medicalOfficerName = "${this.medicalOfficerDao.surname} ${this.medicalOfficerDao.firstName} ${this.medicalOfficerDao.lastName}"
     )
 }
 
@@ -51,7 +52,8 @@ fun MedicalOfficerDao.toDomain(bonus: Int = 0): MedicalOfficer {
         bonus = bonus?: 0,
         specialityId = this.specialityDao.id.value,
         age =  this.age?: 0,
-        numberChild = this.numberChild?: 0
+        numberChild = this.numberChild?: 0,
+        specialityName = this.specialityDao.name
     )
 }
 

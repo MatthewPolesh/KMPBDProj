@@ -144,6 +144,7 @@ fun ActiveSubstanceCard(
                                         composition = textCompos,
                                         appointment = textAppoint,
                                         medicalOfficerId = textOffId.toInt(),
+                                        medicalOfficerName = ""
                                         )
                                 )
                             }

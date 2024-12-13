@@ -56,7 +56,8 @@ class UserViewModel(
                                 numberChild = numberChild,
                                 email = email,
                                 workExperience = workExperience,
-                                specialityId = specId
+                                specialityId = specId,
+                                specialityName = ""
                             )
                             viewModelScope.launch {
                                 medicalOfficerRepository.add(medicalOfficer)
@@ -85,7 +86,8 @@ class UserViewModel(
                                         numberChild = numberChild,
                                         email = email,
                                         workExperience = workExperience,
-                                        specialityId = specMap.keys.max() + 1
+                                        specialityId = specMap.keys.max() + 1,
+                                        specialityName = ""
                                     )
                                     medicalOfficerRepository.add(medicalOfficer)
                                         .onSuccess {

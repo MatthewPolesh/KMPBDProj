@@ -98,6 +98,7 @@ class ActiveSubstanceRepositoryImpl : BaseRepository(), ActiveSubstanceRepositor
                 composition = activeSubstanceComposition,
                 appointment = activeSubstanceAppointment,
                 medicalOfficerId = medicalOfficerId,
+                medicalOfficerName = ""
             )
         }
     }
